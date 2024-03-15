@@ -1,6 +1,7 @@
 package date
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -94,4 +95,20 @@ func TestGetDateDetails(t *testing.T) {
 				tc.inputDate, tc.expectedYear, tc.expectedWeekNum, tc.expectedWeekday, year, weekNum, weekday)
 		}
 	}
+}
+
+
+
+func TestFormatDurationSum(t *testing.T) {
+	// 定义两个表示时间的字符串  
+	durationStr1 := "15min"  
+	durationStr2 := "1h55min"  
+  
+	// 调用函数并打印结果  
+	result, err := FormatDurationSum(durationStr1, durationStr2)  
+	if err != nil {  
+		fmt.Println("Error parsing durations:", err)  
+		return  
+	}  
+	fmt.Println(result) // 输出: 2h0min 或 2h（根据格式化字符串）  	
 }
