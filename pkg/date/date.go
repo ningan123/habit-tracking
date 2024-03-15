@@ -8,16 +8,17 @@ import (
 )
 
 // TODO：2024-12-30的输出结果不太对
-func GetDateDetails(inputDate string) (int, time.Month, int, time.Weekday, error) {
+func GetDateDetails(inputDate string) (int, time.Month, int, int, time.Weekday, error) {
 	// 将输入的日期解析为time.Time类型
 	date, err := time.Parse("2006-01-02", inputDate)
 	if err != nil {
-		return 0, 0, 0, 0, fmt.Errorf("无效的日期格式: %s", err)
+		return 0, 0, 0, 0, 0, fmt.Errorf("无效的日期格式: %s", err)
 	}
 
 	// 获取年份、月份、周数和星期几
 	year := date.Year()
 	month := date.Month()
+	dayOfMonth := date.Day()
 	_, weekNumber := date.ISOWeek()
 	weekday := date.Weekday()
 	
@@ -27,7 +28,7 @@ func GetDateDetails(inputDate string) (int, time.Month, int, time.Weekday, error
 		year++
 	}
 
-	return year, month, weekNumber, weekday, nil
+	return year, month, dayOfMonth, weekNumber, weekday, nil
 }
 
 
