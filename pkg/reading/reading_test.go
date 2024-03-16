@@ -21,15 +21,13 @@ func TestGenMonthAndWeekAndDayReadingInfo(t *testing.T) {
 
 	rawInfo := map[string]string{
 		"2024-01-01": "《三毛流浪记》,20min",
-		"2024-01-02": " 《三毛流浪记》,30min",
-		"2024-01-03": " 《三毛流浪记》,20min",
 		"2024-01-04": "《三体》,20min",
-		"2024-01-05": " 《三体》,20min",
-		"2024-01-06": " 《太白金星有点烦》,30min",
-		"2024-01-07": " 《三体》,20min",
-		"2024-01-08": " 《三体》,20min",
-		"2024-01-09": " 《三体》,30min",
-		"2024-02-10": " 《全脑演讲》,1h10min",
+		"2024-01-05": "《三体》,20min",
+		"2024-01-06": "《太白金星有点烦》,30min",
+		"2024-01-09": "《三体》,30min",
+		"2024-02-10": "《全脑演讲》,1h10min",
+		"2024-02-11": "《学会爱自己》,1h10min",
+		"2024-03-12": "《长安的荔枝》,50min",
 	}
 
 	reading := NewReading(rawInfo)
@@ -40,6 +38,13 @@ func TestGenMonthAndWeekAndDayReadingInfo(t *testing.T) {
 		t.Error(err)
 	}
 	reading.Print()
+
+	// test2 
+	err = reading.ComputDayReadingTime()
+	if err != nil {
+		t.Error(err)
+	}
+	
 
 	// test2 
 	err = reading.ComputWeekReadingTime()

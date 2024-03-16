@@ -55,13 +55,34 @@ func(r *Reading) GenMonthAndWeekAndDayReadingInfo() error {
       return err
     }
 		
+		dReading2, err := NewDayReading(date, year, month, weekNum, weekday, info)
+    if err != nil {
+      return err
+    }
+
+		dReading3, err := NewDayReading(date, year, month, weekNum, weekday, info)
+    if err != nil {
+      return err
+    }
 		r.DayReadingInfo[date] = dReading
-		r.WeekReadingInfo[weekNum].WeekRawInfo[weekday.String()] = dReading
-		r.MonthReadingInfo[month].MonthRawInfo[dayOfMonth] = dReading
+		r.WeekReadingInfo[weekNum].WeekRawInfo[weekday.String()] = dReading2
+		r.MonthReadingInfo[month].MonthRawInfo[dayOfMonth] = dReading3
 	   
   }  
   return nil
 }
+
+func(r *Reading) ComputDayReadingTime() error {
+	klog.InfoS("ComputDayReadingTime")
+	for _, dReading := range r.DayReadingInfo {
+		err := dReading.ComputeReadingTime()
+		if err != nil {
+		  return err
+		}
+	}
+  return nil
+}
+
 
 func(r *Reading) ComputWeekReadingTime() error {
 	klog.InfoS("ComputWeekReadingTime")
@@ -89,6 +110,11 @@ func(r *Reading) ComputMonthReadingTime() error {
 
 func(r *Reading) Print() {
 	klog.InfoS("**************** Begin to print statistic data ****************")
+	// ri
+	for _, dReading := range r.DayReadingInfo {
+		dReading.Print()
+	}
+
 	// 星期
 	for _, wReading := range r.WeekReadingInfo {
 		wReading.Print()
