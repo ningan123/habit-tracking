@@ -47,6 +47,8 @@ func main() {
 	flag.Parse()
 	port := fmt.Sprintf(":%d", *port)
 
+	
+
 	// 设置路由  
 	http.HandleFunc("/", rootHandler)  
 	http.HandleFunc("/a", aHandler)  
