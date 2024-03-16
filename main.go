@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	hData "ningan.com/habit-tracking/pkg/data"
+	hRoute "ningan.com/habit-tracking/pkg/route"
 )
 
 
@@ -13,46 +16,29 @@ var (
 )
 
 
-// 定义一个处理函数，用于返回包含两个链接的HTML页面  
-func rootHandler(w http.ResponseWriter, r *http.Request) {  
-	fmt.Fprintf(w, `<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <title>My Links</title>  
-</head>  
-<body>  
-    <h1>Welcome to My Page</h1>  
-    <p>Here are some links:</p>  
-    <ul>  
-        <li><a href="/a">Link to A</a></li>  
-        <li><a href="/b">Link to B</a></li>  
-    </ul>  
-</body>  
-</html>`)  
-}  
+
   
-// 定义处理函数，用于处理/a路径的请求  
-func aHandler(w http.ResponseWriter, r *http.Request) {  
-	fmt.Fprint(w, "You are at path /a")  
-}  
-  
-// 定义处理函数，用于处理/b路径的请求  
-func bHandler(w http.ResponseWriter, r *http.Request) {  
-	fmt.Fprint(w, "You are at path /b")  
-}  
-  
+
   
 func main() {  
 	flag.Parse()
 	port := fmt.Sprintf(":%d", *port)
 
-	
+	// 
+	err := hData.DealReadingData("./data/reading.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// 设置路由  
-	http.HandleFunc("/", rootHandler)  
-	http.HandleFunc("/a", aHandler)  
-	http.HandleFunc("/b", bHandler)  
+	http.HandleFunc("/", hRoute.RootHandler)  
+	http.HandleFunc("/a", hRoute.AHandler)  
+	http.HandleFunc("/b", hRoute.BHandler)  
+	http.HandleFunc("/reading", hRoute.ReadingHandler) 
+	http.HandleFunc("/reading/day", hRoute.DayReadingHandler)  
+	http.HandleFunc("/reading/week", hRoute.WeekReadingHandler) 
+	http.HandleFunc("/reading/month", hRoute.MonthReadingHandler) 
+	
   
 	// 启动服务器  
 	log.Printf("Starting server on port %s", port)  
@@ -60,3 +46,4 @@ func main() {
 		log.Fatal(err)  
 	}  
 }
+
