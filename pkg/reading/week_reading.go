@@ -54,8 +54,7 @@ func (w *WeekReading) ComputeReadingTime() error {
 }
 
 func (w *WeekReading) Print() {
-	klog.InfoS("week reading info", "weekNum", w.WeekNum, "readingTime", w.WeekReadingTime)
-  for content, conReadingTime := range w.WeekReadingTimeOfDifferentContent {
+	for content, conReadingTime := range w.WeekReadingTimeOfDifferentContent {
 		klog.InfoS("week reading info", "weekNum", w.WeekNum, "readingTime", w.WeekReadingTime, "content", content, "contentReadingTime", conReadingTime)
 	}
 }
