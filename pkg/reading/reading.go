@@ -1,6 +1,8 @@
 package reading
 
 import (
+	"time"
+
 	"k8s.io/klog/v2"
 	hDate "ningan.com/habit-tracking/pkg/date"
 )
@@ -9,6 +11,7 @@ import (
 
 type Reading struct {
 	RawInfo map[string]string // 原始数据
+	MonthReadingInfo map[time.Month]*MonthReading
 	WeekReadingInfo map[int]*WeekReading
   DayReadingInfo map[string]*DayReading 
 }
@@ -17,6 +20,7 @@ type Reading struct {
 func NewReading(rawInfo map[string]string) *Reading {
 	return &Reading{
 	  RawInfo: rawInfo,
+	  MonthReadingInfo: make(map[time.Month]*MonthReading),
 	  WeekReadingInfo: make(map[int]*WeekReading),
     DayReadingInfo: make(map[string]*DayReading),
 	}
@@ -25,11 +29,19 @@ func NewReading(rawInfo map[string]string) *Reading {
 func(r *Reading) GenMonthAndWeekAndDayReadingInfo() error {
 	klog.InfoS("GenMonthAndWeekAndDayReadingInfo")
   for date, info := range r.RawInfo {
-		year, month, weekNum, weekday, err := hDate.GetDateDetails(date)
+		year, month, dayOfMonth, weekNum, weekday, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.InfoS("date detail", "date", date, "year", year, "month", month, "weekNum", weekNum, "weekday", weekday)
+		klog.InfoS("date detail", "date", date, "year", year, "month", month, "dayOfMonth", dayOfMonth, "weekNum", weekNum, "weekday", weekday)
+
+		if r.MonthReadingInfo[month] == nil {
+		  monthRawInfo := make(map[int]*DayReading)
+			r.MonthReadingInfo[month], err = NewMonthReading(month, monthRawInfo)
+			if err != nil {
+			  return err
+			}
+		}
 
 		if r.WeekReadingInfo[weekNum] == nil {
 			weekRawInfo := make(map[string]*DayReading)
@@ -44,15 +56,15 @@ func(r *Reading) GenMonthAndWeekAndDayReadingInfo() error {
     }
 		
 		r.DayReadingInfo[date] = dReading
-		r.WeekReadingInfo[weekNum].WeekRawInfo[weekday.String()] =  dReading
-		  
+		r.WeekReadingInfo[weekNum].WeekRawInfo[weekday.String()] = dReading
+		r.MonthReadingInfo[month].MonthRawInfo[dayOfMonth] = dReading
 	   
   }  
   return nil
 }
 
-func(r *Reading) ComputReadingTime() error {
-	klog.InfoS("ComputReadingTime")
+func(r *Reading) ComputWeekReadingTime() error {
+	klog.InfoS("ComputWeekReadingTime")
 	for _, wReading := range r.WeekReadingInfo {
 		err := wReading.ComputeReadingTime()
 		if err != nil {
@@ -62,11 +74,29 @@ func(r *Reading) ComputReadingTime() error {
   return nil
 }
 
+func(r *Reading) ComputMonthReadingTime() error {
+	klog.InfoS("ComputMonthReadingTime")
+	for _, mReading := range r.MonthReadingInfo {
+		err := mReading.ComputeReadingTime()
+		if err != nil {
+		  return err
+		}
+	}
+  return nil
+}
+
+
 
 func(r *Reading) Print() {
+	klog.InfoS("**************** Begin to print statistic data ****************")
 	// 星期
 	for _, wReading := range r.WeekReadingInfo {
 		wReading.Print()
+	}
+
+	// 月
+	for _, mReading := range r.MonthReadingInfo {
+		mReading.Print()
 	}
 }
 

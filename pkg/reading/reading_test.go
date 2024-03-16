@@ -1,7 +1,7 @@
 package reading
 
 import (
-	"fmt"
+
 	"testing"
 )
 
@@ -29,6 +29,7 @@ func TestGenMonthAndWeekAndDayReadingInfo(t *testing.T) {
 		"2024-01-07": " 《三体》,20min",
 		"2024-01-08": " 《三体》,20min",
 		"2024-01-09": " 《三体》,30min",
+		"2024-02-10": " 《全脑演讲》,1h10min",
 	}
 
 	reading := NewReading(rawInfo)
@@ -38,14 +39,18 @@ func TestGenMonthAndWeekAndDayReadingInfo(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Println()
 	reading.Print()
 
 	// test2 
-	err = reading.ComputReadingTime()
+	err = reading.ComputWeekReadingTime()
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Println()
+
+	// test3
+	err = reading.ComputMonthReadingTime()
+	if err != nil {
+		t.Error(err)
+	}
 	reading.Print()
 }
