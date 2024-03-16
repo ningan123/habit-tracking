@@ -13,6 +13,7 @@ import (
 
 var (
 	port = flag.Int("p", 8888, "port")
+	dataPath = flag.String("data-path", "./data/test", "data-path")
 )
 
 
@@ -25,7 +26,7 @@ func main() {
 	port := fmt.Sprintf(":%d", *port)
 
 	// 
-	err := hData.DealReadingData("./data/reading.txt")
+	err := hData.DealReadingData(*dataPath+"/reading.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
