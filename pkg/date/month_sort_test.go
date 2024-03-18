@@ -20,7 +20,7 @@ func TestByYearMonth (t *testing.T) {
 		for k := range m {  
 			keys = append(keys, k)  
 		}  
-		sort.Sort(byYearMonth(keys))  
+		sort.Sort(ByYearMonth(keys))  
 		
 		// 按照排序后的键顺序提取值到切片  
 		values := make([]int, len(keys))  

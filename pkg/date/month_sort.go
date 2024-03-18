@@ -30,12 +30,12 @@ func parseYearMonth(s string) (int, int, error) {
 	return year, month, nil  
 }  
 
-// byYearMonth 实现了sort.Interface用于对字符串键进行排序  
-type byYearMonth []string  
+// ByYearMonth 实现了sort.Interface用于对字符串键进行排序  
+type ByYearMonth []string  
   
-func (a byYearMonth) Len() int           { return len(a) }  
-func (a byYearMonth) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }  
-func (a byYearMonth) Less(i, j int) bool { return compareYearWeek(a[i], a[j]) < 0 }  
+func (a ByYearMonth) Len() int           { return len(a) }  
+func (a ByYearMonth) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }  
+func (a ByYearMonth) Less(i, j int) bool { return compareYearWeek(a[i], a[j]) < 0 }  
   
   
 // compareYearMonth 比较两个"年份-月份"格式的字符串  
