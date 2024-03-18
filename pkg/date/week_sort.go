@@ -26,12 +26,12 @@ func parseYearWeek(s string) (int, int, error) {
 	return year, week, nil  
 }  
   
-// byYearWeek 实现了sort.Interface用于对字符串键进行排序  
-type byYearWeek []string  
+// ByYearWeek 实现了sort.Interface用于对字符串键进行排序  
+type ByYearWeek []string  
   
-func (a byYearWeek) Len() int           { return len(a) }  
-func (a byYearWeek) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }  
-func (a byYearWeek) Less(i, j int) bool { return compareYearWeek(a[i], a[j]) < 0 }  
+func (a ByYearWeek) Len() int           { return len(a) }  
+func (a ByYearWeek) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }  
+func (a ByYearWeek) Less(i, j int) bool { return compareYearWeek(a[i], a[j]) < 0 }  
   
 // compareYearWeek 比较两个"年份-周数"格式的字符串  
 func compareYearWeek(a, b string) int {  
