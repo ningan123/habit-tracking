@@ -12,7 +12,7 @@ import (
 
 var GlobalReading *hReading.Reading
 
-// readFileToMap 读取文件内容并返回一个map，其中键是日期，值是rawData
+// readFileToMap 读取文件内容并返回一个map，其中键是日期，值是rawData；如果key已经存在，value直接拼接rawData
 func readFileToMap(fileName string) (map[string]string, error) {  
 	file, err := os.Open(fileName)  
 	if err != nil {  
@@ -27,8 +27,12 @@ func readFileToMap(fileName string) (map[string]string, error) {
 		fields := strings.Split(line, " ") // 假设每列之间使用逗号分隔  
 		if len(fields) >= 2 {  
 			date := strings.TrimSpace(fields[0]) // 去除可能的空白字符  
-			rawData := strings.TrimSpace(fields[1]) // 去除可能的空白字符  
-			dataMap[date] = rawData  
+			rawData := strings.TrimSpace(fields[1]) // 去除可能的空白字符 
+			if _, ok := dataMap[date]; ok {
+			  dataMap[date] += ";" + rawData
+			} else {
+				dataMap[date] = rawData  
+			}
 		}  
 	}  
   
