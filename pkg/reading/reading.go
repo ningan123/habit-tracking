@@ -3,7 +3,6 @@ package reading
 import (
 	"fmt"
 	"sort"
-	"time"
 
 	"k8s.io/klog/v2"
 	hDate "ningan.com/habit-tracking/pkg/date"
@@ -16,7 +15,7 @@ var (
 type Reading struct {
 	RawInfo map[string]string // 原始数据
 	YearReadingInfo map[int]*YearReading
-	MonthReadingInfo map[time.Month]*MonthReading
+	MonthReadingInfo map[string]*MonthReading
 	MonthOrderReadingInfo []*MonthReading
 	WeekReadingInfo map[string]*WeekReading
 	WeekOrderReadingInfo []*WeekReading
@@ -29,8 +28,7 @@ func NewReading(rawInfo map[string]string) *Reading {
 	return &Reading{
 	  RawInfo: rawInfo,
 		YearReadingInfo: make(map[int]*YearReading),
-		MonthReadingInfo: make(map[time.Month]*MonthReading),
-		MonthOrderReadingInfo: make([]*MonthReading, 12),
+		MonthReadingInfo: make(map[string]*MonthReading),
 	  WeekReadingInfo: make(map[string]*WeekReading),
     DayReadingInfo: make(map[string]*DayReading),
 		DayOrderReadingInfo: make([]*DayReading, 365),
@@ -48,9 +46,10 @@ func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
 		}
 		klog.InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
-		if r.MonthReadingInfo[month] == nil {
+		monthNum := fmt.Sprintf("%d-%02d", year, month)
+		if r.MonthReadingInfo[monthNum] == nil {
 		  monthRawInfo := make(map[int]*DayReading)
-			r.MonthReadingInfo[month], err = NewMonthReading(month, monthRawInfo)
+			r.MonthReadingInfo[monthNum], err = NewMonthReading(monthNum, monthRawInfo)
 			if err != nil {
 			  return err
 			}
@@ -95,7 +94,7 @@ func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
 		}
 		r.DayReadingInfo[date] = dReading
 		r.WeekReadingInfo[weekNum].WeekRawInfo[weekday.String()] = dReading2
-		r.MonthReadingInfo[month].MonthRawInfo[dayOfMonth] = dReading3
+		r.MonthReadingInfo[monthNum].MonthRawInfo[dayOfMonth] = dReading3
 		r.YearReadingInfo[year].YearRawInfo[date] = dReading4
 	   
   }  
@@ -176,26 +175,20 @@ func (r *Reading) ConvertWeekReadingInfoToWeekOrderReadingInfo() error {
 
 
 func (r *Reading) ConvertMonthReadingInfoToMonthOrderReadingInfo() error {
-	monthsMap := map[string]int{  
-		"January": 1,  
-		"February": 2,  
-		"March": 3,  
-		"April": 4,  
-		"May": 5,  
-		"June": 6,  
-		"July": 7,  
-		"August": 8,  
-		"September": 9,  
-		"October": 10,  
-		"November": 11,  
-		"December": 12,  
-	}  
-
-	for monthNum, mReading := range r.MonthReadingInfo {
-		monStr := monthNum.String()
-		// klog.InfoS("ConvertMonthReadingTimeToMonthOrderReadingTime", "monthNum", monthNum, "mReading", mReading)
-	  r.MonthOrderReadingInfo[monthsMap[monStr]-1] = mReading		
+	// 提取key并排序
+	keys := make([]string, 0, len(r.MonthReadingInfo))
+	for k := range r.MonthReadingInfo {
+		keys = append(keys, string(k))
 	}
+	sort.Sort(hDate.ByYearMonth(keys))
+
+	// 按照排序后的键顺序提取值到切片 
+	r.MonthOrderReadingInfo = make([]*MonthReading, len(keys))
+	for i, k := range keys {
+		r.MonthOrderReadingInfo[i] = r.MonthReadingInfo[k]
+	}
+
+
   return nil
 }
 

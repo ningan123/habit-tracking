@@ -2,14 +2,13 @@ package reading
 
 import (
 	"fmt"
-	"time"
 
 	"k8s.io/klog/v2"
 	hDate "ningan.com/habit-tracking/pkg/date"
 )
 
 type MonthReading struct {
-	MonthNum time.Month
+	MonthNum string
 	MonthReadingTime string 
 	MonthReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
 	MonthReadingTimeOfDifferentContentStr string
@@ -17,7 +16,7 @@ type MonthReading struct {
 }
 
 
-func NewMonthReading(month time.Month, monthRawInfo map[int]*DayReading) (*MonthReading, error) {
+func NewMonthReading(month string, monthRawInfo map[int]*DayReading) (*MonthReading, error) {
 	return &MonthReading{
 		MonthNum: month, 
 		MonthReadingTime: "0min",

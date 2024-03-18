@@ -116,7 +116,7 @@ func MonthHtmlTable(w http.ResponseWriter) {
 		} 
 
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%d</td>", item.MonthNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.MonthNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.MonthReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.MonthReadingTimeOfDifferentContentStr)  
 		fmt.Fprintf(w, "</tr>\n")  
