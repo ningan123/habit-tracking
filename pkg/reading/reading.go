@@ -11,6 +11,7 @@ import (
 
 type Reading struct {
 	RawInfo map[string]string // 原始数据
+	YearReadingInfo map[int]*YearReading
 	MonthReadingInfo map[time.Month]*MonthReading
 	WeekReadingInfo map[int]*WeekReading
   DayReadingInfo map[string]*DayReading 
@@ -20,14 +21,17 @@ type Reading struct {
 func NewReading(rawInfo map[string]string) *Reading {
 	return &Reading{
 	  RawInfo: rawInfo,
+		YearReadingInfo: make(map[int]*YearReading),
 	  MonthReadingInfo: make(map[time.Month]*MonthReading),
 	  WeekReadingInfo: make(map[int]*WeekReading),
     DayReadingInfo: make(map[string]*DayReading),
 	}
 }
 
-func(r *Reading) GenMonthAndWeekAndDayReadingInfo() error {
-	klog.InfoS("GenMonthAndWeekAndDayReadingInfo")
+
+
+func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
+	klog.InfoS("GenYearAndMonthAndWeekAndDayReadingInfo")
   for date, info := range r.RawInfo {
 		year, month, dayOfMonth, weekNum, weekday, err := hDate.GetDateDetails(date)
 		if err != nil {
@@ -47,9 +51,19 @@ func(r *Reading) GenMonthAndWeekAndDayReadingInfo() error {
 			weekRawInfo := make(map[string]*DayReading)
 			r.WeekReadingInfo[weekNum], err = NewWeekReading(weekNum, weekRawInfo)
 			if err != nil {
-			  return nil
+			  return err
 			}
 		}
+
+		if r.YearReadingInfo[year] == nil {
+			yearRawInfo := make(map[string]*DayReading)
+			r.YearReadingInfo[year], err = NewYearReading(year, yearRawInfo)
+			if err != nil {
+			  return err
+			}
+		}
+
+
 		dReading, err := NewDayReading(date, year, month, weekNum, weekday, info)
     if err != nil {
       return err
@@ -64,15 +78,22 @@ func(r *Reading) GenMonthAndWeekAndDayReadingInfo() error {
     if err != nil {
       return err
     }
+
+		dReading4, err := NewDayReading(date, year, month, weekNum, weekday, info)
+		if err != nil {
+			return err
+		}
 		r.DayReadingInfo[date] = dReading
 		r.WeekReadingInfo[weekNum].WeekRawInfo[weekday.String()] = dReading2
 		r.MonthReadingInfo[month].MonthRawInfo[dayOfMonth] = dReading3
+		r.YearReadingInfo[year].YearRawInfo[date] = dReading4
 	   
   }  
   return nil
 }
 
-func(r *Reading) ComputDayReadingTime() error {
+
+func(r *Reading) ComputeDayReadingTime() error {
 	klog.InfoS("ComputDayReadingTime")
 	for _, dReading := range r.DayReadingInfo {
 		err := dReading.ComputeReadingTime()
@@ -84,7 +105,7 @@ func(r *Reading) ComputDayReadingTime() error {
 }
 
 
-func(r *Reading) ComputWeekReadingTime() error {
+func(r *Reading) ComputeWeekReadingTime() error {
 	klog.InfoS("ComputWeekReadingTime")
 	for _, wReading := range r.WeekReadingInfo {
 		err := wReading.ComputeReadingTime()
@@ -95,7 +116,7 @@ func(r *Reading) ComputWeekReadingTime() error {
   return nil
 }
 
-func(r *Reading) ComputMonthReadingTime() error {
+func(r *Reading) ComputeMonthReadingTime() error {
 	klog.InfoS("ComputMonthReadingTime")
 	for _, mReading := range r.MonthReadingInfo {
 		err := mReading.ComputeReadingTime()
@@ -106,6 +127,17 @@ func(r *Reading) ComputMonthReadingTime() error {
   return nil
 }
 
+
+func(r *Reading) ComputeYearReadingTime() error {
+	klog.InfoS("ComputYearReadingTime")
+	for _, mReading := range r.YearReadingInfo {
+		err := mReading.ComputeReadingTime()
+		if err != nil {
+		  return err
+		}
+	}
+  return nil
+}
 
 
 func(r *Reading) Print() {

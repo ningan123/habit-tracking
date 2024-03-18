@@ -7,65 +7,8 @@ import (
 	hData "ningan.com/habit-tracking/pkg/data"
 )
 
-// 定义一个处理函数，用于返回包含两个链接的HTML页面
-func RootHandler(w http.ResponseWriter, r *http.Request) {  
-	fmt.Fprintf(w, `<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <title>My Links</title>  
-</head>  
-<body>  
-    <h1>Welcome to My Page</h1>  
-    <p>Here are some links:</p>  
-    <ul>  
-		    <li><a href="/reading">Link to reading</a></li>  
-        <li><a href="/a">Link to A</a></li>  
-        <li><a href="/b">Link to B</a></li>  
-    </ul>  
-</body>  
-</html>`)  
-}  
 
-
-
-// 定义处理函数，用于处理/a路径的请求  
-func AHandler(w http.ResponseWriter, r *http.Request) {  
-	fmt.Fprint(w, "You are at path /a")  
-}  
-  
-// 定义处理函数，用于处理/b路径的请求  
-func BHandler(w http.ResponseWriter, r *http.Request) {  
-	fmt.Fprint(w, "You are at path /b")  
-}  
-
-
-// 定义处理函数，用于处理/reading路径的请求  
-func ReadingHandler(w http.ResponseWriter, r *http.Request) {  
-	fmt.Fprintf(w, `<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <title>My Links</title>  
-</head>  
-<body>  
-    <h1>Welcome to My Page</h1>  
-    <p>Here are some links:</p>  
-    <ul>  
-		    <li><a href="/reading/day">Link to day reading</a></li>  
-        <li><a href="/reading/week">Link to week reading</a></li> 
-				<li><a href="/reading/month">Link to month reading</a></li>  
-    </ul>  
-</body>  
-</html>`)  
-	
-} 
-
-// 定义处理函数，用于处理/reading/day路径的请求  
-func DayReadingHandler (w http.ResponseWriter, r *http.Request) {
-	// 设置响应头，指定内容类型为HTML  
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
-  
+func DayHtmlTable(w http.ResponseWriter) {
 	// 构造HTML表格的开头  
 	fmt.Fprintf(w, "<html>\n")  
 	fmt.Fprintf(w, "<head>\n")  
@@ -90,15 +33,10 @@ func DayReadingHandler (w http.ResponseWriter, r *http.Request) {
 	// 构造HTML表格的结尾  
 	fmt.Fprintf(w, "</table>\n")  
 	fmt.Fprintf(w, "</body>\n")  
-	fmt.Fprintf(w, "</html>\n")  
+	fmt.Fprintf(w, "</html>\n")  	
 }
 
-
-// 定义处理函数，用于处理/reading/week路径的请求  
-func WeekReadingHandler (w http.ResponseWriter, r *http.Request) {
-	// 设置响应头，指定内容类型为HTML  
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
-  
+func WeekHtmlTable(w http.ResponseWriter) {
 	// 构造HTML表格的开头  
 	fmt.Fprintf(w, "<html>\n")  
 	fmt.Fprintf(w, "<head>\n")  
@@ -127,12 +65,7 @@ func WeekReadingHandler (w http.ResponseWriter, r *http.Request) {
 }
 
 
-
-// 定义处理函数，用于处理/reading/month路径的请求  
-func MonthReadingHandler (w http.ResponseWriter, r *http.Request) {
-	// 设置响应头，指定内容类型为HTML  
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
-  
+func MonthHtmlTable(w http.ResponseWriter) {
 	// 构造HTML表格的开头  
 	fmt.Fprintf(w, "<html>\n")  
 	fmt.Fprintf(w, "<head>\n")  
@@ -160,3 +93,31 @@ func MonthReadingHandler (w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "</html>\n")  
 }
 
+
+func YearHtmlTable(w http.ResponseWriter) {
+	// 构造HTML表格的开头  
+	fmt.Fprintf(w, "<html>\n")  
+	fmt.Fprintf(w, "<head>\n")  
+	fmt.Fprintf(w, "<title>MyStruct Table</title>\n")  
+	fmt.Fprintf(w, "</head>\n")  
+	fmt.Fprintf(w, "<body>\n")  
+	fmt.Fprintf(w, "<table border='1'>\n")  
+	fmt.Fprintf(w, "<tr><th>YearNum</th><th>YearReadingTime</th><th>content</th><th>contentReadingTime</th></tr>\n")  
+  
+	// 遍历数据并构造表格的行  
+	for _, item := range hData.GlobalReading.YearReadingInfo {  
+		for content, conReadingTime := range item.YearReadingTimeOfDifferentContent {
+			fmt.Fprintf(w, "<tr>")  
+			fmt.Fprintf(w, "<td>%d</td>", item.YearNum)
+			fmt.Fprintf(w, "<td>%s</td>", item.YearReadingTime)  
+			fmt.Fprintf(w, "<td>%s</td>", content)  
+			fmt.Fprintf(w, "<td>%s</td>", conReadingTime)  
+			fmt.Fprintf(w, "</tr>\n")  
+		}		
+	}  
+  
+	// 构造HTML表格的结尾  
+	fmt.Fprintf(w, "</table>\n")  
+	fmt.Fprintf(w, "</body>\n")  
+	fmt.Fprintf(w, "</html>\n")  
+}

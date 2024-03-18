@@ -58,26 +58,32 @@ func DealReadingData(fileName string) (error) {
 
 	GlobalReading = hReading.NewReading(dataMap)
 
-	err = GlobalReading.GenMonthAndWeekAndDayReadingInfo()
+	err = GlobalReading.GenYearAndMonthAndWeekAndDayReadingInfo()
 	if err != nil {
 		return err
 	}
 	GlobalReading.Print()
 
-	err = GlobalReading.ComputDayReadingTime()
+	err = GlobalReading.ComputeDayReadingTime()
 	if err != nil {
 		return err
 	}
 	
-	err = GlobalReading.ComputWeekReadingTime()
+	err = GlobalReading.ComputeWeekReadingTime()
 	if err != nil {
 		return err
 	}
 
-	err = GlobalReading.ComputMonthReadingTime()
+	err = GlobalReading.ComputeMonthReadingTime()
 	if err != nil {
 		return err
 	}
+
+	err = GlobalReading.ComputeYearReadingTime()
+	if err != nil {
+		return err
+	}
+
 	GlobalReading.Print()
 
 	return nil

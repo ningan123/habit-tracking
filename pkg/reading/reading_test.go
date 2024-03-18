@@ -33,29 +33,35 @@ func TestGenMonthAndWeekAndDayReadingInfo(t *testing.T) {
 	reading := NewReading(rawInfo)
 
 	// test1
-	err := reading.GenMonthAndWeekAndDayReadingInfo()
+	err := reading.GenYearAndMonthAndWeekAndDayReadingInfo()
 	if err != nil {
 		t.Error(err)
 	}
 	reading.Print()
 
 	// test2 
-	err = reading.ComputDayReadingTime()
+	err = reading.ComputeDayReadingTime()
 	if err != nil {
 		t.Error(err)
 	}
 	
 
 	// test2 
-	err = reading.ComputWeekReadingTime()
+	err = reading.ComputeWeekReadingTime()
 	if err != nil {
 		t.Error(err)
 	}
 
 	// test3
-	err = reading.ComputMonthReadingTime()
+	err = reading.ComputeMonthReadingTime()
 	if err != nil {
 		t.Error(err)
 	}
 	reading.Print()
+
+	// test4
+	err = reading.ComputeYearReadingTime()
+	if err != nil {
+		t.Error(err)
+	}
 }
