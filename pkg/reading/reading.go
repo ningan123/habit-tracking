@@ -128,7 +128,7 @@ func(r *Reading) GenMonthReadingInfo() error {
 		monthNum := fmt.Sprintf("%d-%02d", year, month)
 		if r.MonthReadingInfo[monthNum] == nil {
 		  monthRawInfo := make(map[int]*DayReading)
-			r.MonthReadingInfo[monthNum], err = NewMonthReading(monthNum, monthRawInfo)
+			r.MonthReadingInfo[monthNum], err = NewMonthReading(monthNum, monthRawInfo, daysInMonth)
 			if err != nil {
 			  return err
 			}

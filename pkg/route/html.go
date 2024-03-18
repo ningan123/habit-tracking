@@ -16,7 +16,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")  
 	fmt.Fprintf(w, "<body>\n")  
 	fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th>Date</th><th>DayReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish(>=20min)</th></tr>\n")  
+	fmt.Fprintf(w, "<tr><th>date</th><th>dayReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalReading.DayOrderReadingInfo { 
@@ -61,7 +61,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")  
 	fmt.Fprintf(w, "<body>\n")  
 	fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th>WeekNum</th><th>WeekReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish</th></tr>\n")  
+	fmt.Fprintf(w, "<tr><th>weekNum</th><th>weekReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalReading.WeekOrderReadingInfo { 
@@ -107,7 +107,7 @@ func MonthHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")  
 	fmt.Fprintf(w, "<body>\n")  
 	fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th>MonthNum</th><th>MonthReadingTime</th><th>content</th></tr>\n")  
+	fmt.Fprintf(w, "<tr><th>monthNum</th><th>monthReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalReading.MonthOrderReadingInfo { 
@@ -118,7 +118,13 @@ func MonthHtmlTable(w http.ResponseWriter) {
 		fmt.Fprintf(w, "<tr>")  
 		fmt.Fprintf(w, "<td>%s</td>", item.MonthNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.MonthReadingTime)  
-		fmt.Fprintf(w, "<td>%s</td>", item.MonthReadingTimeOfDifferentContentStr)  
+		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime) 
+		fmt.Fprintf(w, "<td>%s</td>", item.MonthReadingTimeOfDifferentContentStr)
+		if item.IsFinish {
+			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
+		} else {
+			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
+		}  
 		fmt.Fprintf(w, "</tr>\n")  
 
 		// for content, conReadingTime := range item.MonthReadingTimeOfDifferentContent {
@@ -146,7 +152,7 @@ func YearHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")  
 	fmt.Fprintf(w, "<body>\n")  
 	fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th>YearNum</th><th>YearReadingTime</th><th>content</th></tr>\n")  
+	fmt.Fprintf(w, "<tr><th>yearNum</th><th>yearReadingTime</th><th>content</th></tr>\n")  
   
 
 
