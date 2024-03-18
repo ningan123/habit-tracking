@@ -174,6 +174,29 @@ func TestFormatDurationSum(t *testing.T) {
 	}
 }
 
+func TestFormatDurationMultiply(t *testing.T) {
+	// 测试用例表
+	testCases := []struct {	  
+		durationStr        string
+		multiplier       int
+		expectResult string
+	} {
+		{"15min", 2, "30min"},
+		{"1h", 2, "2h"},
+		{"1h55min", 2, "3h50min"},
+	}
+
+	for _, tc := range testCases {
+		result, err := FormatDurationMultiply(tc.durationStr, tc.multiplier)
+		if err != nil {
+			t.Errorf("对于输入时间 %s 和 %d，期望的结果为 %s，但出现错误：%s", tc.durationStr, tc.multiplier, tc.expectResult, err.Error())
+		}
+		if result != tc.expectResult {
+			t.Errorf("对于输入时间 %s 和 %d，期望的结果为 %s，但实际结果为 %s", tc.durationStr, tc.multiplier, tc.expectResult, result)
+		}
+	}
+}
+
 
 func TestIsActualDurationLonger(t *testing.T) {
 	// 测试用例表
