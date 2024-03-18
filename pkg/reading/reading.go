@@ -15,6 +15,7 @@ type Reading struct {
 	MonthReadingInfo map[time.Month]*MonthReading
 	MonthOrderReadingInfo []*MonthReading
 	WeekReadingInfo map[int]*WeekReading
+	WeekOrderReadingInfo []*WeekReading
   DayReadingInfo map[string]*DayReading 
 }
 
@@ -26,6 +27,7 @@ func NewReading(rawInfo map[string]string) *Reading {
 		MonthReadingInfo: make(map[time.Month]*MonthReading),
 		MonthOrderReadingInfo: make([]*MonthReading, 12),
 	  WeekReadingInfo: make(map[int]*WeekReading),
+		WeekOrderReadingInfo: make([]*WeekReading, 53),
     DayReadingInfo: make(map[string]*DayReading),
 	}
 }
@@ -141,7 +143,16 @@ func(r *Reading) ComputeYearReadingTime() error {
   return nil
 }
 
-func (r *Reading) ConvertYearReadingTimeToYearOrderReadingTime() error {
+func (r *Reading) ConvertWeekReadingTimeToWeekOrderReadingTime() error {
+	for weekNum, mReading := range r.WeekReadingInfo {
+		// klog.InfoS("ConvertWeekReadingTimeToWeekOrderReadingTime", "weekNum", weekNum, "mReading", mReading)
+	  r.WeekOrderReadingInfo[weekNum-1] = mReading		
+	}
+
+	for index, mReading := range r.WeekOrderReadingInfo {
+		klog.InfoS("ConvertWeekReadingTimeToWeekOrderReadingTime", "index", index, "mReading", mReading)
+	}
+
   return nil
 }
 
@@ -164,16 +175,9 @@ func (r *Reading) ConvertMonthReadingTimeToMonthOrderReadingTime() error {
 
 	for monthNum, mReading := range r.MonthReadingInfo {
 		monStr := monthNum.String()
-	  r.MonthOrderReadingInfo[monthsMap[monStr]-1] = mReading
-		
+		// klog.InfoS("ConvertMonthReadingTimeToMonthOrderReadingTime", "monthNum", monthNum, "mReading", mReading)
+	  r.MonthOrderReadingInfo[monthsMap[monStr]-1] = mReading		
 	}
-
-	for index, mReading := range r.MonthOrderReadingInfo {
-		klog.InfoS("ConvertMonthReadingTimeToMonthOrderReadingTime", "monthNum", index+1, "mReading", mReading)
-
-	}
-	
-	
 
   return nil
 }

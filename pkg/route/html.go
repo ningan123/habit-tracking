@@ -47,7 +47,10 @@ func WeekHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "<tr><th>WeekNum</th><th>WeekReadingTime</th><th>content</th><th>contentReadingTime</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
-	for _, item := range hData.GlobalReading.WeekReadingInfo {  
+	for _, item := range hData.GlobalReading.WeekOrderReadingInfo { 
+		if item == nil {
+			continue 
+		}  
 		for content, conReadingTime := range item.WeekReadingTimeOfDifferentContent {
 			fmt.Fprintf(w, "<tr>")  
 			fmt.Fprintf(w, "<td>%d</td>", item.WeekNum)
@@ -78,7 +81,7 @@ func MonthHtmlTable(w http.ResponseWriter) {
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalReading.MonthOrderReadingInfo { 
 		if item == nil {
-			return 
+			continue 
 		} 
 		for content, conReadingTime := range item.MonthReadingTimeOfDifferentContent {
 			fmt.Fprintf(w, "<tr>")  
