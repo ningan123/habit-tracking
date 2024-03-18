@@ -50,7 +50,7 @@ func NewDayReading(date string, year int, dayOfYear int, month time.Month, dayOf
 		DayReadingTime: "0min",
 		DayReadingTimeOfDifferentContent: make(map[string]string),
 		ContentInfoList: contentInfoList,
-		TargetReadingTime: "15min",
+		TargetReadingTime: TargetDayReadingTime,
 	}, nil
 }
 

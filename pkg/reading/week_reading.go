@@ -13,14 +13,23 @@ type WeekReading struct {
 	WeekReadingTimeOfDifferentContent map[string]string 
 	WeekReadingTimeOfDifferentContentStr string
 	WeekRawInfo  map[string]*DayReading  // string表示周几
+	IsFinish bool
+	TargetReadingTime string
 }
 
 func NewWeekReading(weekNum int, weekRawInfo map[string]*DayReading ) (*WeekReading, error) {
+	tReadingTime, err := hDate.FormatDurationMultiply(TargetDayReadingTime, 7)
+	if err != nil {
+		klog.Errorf("format duration error: %v", err)
+		return nil, err
+	}
+
   return &WeekReading{
     WeekNum: weekNum,
 		WeekReadingTime: "0min",
 		WeekReadingTimeOfDifferentContent : make(map[string]string),
 		WeekRawInfo: weekRawInfo,
+		TargetReadingTime: tReadingTime,
   }, nil
 }
 
@@ -65,4 +74,15 @@ func (w *WeekReading) Print() {
 	for content, conReadingTime := range w.WeekReadingTimeOfDifferentContent {
 		klog.InfoS("week reading info", "weekNum", w.WeekNum, "readingTime", w.WeekReadingTime, "content", content, "contentReadingTime", conReadingTime)
 	}
+}
+
+
+// 只要阅读时长>=target时长，就认为完成
+func (w *WeekReading) CheckFinish() error {
+  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(w.WeekReadingTime, w.TargetReadingTime)
+	if err != nil {
+		return err
+	}
+	w.IsFinish = res
+	return nil
 }

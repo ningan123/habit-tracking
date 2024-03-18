@@ -7,7 +7,9 @@ import (
 	hDate "ningan.com/habit-tracking/pkg/date"
 )
 
-
+var (
+	TargetDayReadingTime string = "20min"
+)
 
 type Reading struct {
 	RawInfo map[string]string // 原始数据
