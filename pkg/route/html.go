@@ -152,12 +152,12 @@ func YearHtmlTable(w http.ResponseWriter) {
 
 
 	// 遍历数据并构造表格的行  
-	for _, item := range hData.GlobalReading.YearReadingInfo { 
+	for _, item := range hData.GlobalReading.YearOrderReadingInfo { 
 		if item == nil {
 			continue
 		} 
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%d</td>", item.YearNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.YearNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.YearReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.YearReadingTimeOfDifferentContentStr)  
 		fmt.Fprintf(w, "</tr>\n")  

@@ -14,7 +14,8 @@ var (
 
 type Reading struct {
 	RawInfo map[string]string // 原始数据
-	YearReadingInfo map[int]*YearReading
+	YearReadingInfo map[string]*YearReading
+	YearOrderReadingInfo []*YearReading
 	MonthReadingInfo map[string]*MonthReading
 	MonthOrderReadingInfo []*MonthReading
 	WeekReadingInfo map[string]*WeekReading
@@ -27,7 +28,7 @@ type Reading struct {
 func NewReading(rawInfo map[string]string) *Reading {
 	return &Reading{
 	  RawInfo: rawInfo,
-		YearReadingInfo: make(map[int]*YearReading),
+		YearReadingInfo: make(map[string]*YearReading),
 		MonthReadingInfo: make(map[string]*MonthReading),
 	  WeekReadingInfo: make(map[string]*WeekReading),
     DayReadingInfo: make(map[string]*DayReading),
@@ -63,9 +64,10 @@ func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
 			}
 		}
 
-		if r.YearReadingInfo[year] == nil {
+		yearNum := fmt.Sprintf("%d", year)
+		if r.YearReadingInfo[yearNum] == nil {
 			yearRawInfo := make(map[string]*DayReading)
-			r.YearReadingInfo[year], err = NewYearReading(year, yearRawInfo)
+			r.YearReadingInfo[yearNum], err = NewYearReading(yearNum, yearRawInfo)
 			if err != nil {
 			  return err
 			}
@@ -94,7 +96,7 @@ func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
 		r.DayReadingInfo[date] = dReading
 		r.WeekReadingInfo[weekNum].WeekRawInfo[weekday.String()] = dReading2
 		r.MonthReadingInfo[monthNum].MonthRawInfo[dayOfMonth] = dReading3
-		r.YearReadingInfo[year].YearRawInfo[date] = dReading4
+		r.YearReadingInfo[yearNum].YearRawInfo[date] = dReading4
 	   
   }  
   return nil
@@ -196,6 +198,23 @@ func (r *Reading) ConvertMonthReadingInfoToMonthOrderReadingInfo() error {
 		r.MonthOrderReadingInfo[i] = r.MonthReadingInfo[k]
 	}
 
+  return nil
+}
+
+
+func (r *Reading) ConvertYearReadingInfoToYearOrderReadingInfo() error {
+	// 提取key并排序
+	keys := make([]string, 0, len(r.YearReadingInfo))
+	for k := range r.YearReadingInfo {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	// 按照排序后的键顺序提取值到切片 
+	r.YearOrderReadingInfo = make([]*YearReading, len(keys))
+	for i, k := range keys {
+		r.YearOrderReadingInfo[i] = r.YearReadingInfo[k]
+	}
 
   return nil
 }

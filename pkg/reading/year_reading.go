@@ -8,14 +8,14 @@ import (
 )
 
 type YearReading struct {
-  YearNum int // 年份
+  YearNum string // 年份
   YearReadingTime string  // 年总阅读时长
 	YearRawInfo map[string]*DayReading  
   YearReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
 	YearReadingTimeOfDifferentContentStr string	
 }
 
-func NewYearReading(yearNum int, yearRawInfo map[string]*DayReading) (*YearReading, error) {
+func NewYearReading(yearNum string, yearRawInfo map[string]*DayReading) (*YearReading, error) {
   return &YearReading{
     YearRawInfo: yearRawInfo,
 		YearNum: yearNum,

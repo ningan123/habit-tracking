@@ -99,6 +99,11 @@ func DealReadingData(fileName string) (error) {
 		return err
 	}
 
+	err = GlobalReading.ConvertYearReadingInfoToYearOrderReadingInfo()
+	if err != nil {
+		return err
+	}
+
 	err = GlobalReading.CheckFinish()
 	if err != nil {
 		return err
