@@ -1,6 +1,8 @@
 package reading
 
 import (
+	"fmt"
+
 	"k8s.io/klog/v2"
 	hDate "ningan.com/habit-tracking/pkg/date"
 )
@@ -9,7 +11,8 @@ type YearReading struct {
   YearNum int // 年份
   YearReadingTime string  // 年总阅读时长
 	YearRawInfo map[string]*DayReading  
-  YearReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间	
+  YearReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
+	YearReadingTimeOfDifferentContentStr string	
 }
 
 func NewYearReading(yearNum int, yearRawInfo map[string]*DayReading) (*YearReading, error) {
@@ -47,7 +50,12 @@ func (y *YearReading) ComputeReadingTime() error {
 		}
 		y.YearReadingTime = sum
 	}
-	 return nil
+
+	for k, v := range y.YearReadingTimeOfDifferentContent {
+		y.YearReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+	}
+
+	return nil
 }	
 
 

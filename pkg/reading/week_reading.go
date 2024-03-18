@@ -1,6 +1,8 @@
 package reading
 
 import (
+	"fmt"
+
 	"k8s.io/klog/v2"
 	hDate "ningan.com/habit-tracking/pkg/date"
 )
@@ -9,6 +11,7 @@ type WeekReading struct {
 	WeekNum int
 	WeekReadingTime string 
 	WeekReadingTimeOfDifferentContent map[string]string 
+	WeekReadingTimeOfDifferentContentStr string
 	WeekRawInfo  map[string]*DayReading  // string表示周几
 }
 
@@ -50,7 +53,12 @@ func (w *WeekReading) ComputeReadingTime() error {
 		}
 		w.WeekReadingTime = sum
 	}
-	 return nil
+
+	for k, v := range w.WeekReadingTimeOfDifferentContent {
+		w.WeekReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+	}
+	
+	return nil
 }
 
 func (w *WeekReading) Print() {

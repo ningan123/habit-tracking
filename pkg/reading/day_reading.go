@@ -19,7 +19,8 @@ type DayReading struct {
 	DayOfYear int // 一年中的第几天
 	DayOfMonth int // 一个月中的第几天
 	DayReadingTime string // 这一天总共的阅读时长
-	DayReadingTimeOfDifferentContent map[string]string 
+	DayReadingTimeOfDifferentContent map[string]string
+	DayReadingTimeOfDifferentContentStr string
 	ContentInfoList []ContentInfo 
 }
 
@@ -94,6 +95,10 @@ func (d *DayReading) ComputeReadingTime () error {
 			return err 
 		}
 		d.DayReadingTime = sum
+	}
+
+	for k,v := range d.DayReadingTimeOfDifferentContent {
+	  d.DayReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
 	}
 	return nil
 }

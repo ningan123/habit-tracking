@@ -1,6 +1,7 @@
 package reading
 
 import (
+	"fmt"
 	"time"
 
 	"k8s.io/klog/v2"
@@ -11,6 +12,7 @@ type MonthReading struct {
 	MonthNum time.Month
 	MonthReadingTime string 
 	MonthReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
+	MonthReadingTimeOfDifferentContentStr string
 	MonthRawInfo  map[int]*DayReading  // int表示几号
 }
 
@@ -49,7 +51,12 @@ func (m *MonthReading) ComputeReadingTime() error {
 		}
 		m.MonthReadingTime = sum
 	}
-	 return nil
+
+	for k,v := range m.MonthReadingTimeOfDifferentContent {
+	  m.MonthReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+	}
+
+	return nil
 }	
 
 
