@@ -158,7 +158,7 @@ func(r *Reading) GenYearReadingInfo() error {
 		yearNum := fmt.Sprintf("%d", year)
 		if r.YearReadingInfo[yearNum] == nil {
 			yearRawInfo := make(map[string]*DayReading)
-			r.YearReadingInfo[yearNum], err = NewYearReading(yearNum, yearRawInfo)
+			r.YearReadingInfo[yearNum], err = NewYearReading(yearNum, yearRawInfo, daysInYear)
 			if err != nil {
 			  return err
 			}

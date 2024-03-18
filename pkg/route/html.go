@@ -152,11 +152,8 @@ func YearHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")  
 	fmt.Fprintf(w, "<body>\n")  
 	fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th>yearNum</th><th>yearReadingTime</th><th>content</th></tr>\n")  
+	fmt.Fprintf(w, "<tr><th>yearNum</th><th>yearReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish</th></tr>\n")  
   
-
-
-
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalReading.YearOrderReadingInfo { 
 		if item == nil {
@@ -165,7 +162,13 @@ func YearHtmlTable(w http.ResponseWriter) {
 		fmt.Fprintf(w, "<tr>")  
 		fmt.Fprintf(w, "<td>%s</td>", item.YearNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.YearReadingTime)  
-		fmt.Fprintf(w, "<td>%s</td>", item.YearReadingTimeOfDifferentContentStr)  
+		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime)  
+		fmt.Fprintf(w, "<td>%s</td>", item.YearReadingTimeOfDifferentContentStr) 
+		if item.IsFinish {
+			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
+		} else {
+			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
+		}   
 		fmt.Fprintf(w, "</tr>\n")  
 
 		// for content, conReadingTime := range item.YearReadingTimeOfDifferentContent {
