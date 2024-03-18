@@ -111,6 +111,32 @@ func FormatDurationSum(durationStr1, durationStr2 string) (string, error) {
 }  
 
 
+func FormatDurationMultiply(durationStr string, multiplier int) (string, error) {
+	duration, err := parseDuration(durationStr)
+	if err != nil {
+		return "", err
+	}
+
+	resDuration := duration * time.Duration(multiplier)
+
+	// 提取小时和剩余的分钟数  
+	hours := int(resDuration.Hours())  
+	remainingMinutes := int(resDuration.Minutes()) % 60  
+
+	// 返回格式化后的字符串  
+	if hours > 0 {
+		if remainingMinutes == 0 {
+		  return fmt.Sprintf("%dh", hours), nil
+		} else {
+			return fmt.Sprintf("%dh%dmin", hours, remainingMinutes), nil
+		}
+	} else {		
+		return fmt.Sprintf("%dmin", remainingMinutes), nil
+	} 
+
+}
+
+
 func IsActualDurationLongerOrEqualToTargetDuration(actualDurationStr, targetDurationStr string) (bool, error) {  
 	// 解析两个时长字符串  
 	actualDuration, err := parseDuration(actualDurationStr)  
