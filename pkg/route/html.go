@@ -76,7 +76,10 @@ func MonthHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "<tr><th>MonthNum</th><th>MonthReadingTime</th><th>content</th><th>contentReadingTime</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
-	for _, item := range hData.GlobalReading.MonthReadingInfo {  
+	for _, item := range hData.GlobalReading.MonthOrderReadingInfo { 
+		if item == nil {
+			return 
+		} 
 		for content, conReadingTime := range item.MonthReadingTimeOfDifferentContent {
 			fmt.Fprintf(w, "<tr>")  
 			fmt.Fprintf(w, "<td>%d</td>", item.MonthNum)
