@@ -31,7 +31,6 @@ func NewReading(rawInfo map[string]string) *Reading {
 		MonthReadingInfo: make(map[string]*MonthReading),
 	  WeekReadingInfo: make(map[string]*WeekReading),
     DayReadingInfo: make(map[string]*DayReading),
-		DayOrderReadingInfo: make([]*DayReading, 365),
 	}
 }
 
@@ -149,8 +148,17 @@ func(r *Reading) ComputeYearReadingTime() error {
 }
 
 func (r *Reading) ConverDayReadingInfoToDayOrderReadingInfo() error {
-	for _, dReading := range r.DayReadingInfo {
-	  r.DayOrderReadingInfo[dReading.DayOfYear-1] = dReading
+	// 提取key并排序
+	keys := make([]string, 0, len(r.DayReadingInfo))
+	for k := range r.DayReadingInfo {
+	  keys = append(keys, k)
+	}
+	sort.Sort(hDate.ByDate(keys))
+
+	// 按照排序后的键顺序提取值到切片 
+	r.DayOrderReadingInfo = make([]*DayReading, len(keys))
+	for i, k := range keys {
+	  r.DayOrderReadingInfo[i] = r.DayReadingInfo[k]
 	}
 	return nil
 }
