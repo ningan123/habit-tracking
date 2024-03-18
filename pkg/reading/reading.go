@@ -145,7 +145,7 @@ func(r *Reading) ComputeYearReadingTime() error {
   return nil
 }
 
-func (r *Reading) ConverDayReadingTimeToDayOrderReadingTime() error {
+func (r *Reading) ConverDayReadingInfoToDayOrderReadingInfo() error {
 	for _, dReading := range r.DayReadingInfo {
 	  r.DayOrderReadingInfo[dReading.DayOfYear-1] = dReading
 	}
@@ -153,21 +153,16 @@ func (r *Reading) ConverDayReadingTimeToDayOrderReadingTime() error {
 }
 
 
-func (r *Reading) ConvertWeekReadingTimeToWeekOrderReadingTime() error {
+func (r *Reading) ConvertWeekReadingInfoToWeekOrderReadingInfo() error {
 	for weekNum, mReading := range r.WeekReadingInfo {
 		// klog.InfoS("ConvertWeekReadingTimeToWeekOrderReadingTime", "weekNum", weekNum, "mReading", mReading)
 	  r.WeekOrderReadingInfo[weekNum-1] = mReading		
 	}
-
-	for index, mReading := range r.WeekOrderReadingInfo {
-		klog.InfoS("ConvertWeekReadingTimeToWeekOrderReadingTime", "index", index, "mReading", mReading)
-	}
-
   return nil
 }
 
 
-func (r *Reading) ConvertMonthReadingTimeToMonthOrderReadingTime() error {
+func (r *Reading) ConvertMonthReadingInfoToMonthOrderReadingInfo() error {
 	monthsMap := map[string]int{  
 		"January": 1,  
 		"February": 2,  
@@ -188,7 +183,6 @@ func (r *Reading) ConvertMonthReadingTimeToMonthOrderReadingTime() error {
 		// klog.InfoS("ConvertMonthReadingTimeToMonthOrderReadingTime", "monthNum", monthNum, "mReading", mReading)
 	  r.MonthOrderReadingInfo[monthsMap[monStr]-1] = mReading		
 	}
-
   return nil
 }
 
