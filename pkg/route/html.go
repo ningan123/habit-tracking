@@ -70,7 +70,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 		}  
 		
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%d</td>", item.WeekNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.WeekNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.WeekReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime) 
 		fmt.Fprintf(w, "<td>%s</td>", item.WeekReadingTimeOfDifferentContentStr) 		

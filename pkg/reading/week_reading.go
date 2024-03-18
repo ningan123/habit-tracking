@@ -8,7 +8,7 @@ import (
 )
 
 type WeekReading struct {
-	WeekNum int
+	WeekNum string
 	WeekReadingTime string 
 	WeekReadingTimeOfDifferentContent map[string]string 
 	WeekReadingTimeOfDifferentContentStr string
@@ -17,7 +17,7 @@ type WeekReading struct {
 	TargetReadingTime string
 }
 
-func NewWeekReading(weekNum int, weekRawInfo map[string]*DayReading ) (*WeekReading, error) {
+func NewWeekReading(weekNum string, weekRawInfo map[string]*DayReading ) (*WeekReading, error) {
 	tReadingTime, err := hDate.FormatDurationMultiply(TargetDayReadingTime, 7)
 	if err != nil {
 		klog.Errorf("format duration error: %v", err)

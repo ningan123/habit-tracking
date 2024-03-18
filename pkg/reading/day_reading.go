@@ -33,7 +33,7 @@ type ContentInfo struct {
 }
 
 
-func NewDayReading(date string, year int, dayOfYear int, month time.Month, dayOfMonth int, weekNum int, weekday time.Weekday, dayRawInfo string) (*DayReading, error) {
+func NewDayReading(date string, year int, dayOfYear int, month time.Month, dayOfMonth int, weekNum string, weekday time.Weekday, dayRawInfo string) (*DayReading, error) {
 	contentInfoList, err := SplitRawInfo(dayRawInfo)
 	if err != nil {
 		return nil, err

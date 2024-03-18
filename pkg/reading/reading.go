@@ -1,6 +1,8 @@
 package reading
 
 import (
+	"fmt"
+	"sort"
 	"time"
 
 	"k8s.io/klog/v2"
@@ -16,7 +18,7 @@ type Reading struct {
 	YearReadingInfo map[int]*YearReading
 	MonthReadingInfo map[time.Month]*MonthReading
 	MonthOrderReadingInfo []*MonthReading
-	WeekReadingInfo map[int]*WeekReading
+	WeekReadingInfo map[string]*WeekReading
 	WeekOrderReadingInfo []*WeekReading
   DayReadingInfo map[string]*DayReading 
 	DayOrderReadingInfo []*DayReading
@@ -29,8 +31,7 @@ func NewReading(rawInfo map[string]string) *Reading {
 		YearReadingInfo: make(map[int]*YearReading),
 		MonthReadingInfo: make(map[time.Month]*MonthReading),
 		MonthOrderReadingInfo: make([]*MonthReading, 12),
-	  WeekReadingInfo: make(map[int]*WeekReading),
-		WeekOrderReadingInfo: make([]*WeekReading, 53),
+	  WeekReadingInfo: make(map[string]*WeekReading),
     DayReadingInfo: make(map[string]*DayReading),
 		DayOrderReadingInfo: make([]*DayReading, 365),
 	}
@@ -41,12 +42,12 @@ func NewReading(rawInfo map[string]string) *Reading {
 func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
 	klog.InfoS("GenYearAndMonthAndWeekAndDayReadingInfo")
   for date, info := range r.RawInfo {
-		year, dayOfYear, month, dayOfMonth, weekNum, weekday, err := hDate.GetDateDetails(date)
+		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.InfoS("date detail", "date", date, "year", year, "dayOfYear", dayOfYear, "month", month, "dayOfMonth", dayOfMonth, "weekNum", weekNum, "weekday", weekday)
-
+		klog.InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		
 		if r.MonthReadingInfo[month] == nil {
 		  monthRawInfo := make(map[int]*DayReading)
 			r.MonthReadingInfo[month], err = NewMonthReading(month, monthRawInfo)
@@ -55,6 +56,7 @@ func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
 			}
 		}
 
+		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
 		if r.WeekReadingInfo[weekNum] == nil {
 			weekRawInfo := make(map[string]*DayReading)
 			r.WeekReadingInfo[weekNum], err = NewWeekReading(weekNum, weekRawInfo)
@@ -156,10 +158,19 @@ func (r *Reading) ConverDayReadingInfoToDayOrderReadingInfo() error {
 
 
 func (r *Reading) ConvertWeekReadingInfoToWeekOrderReadingInfo() error {
-	for weekNum, mReading := range r.WeekReadingInfo {
-		// klog.InfoS("ConvertWeekReadingTimeToWeekOrderReadingTime", "weekNum", weekNum, "mReading", mReading)
-	  r.WeekOrderReadingInfo[weekNum-1] = mReading		
+	// 提取key并排序
+	keys := make([]string, 0, len(r.WeekReadingInfo))
+	for k := range r.WeekReadingInfo {
+	  keys = append(keys, k)
 	}
+	sort.Sort(hDate.ByYearWeek(keys))
+
+	// 按照排序后的键顺序提取值到切片 
+	r.WeekOrderReadingInfo = make([]*WeekReading, len(keys))
+	for i, k := range keys {
+	  r.WeekOrderReadingInfo[i] = r.WeekReadingInfo[k]
+	}
+
   return nil
 }
 
