@@ -58,7 +58,12 @@ func dayOfYear(t time.Time) int {
 } 
 
 
+func dateWeek(date time.Time) (int, int, time.Weekday) {
+	year, week := date.ISOWeek()
+	weekDay := date.Weekday()
 
+	return year, week, weekDay
+}
 
 // TODO：2024-12-30的输出结果不太对
 func GetDateDetails(inputDate string) (int, int, time.Month, int, int, time.Weekday, error) {
