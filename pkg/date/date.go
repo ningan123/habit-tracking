@@ -7,16 +7,35 @@ import (
 	"time"
 )
 
+// dayOfYear 计算给定时间是一年中的第几天
+func dayOfYear(t time.Time) int {  
+	jan1 := time.Date(t.Year(), 1, 1, 0, 0, 0, 0, t.Location())  
+	return int(t.Sub(jan1).Hours() / 24) +1 
+} 
+
+// dayOfYearFromString 计算给定日期字符串是一年中的第几天  
+func dayOfYearFromString(dateStr string, layout string) (int, error) {  
+	// 解析日期字符串为time.Time对象  
+	t, err := time.Parse(layout, dateStr)  
+	if err != nil {  
+		return 0, err  
+	}  
+	// 使用之前定义的dayOfYear函数计算是一年中的第几天  
+	return dayOfYear(t), nil  
+}  
+
+
 // TODO：2024-12-30的输出结果不太对
-func GetDateDetails(inputDate string) (int, time.Month, int, int, time.Weekday, error) {
+func GetDateDetails(inputDate string) (int, int, time.Month, int, int, time.Weekday, error) {
 	// 将输入的日期解析为time.Time类型
 	date, err := time.Parse("2006-01-02", inputDate)
 	if err != nil {
-		return 0, 0, 0, 0, 0, fmt.Errorf("无效的日期格式: %s", err)
+		return 0, 0, 0, 0, 0, 0, fmt.Errorf("无效的日期格式: %s", err)
 	}
 
 	// 获取年份、月份、周数和星期几
 	year := date.Year()
+	dayOfYear := dayOfYear(date)
 	month := date.Month()
 	dayOfMonth := date.Day()
 	_, weekNumber := date.ISOWeek()
@@ -28,7 +47,7 @@ func GetDateDetails(inputDate string) (int, time.Month, int, int, time.Weekday, 
 		year++
 	}
 
-	return year, month, dayOfMonth, weekNumber, weekday, nil
+	return year, dayOfYear, month, dayOfMonth, weekNumber, weekday, nil
 }
 
 
