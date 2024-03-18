@@ -187,6 +187,29 @@ func (r *Reading) ConvertMonthReadingInfoToMonthOrderReadingInfo() error {
 }
 
 
+func (r *Reading) CheckFinish() error {
+	klog.InfoS("CheckFinish")
+	err := r.CheckDayFinish()
+	if err != nil {
+	  return err
+	}
+
+  return nil
+}
+
+func (r *Reading) CheckDayFinish() error {
+	klog.InfoS("CheckDayFinish")
+	for _, dReading := range r.DayReadingInfo {
+		err := dReading.CheckFinish()
+		if err != nil {
+		  return err
+		}
+	}
+  return nil
+}
+
+
+
 func(r *Reading) Print() {
 	klog.InfoS("**************** Begin to print reading statistic data ****************")
 	// ri

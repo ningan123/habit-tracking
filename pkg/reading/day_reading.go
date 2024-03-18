@@ -22,6 +22,8 @@ type DayReading struct {
 	DayReadingTimeOfDifferentContent map[string]string
 	DayReadingTimeOfDifferentContentStr string
 	ContentInfoList []ContentInfo 
+	IsFinish bool
+	TargetReadingTime string
 }
 
 
@@ -48,6 +50,7 @@ func NewDayReading(date string, year int, dayOfYear int, month time.Month, dayOf
 		DayReadingTime: "0min",
 		DayReadingTimeOfDifferentContent: make(map[string]string),
 		ContentInfoList: contentInfoList,
+		TargetReadingTime: "15min",
 	}, nil
 }
 
@@ -108,4 +111,14 @@ func (d *DayReading) Print() {
 	for _, conInfo := range d.ContentInfoList {
 		klog.InfoS("day reading info", "date", d.DayDate,"readingTime", d.DayReadingTime,  "content", conInfo.Content, "contentReadingTime", conInfo.ReadingTime)
 	}
+}
+
+// 只要阅读时长>=target时长，就认为完成
+func (d *DayReading) CheckFinish() error {
+  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(d.DayReadingTime, d.TargetReadingTime)
+	if err != nil {
+		return err
+	}
+	d.IsFinish = res
+	return nil
 }
