@@ -58,48 +58,17 @@ func DealReadingData(fileName string) (error) {
 
 	GlobalReading = hReading.NewReading(dataMap)
 
-	err = GlobalReading.GenYearAndMonthAndWeekAndDayReadingInfo()
-	if err != nil {
-		return err
-	}
-	GlobalReading.Print()
-
-	err = GlobalReading.ComputeDayReadingTime()
-	if err != nil {
-		return err
-	}
-	
-	err = GlobalReading.ComputeWeekReadingTime()
+	err = GlobalReading.GenReadingInfo()
 	if err != nil {
 		return err
 	}
 
-	err = GlobalReading.ComputeMonthReadingTime()
+	err = GlobalReading.ComputeReadingTime()
 	if err != nil {
 		return err
 	}
 
-	err = GlobalReading.ComputeYearReadingTime()
-	if err != nil {
-		return err
-	}
-	
-	err = GlobalReading.ConverDayReadingInfoToDayOrderReadingInfo()
-	if err != nil {
-		return err
-	}
-
-	err = GlobalReading.ConvertWeekReadingInfoToWeekOrderReadingInfo()
-	if err != nil {
-		return err
-	}
-
-	err = GlobalReading.ConvertMonthReadingInfoToMonthOrderReadingInfo()
-	if err != nil {
-		return err
-	}
-
-	err = GlobalReading.ConvertYearReadingInfoToYearOrderReadingInfo()
+	err = GlobalReading.ConvertReadingInfoToOrderReadingInfo()
 	if err != nil {
 		return err
 	}
@@ -109,7 +78,7 @@ func DealReadingData(fileName string) (error) {
 		return err
 	}
 
-	GlobalReading.Print()
+	GlobalReading.PrintReadingInfo()
 
 	return nil
 	

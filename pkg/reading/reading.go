@@ -36,9 +36,88 @@ func NewReading(rawInfo map[string]string) *Reading {
 }
 
 
+// ==============================================
+// ==============================================
 
-func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
-	klog.InfoS("GenYearAndMonthAndWeekAndDayReadingInfo")
+func(r *Reading) GenReadingInfo() error {
+	klog.Info("Generate Reading Info")
+	err := r.GenDayReadingInfo()
+	if err != nil {
+		return err
+	}
+
+	err = r.GenWeekReadingInfo()
+	if err != nil {
+		return err
+	}
+
+	err = r.GenMonthReadingInfo()
+	if err != nil {
+		return err
+	}
+
+	err = r.GenYearReadingInfo()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+
+func(r *Reading) GenDayReadingInfo() error {
+	klog.InfoS("GenDayReadingInfo")
+  for date, info := range r.RawInfo {
+		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+		if err != nil {
+			return err
+		}
+		klog.InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		
+		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
+		dReading, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+    if err != nil {
+      return err
+    }
+		
+		r.DayReadingInfo[date] = dReading
+  }  
+  return nil
+}
+
+
+func(r *Reading) GenWeekReadingInfo() error {
+	klog.InfoS("GenWeekReadingInfo")
+  for date, info := range r.RawInfo {
+		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+		if err != nil {
+			return err
+		}
+		klog.InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+
+		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
+		if r.WeekReadingInfo[weekNum] == nil {
+			weekRawInfo := make(map[string]*DayReading)
+			r.WeekReadingInfo[weekNum], err = NewWeekReading(weekNum, weekRawInfo)
+			if err != nil {
+			  return err
+			}
+		}
+		
+		dReading, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+    if err != nil {
+      return err
+		}
+
+		r.WeekReadingInfo[weekNum].WeekRawInfo[weekday.String()] = dReading
+	   
+  }  
+  return nil
+}
+
+
+func(r *Reading) GenMonthReadingInfo() error {
+	klog.InfoS("GenMonthReadingInfo")
   for date, info := range r.RawInfo {
 		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
@@ -54,15 +133,27 @@ func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
 			  return err
 			}
 		}
-
 		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
-		if r.WeekReadingInfo[weekNum] == nil {
-			weekRawInfo := make(map[string]*DayReading)
-			r.WeekReadingInfo[weekNum], err = NewWeekReading(weekNum, weekRawInfo)
-			if err != nil {
-			  return err
-			}
+
+		dReading, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+    if err != nil {
+      return err
+    }
+
+		r.MonthReadingInfo[monthNum].MonthRawInfo[dayOfMonth] = dReading	   
+  }  
+  return nil
+}
+
+
+func(r *Reading) GenYearReadingInfo() error {
+	klog.InfoS("GenYearReadingInfo")
+  for date, info := range r.RawInfo {
+		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+		if err != nil {
+			return err
 		}
+		klog.InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
 		yearNum := fmt.Sprintf("%d", year)
 		if r.YearReadingInfo[yearNum] == nil {
@@ -72,35 +163,48 @@ func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
 			  return err
 			}
 		}
-
+		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
 
 		dReading, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
-    if err != nil {
-      return err
-    }
-		
-		dReading2, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
-    if err != nil {
-      return err
-    }
-
-		dReading3, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
-    if err != nil {
-      return err
-    }
-
-		dReading4, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
 		if err != nil {
 			return err
 		}
-		r.DayReadingInfo[date] = dReading
-		r.WeekReadingInfo[weekNum].WeekRawInfo[weekday.String()] = dReading2
-		r.MonthReadingInfo[monthNum].MonthRawInfo[dayOfMonth] = dReading3
-		r.YearReadingInfo[yearNum].YearRawInfo[date] = dReading4
+
+		r.YearReadingInfo[yearNum].YearRawInfo[date] = dReading
 	   
   }  
   return nil
 }
+
+// ==============================================
+// ==============================================
+
+func(r *Reading) ComputeReadingTime() error {
+	klog.InfoS("ComputeReadingTime")
+
+	err := r.ComputeDayReadingTime()
+	if err != nil {
+		return err
+	}
+
+	err = r.ComputeWeekReadingTime()
+	if err != nil {
+		return err
+	}
+
+	err = r.ComputeMonthReadingTime()
+	if err != nil {
+		return err
+	}
+
+	err = r.ComputeYearReadingTime()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 
 
 func(r *Reading) ComputeDayReadingTime() error {
@@ -149,7 +253,39 @@ func(r *Reading) ComputeYearReadingTime() error {
   return nil
 }
 
-func (r *Reading) ConverDayReadingInfoToDayOrderReadingInfo() error {
+
+// ==================================================
+// ==================================================
+
+func (r *Reading) ConvertReadingInfoToOrderReadingInfo() error {
+	klog.InfoS("ConverReadingInfoToOrderReadingInfo")
+
+	err := r.ConvertDayReadingInfoToDayOrderReadingInfo() 
+	if err != nil {
+		return err
+	}
+
+	err = r.ConvertWeekReadingInfoToWeekOrderReadingInfo()
+	if err != nil {
+		return err
+	}
+
+	err = r.ConvertMonthReadingInfoToMonthOrderReadingInfo()
+	if err != nil {
+		return err
+	}
+
+	err = r.ConvertYearReadingInfoToYearOrderReadingInfo()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+
+func (r *Reading) ConvertDayReadingInfoToDayOrderReadingInfo() error {
+	klog.InfoS("ConvertDayReadingInfoToDayOrderReadingInfo")
 	// 提取key并排序
 	keys := make([]string, 0, len(r.DayReadingInfo))
 	for k := range r.DayReadingInfo {
@@ -167,6 +303,7 @@ func (r *Reading) ConverDayReadingInfoToDayOrderReadingInfo() error {
 
 
 func (r *Reading) ConvertWeekReadingInfoToWeekOrderReadingInfo() error {
+	klog.InfoS("ConvertWeekReadingInfoToWeekOrderReadingInfo")
 	// 提取key并排序
 	keys := make([]string, 0, len(r.WeekReadingInfo))
 	for k := range r.WeekReadingInfo {
@@ -185,6 +322,7 @@ func (r *Reading) ConvertWeekReadingInfoToWeekOrderReadingInfo() error {
 
 
 func (r *Reading) ConvertMonthReadingInfoToMonthOrderReadingInfo() error {
+	klog.InfoS("ConvertMonthReadingInfoToMonthOrderReadingInfo")
 	// 提取key并排序
 	keys := make([]string, 0, len(r.MonthReadingInfo))
 	for k := range r.MonthReadingInfo {
@@ -203,6 +341,7 @@ func (r *Reading) ConvertMonthReadingInfoToMonthOrderReadingInfo() error {
 
 
 func (r *Reading) ConvertYearReadingInfoToYearOrderReadingInfo() error {
+	klog.InfoS("ConvertYearReadingInfoToYearOrderReadingInfo")
 	// 提取key并排序
 	keys := make([]string, 0, len(r.YearReadingInfo))
 	for k := range r.YearReadingInfo {
@@ -218,6 +357,9 @@ func (r *Reading) ConvertYearReadingInfoToYearOrderReadingInfo() error {
 
   return nil
 }
+
+// ==============================================
+// ==============================================
 
 
 func (r *Reading) CheckFinish() error {
@@ -242,29 +384,48 @@ func (r *Reading) CheckDayFinish() error {
 }
 
 
+// ==============================================
+// ==============================================
 
-func(r *Reading) Print() {
-	klog.InfoS("**************** Begin to print reading statistic data ****************")
-	// ri
+
+
+func(r *Reading) PrintReadingInfo() {
+	klog.InfoS("PrintReadingInfo")
+
+	r.PrintDayReadingInfo()
+	r.PrintWeekReadingInfo()
+	r.PrintMonthReadingInfo()
+	r.PrintYearReadingInfo()
+}
+
+
+
+func(r *Reading) PrintDayReadingInfo() {
+	klog.InfoS("PrintDayReadingInfo")
 	for _, dReading := range r.DayReadingInfo {
 		dReading.Print()
 	}
+}
 
-	// 星期
+func(r *Reading) PrintWeekReadingInfo() {
+	klog.InfoS("PrintWeekReadingInfo")
 	for _, wReading := range r.WeekReadingInfo {
 		wReading.Print()
 	}
+}
 
-	// 月
+func(r *Reading) PrintMonthReadingInfo() {
+	klog.InfoS("PrintMonthReadingInfo")
 	for _, mReading := range r.MonthReadingInfo {
 		mReading.Print()
 	}
+}
 
+func(r *Reading) PrintYearReadingInfo() {
+	klog.InfoS("PrintYearReadingInfo")
 	for _, yReading := range r.YearReadingInfo {
 		yReading.Print()
 	}
 }
-
-
 
 

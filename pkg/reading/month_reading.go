@@ -13,6 +13,8 @@ type MonthReading struct {
 	MonthReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
 	MonthReadingTimeOfDifferentContentStr string
 	MonthRawInfo  map[int]*DayReading  // int表示几号
+	IsFinish bool
+	TargetReadingTime string
 }
 
 
