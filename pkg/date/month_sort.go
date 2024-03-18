@@ -35,7 +35,7 @@ type ByYearMonth []string
   
 func (a ByYearMonth) Len() int           { return len(a) }  
 func (a ByYearMonth) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }  
-func (a ByYearMonth) Less(i, j int) bool { return compareYearWeek(a[i], a[j]) < 0 }  
+func (a ByYearMonth) Less(i, j int) bool { return compareYearMonth(a[i], a[j]) < 0 }  
   
   
 // compareYearMonth 比较两个"年份-月份"格式的字符串  
