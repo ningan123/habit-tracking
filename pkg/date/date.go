@@ -59,7 +59,10 @@ func parseDuration(s string) (time.Duration, error) {
 		hours, err := strconv.Atoi(parts[0])  
 		if err != nil {  
 			return 0, fmt.Errorf("invalid hours in duration: %s", s)  
-		}  
+		} 
+		if parts[1] == "" {
+			return time.Duration(hours)*time.Hour, nil
+		}
 		minutes, err := strconv.Atoi(strings.TrimSuffix(parts[1], "min"))  
 		if err != nil {  
 			return 0, fmt.Errorf("invalid minutes in duration: %s", s)  
@@ -96,5 +99,27 @@ func FormatDurationSum(durationStr1, durationStr2 string) (string, error) {
 	remainingMinutes := int(totalDuration.Minutes()) % 60  
   
 	// 返回格式化后的字符串  
-	return fmt.Sprintf("%dh%dmin", hours, remainingMinutes), nil  
+	if hours > 0 {
+		if remainingMinutes == 0 {
+		  return fmt.Sprintf("%dh", hours), nil
+		} else {
+			return fmt.Sprintf("%dh%dmin", hours, remainingMinutes), nil
+		}
+	} else {		
+		return fmt.Sprintf("%dmin", remainingMinutes), nil
+	} 
+}  
+
+
+func IsActualDurationLongerOrEqualToTargetDuration(actualDurationStr, targetDurationStr string) (bool, error) {  
+	// 解析两个时长字符串  
+	actualDuration, err := parseDuration(actualDurationStr)  
+	if err != nil {  
+		return false, err  
+	}  
+	targetDuration, err := parseDuration(targetDurationStr)  
+	if err != nil {  
+		return false, err  
+	}  	
+	return actualDuration >= targetDuration, nil
 }  
