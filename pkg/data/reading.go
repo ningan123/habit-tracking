@@ -83,6 +83,11 @@ func DealReadingData(fileName string) (error) {
 	if err != nil {
 		return err
 	}
+	
+	err = GlobalReading.ConverDayReadingTimeToDayOrderReadingTime()
+	if err != nil {
+		return err
+	}
 
 	err = GlobalReading.ConvertWeekReadingTimeToWeekOrderReadingTime()
 	if err != nil {

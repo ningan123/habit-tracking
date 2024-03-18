@@ -16,6 +16,8 @@ type DayReading struct {
 	DayWeek time.Weekday // 星期几
 	DayMonth time.Month // 几月
 	DayYear int // 哪一年
+	DayOfYear int // 一年中的第几天
+	DayOfMonth int // 一个月中的第几天
 	DayReadingTime string // 这一天总共的阅读时长
 	DayReadingTimeOfDifferentContent map[string]string 
 	ContentInfoList []ContentInfo 
@@ -28,7 +30,7 @@ type ContentInfo struct {
 }
 
 
-func NewDayReading(date string, year int, month time.Month, weekNum int, weekday time.Weekday, dayRawInfo string) (*DayReading, error) {
+func NewDayReading(date string, year int, dayOfYear int, month time.Month, dayOfMonth int, weekNum int, weekday time.Weekday, dayRawInfo string) (*DayReading, error) {
 	contentInfoList, err := SplitRawInfo(dayRawInfo)
 	if err != nil {
 		return nil, err
@@ -38,13 +40,14 @@ func NewDayReading(date string, year int, month time.Month, weekNum int, weekday
 		DayRawInfo: dayRawInfo,
 		DayDate: date,
 		DayWeek: weekday,
+		DayOfYear: dayOfYear,
+		DayOfMonth: dayOfMonth,
 		DayMonth: month,
 		DayYear: year,
 		DayReadingTime: "0min",
 		DayReadingTimeOfDifferentContent: make(map[string]string),
 		ContentInfoList: contentInfoList,
 	}, nil
-
 }
 
 func SplitRawInfo(rawInfo string) ([]ContentInfo, error) {

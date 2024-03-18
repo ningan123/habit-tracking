@@ -17,6 +17,7 @@ type Reading struct {
 	WeekReadingInfo map[int]*WeekReading
 	WeekOrderReadingInfo []*WeekReading
   DayReadingInfo map[string]*DayReading 
+	DayOrderReadingInfo []*DayReading
 }
 
 
@@ -29,6 +30,7 @@ func NewReading(rawInfo map[string]string) *Reading {
 	  WeekReadingInfo: make(map[int]*WeekReading),
 		WeekOrderReadingInfo: make([]*WeekReading, 53),
     DayReadingInfo: make(map[string]*DayReading),
+		DayOrderReadingInfo: make([]*DayReading, 365),
 	}
 }
 
@@ -37,11 +39,11 @@ func NewReading(rawInfo map[string]string) *Reading {
 func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
 	klog.InfoS("GenYearAndMonthAndWeekAndDayReadingInfo")
   for date, info := range r.RawInfo {
-		year, month, dayOfMonth, weekNum, weekday, err := hDate.GetDateDetails(date)
+		year, dayOfYear, month, dayOfMonth, weekNum, weekday, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.InfoS("date detail", "date", date, "year", year, "month", month, "dayOfMonth", dayOfMonth, "weekNum", weekNum, "weekday", weekday)
+		klog.InfoS("date detail", "date", date, "year", year, "dayOfYear", dayOfYear, "month", month, "dayOfMonth", dayOfMonth, "weekNum", weekNum, "weekday", weekday)
 
 		if r.MonthReadingInfo[month] == nil {
 		  monthRawInfo := make(map[int]*DayReading)
@@ -68,22 +70,22 @@ func(r *Reading) GenYearAndMonthAndWeekAndDayReadingInfo() error {
 		}
 
 
-		dReading, err := NewDayReading(date, year, month, weekNum, weekday, info)
+		dReading, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
     if err != nil {
       return err
     }
 		
-		dReading2, err := NewDayReading(date, year, month, weekNum, weekday, info)
+		dReading2, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
     if err != nil {
       return err
     }
 
-		dReading3, err := NewDayReading(date, year, month, weekNum, weekday, info)
+		dReading3, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
     if err != nil {
       return err
     }
 
-		dReading4, err := NewDayReading(date, year, month, weekNum, weekday, info)
+		dReading4, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
 		if err != nil {
 			return err
 		}
@@ -142,6 +144,14 @@ func(r *Reading) ComputeYearReadingTime() error {
 	}
   return nil
 }
+
+func (r *Reading) ConverDayReadingTimeToDayOrderReadingTime() error {
+	for _, dReading := range r.DayReadingInfo {
+	  r.DayOrderReadingInfo[dReading.DayOfYear-1] = dReading
+	}
+	return nil
+}
+
 
 func (r *Reading) ConvertWeekReadingTimeToWeekOrderReadingTime() error {
 	for weekNum, mReading := range r.WeekReadingInfo {

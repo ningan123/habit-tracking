@@ -19,7 +19,10 @@ func DayHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "<tr><th>Date</th><th>DayReadingTime</th><th>content</th><th>contentReadingTime</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
-	for _, item := range hData.GlobalReading.DayReadingInfo {  
+	for _, item := range hData.GlobalReading.DayOrderReadingInfo { 
+		if item == nil {
+		  continue
+		}
 		for content, conReadingTime := range item.DayReadingTimeOfDifferentContent {
 			fmt.Fprintf(w, "<tr>")  
 			fmt.Fprintf(w, "<td>%s</td>", item.DayDate)
