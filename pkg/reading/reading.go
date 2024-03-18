@@ -141,7 +141,7 @@ func(r *Reading) ComputeYearReadingTime() error {
 
 
 func(r *Reading) Print() {
-	klog.InfoS("**************** Begin to print statistic data ****************")
+	klog.InfoS("**************** Begin to print reading statistic data ****************")
 	// ri
 	for _, dReading := range r.DayReadingInfo {
 		dReading.Print()
@@ -155,6 +155,10 @@ func(r *Reading) Print() {
 	// 月
 	for _, mReading := range r.MonthReadingInfo {
 		mReading.Print()
+	}
+
+	for _, yReading := range r.YearReadingInfo {
+		yReading.Print()
 	}
 }
 
