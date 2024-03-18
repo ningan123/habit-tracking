@@ -5,6 +5,15 @@ import (
 	"time"
 )
 
+func convertDateStrToDate(dateStr string) (time.Time, error) {
+	return time.Parse("2006-01-02", dateStr)
+}
+
+func convertDateToDateStr(date time.Time) string {
+	return date.Format("2006-01-02")
+}
+
+
 
 func dateDetail(date time.Time) (int, time.Month, int) {
 	year := date.Year() // 年份，月份，日
