@@ -8,19 +8,29 @@ import (
 )
 
 type YearReading struct {
-  YearNum int // 年份
+  YearNum string // 年份
+	DaysInYear int // 一年多少天
   YearReadingTime string  // 年总阅读时长
 	YearRawInfo map[string]*DayReading  
   YearReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
 	YearReadingTimeOfDifferentContentStr string	
+	IsFinish bool
+	TargetReadingTime string
 }
 
-func NewYearReading(yearNum int, yearRawInfo map[string]*DayReading) (*YearReading, error) {
+func NewYearReading(yearNum string, yearRawInfo map[string]*DayReading, daysInYear int) (*YearReading, error) {
+	tReadingTime, err := hDate.FormatDurationMultiply(TargetDayReadingTime, daysInYear)
+	if err != nil {
+		klog.Errorf("format duration error: %v", err)
+		return nil, err
+	}
+
   return &YearReading{
     YearRawInfo: yearRawInfo,
 		YearNum: yearNum,
     YearReadingTimeOfDifferentContent: make(map[string]string),
     YearReadingTime: "0min",
+		TargetReadingTime: tReadingTime,
   },nil
 }
 
@@ -63,6 +73,16 @@ func (y *YearReading) ComputeReadingTime() error {
 func (y *YearReading) Print() {
 	for content, conReadingTime := range y.YearReadingTimeOfDifferentContent {
 		klog.InfoS("year reading info", "yearNum", y.YearNum, "readingTime", y.YearReadingTime, "content", content, "contentReadingTime", conReadingTime)
+	}	
+}
+
+
+// 只要阅读时长>=target时长，就认为完成
+func (y *YearReading) CheckFinish() error {
+  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(y.YearReadingTime, y.TargetReadingTime)
+	if err != nil {
+		return err
 	}
-	
+	y.IsFinish = res
+	return nil
 }
