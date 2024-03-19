@@ -32,6 +32,32 @@ func TestParseDuration(t *testing.T) {
 }
 
 
+func TestFormatDurationSub(t *testing.T) {
+	// 测试用例表
+	testCases := []struct {
+		durationStr1        string
+		durationStr2     string
+		expectResult string
+	} {
+		{"1h", "30min", "30min"},
+		{"1h20min", "1h", "20min"},
+		{"1h30min", "30min", "1h"},
+		{"1h20min", "30min", "50min"},
+		{"1h20min", "1h30min", "-10min"},
+		{"1h20min", "1h20min", "0"},
+	}
+
+	for _, tc := range testCases {
+		result, err := FormatDurationSub(tc.durationStr1, tc.durationStr2)
+		if err != nil {
+			t.Errorf("对于输入时长 %s 和 %s，期望的结果为 %s，实际结果为 %s", tc.durationStr1, tc.durationStr2, tc.expectResult, result)
+		}
+		if result != tc.expectResult {
+				t.Errorf("对于输入时长 %s 和 %s，期望的结果为 %s，实际结果为 %s", tc.durationStr1, tc.durationStr2, tc.expectResult, result)
+		}
+	}	
+}
+
 
 func TestFormatDurationSum(t *testing.T) {
 	// 测试用例表
@@ -82,9 +108,7 @@ func TestFormatDurationMultiply(t *testing.T) {
 }
 
 
-
-
-func TestIsActualDurationLonger(t *testing.T) {
+func TestIsActualDurationLongerOrEqualToTargetDuration(t *testing.T) {
 	// 测试用例表
 	testCases := []struct {
 		actualDurationStr        string
