@@ -32,8 +32,46 @@ func parseDuration(s string) (time.Duration, error) {
 		return 0, fmt.Errorf("invalid duration: %s", s)  
 	}  
 	return time.Duration(minutes) * time.Minute, nil  
-}  
+} 
 
+func parseDurationToString(duration time.Duration) string {
+	// 提取小时和剩余的分钟数  
+	hours := int(duration.Hours())  
+	remainingMinutes := int(duration.Minutes()) % 60  
+	
+	// 返回格式化后的字符串  
+	if hours > 0 {
+		if remainingMinutes == 0 {
+			return fmt.Sprintf("%dh", hours)
+		} else {
+			return fmt.Sprintf("%dh%dmin", hours, remainingMinutes)
+		}
+	} else {		
+		if remainingMinutes == 0 {
+			return "0"
+		} else {
+			return fmt.Sprintf("%dmin", remainingMinutes)
+		}		
+	}  
+}
+
+
+func FormatDurationSub(durationStr1, durationStr2 string) (string, error) {
+	// 解析两个时长字符串  
+	duration1, err := parseDuration(durationStr1)  
+	if err != nil {  
+		return "", err  
+	}  
+	duration2, err := parseDuration(durationStr2)  
+	if err != nil {  
+		return "", err  
+	}  
+
+	// 将两个时长相减
+	subDuration := duration1 - duration2  
+
+	return parseDurationToString(subDuration), nil
+}
 
 // formatDurationSum 接受两个表示时间的字符串，返回格式化后的字符串，格式为XhYmin  
 func FormatDurationSum(durationStr1, durationStr2 string) (string, error) {  
@@ -50,20 +88,7 @@ func FormatDurationSum(durationStr1, durationStr2 string) (string, error) {
 	// 将两个时长相加  
 	totalDuration := duration1 + duration2  
   
-	// 提取小时和剩余的分钟数  
-	hours := int(totalDuration.Hours())  
-	remainingMinutes := int(totalDuration.Minutes()) % 60  
-  
-	// 返回格式化后的字符串  
-	if hours > 0 {
-		if remainingMinutes == 0 {
-		  return fmt.Sprintf("%dh", hours), nil
-		} else {
-			return fmt.Sprintf("%dh%dmin", hours, remainingMinutes), nil
-		}
-	} else {		
-		return fmt.Sprintf("%dmin", remainingMinutes), nil
-	} 
+	return parseDurationToString(totalDuration),nil
 }  
 
 
@@ -75,21 +100,7 @@ func FormatDurationMultiply(durationStr string, multiplier int) (string, error) 
 
 	resDuration := duration * time.Duration(multiplier)
 
-	// 提取小时和剩余的分钟数  
-	hours := int(resDuration.Hours())  
-	remainingMinutes := int(resDuration.Minutes()) % 60  
-
-	// 返回格式化后的字符串  
-	if hours > 0 {
-		if remainingMinutes == 0 {
-		  return fmt.Sprintf("%dh", hours), nil
-		} else {
-			return fmt.Sprintf("%dh%dmin", hours, remainingMinutes), nil
-		}
-	} else {		
-		return fmt.Sprintf("%dmin", remainingMinutes), nil
-	} 
-
+	return parseDurationToString(resDuration),nil
 }
 
 
