@@ -15,6 +15,7 @@ type WeekReading struct {
 	WeekRawInfo  map[string]*DayReading  // string表示周几
 	IsFinish bool
 	TargetReadingTime string
+	ExtraReadingTime string
 }
 
 func NewWeekReading(weekNum string, weekRawInfo map[string]*DayReading ) (*WeekReading, error) {
@@ -60,7 +61,7 @@ func (w *WeekReading) ComputeReadingTime() error {
 		if err != nil {
 			return err 
 		}
-		w.WeekReadingTime = sum
+		w.WeekReadingTime = sum		
 	}
 
 	for k, v := range w.WeekReadingTimeOfDifferentContent {
@@ -83,6 +84,16 @@ func (w *WeekReading) CheckFinish() error {
 	if err != nil {
 		return err
 	}
+	// klog.InfoS("week reading info", "weekNum", w.WeekNum, "readingTime", w.WeekReadingTime, "targetReadingTime", w.TargetReadingTime, "isFinish", res)
 	w.IsFinish = res
+	return nil
+}
+
+func (w *WeekReading) ComputeExtraReadingTime() error {
+  sub, err := hDate.FormatDurationSub(w.WeekReadingTime, w.TargetReadingTime)
+	if err != nil {
+	  return err
+	}
+	w.ExtraReadingTime = sub
 	return nil
 }

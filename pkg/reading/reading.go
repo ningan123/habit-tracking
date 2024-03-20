@@ -369,6 +369,11 @@ func (r *Reading) CheckFinish() error {
 	  return err
 	}
 
+	err = r.CheckWeekFinish()
+	if err != nil {
+	  return err
+	}
+
   return nil
 }
 
@@ -381,6 +386,42 @@ func (r *Reading) CheckDayFinish() error {
 		}
 	}
   return nil
+}
+
+func (r *Reading) CheckWeekFinish() error {
+  klog.InfoS("CheckWeekFinish")
+	for _, wReading := range r.WeekReadingInfo {
+	  err := wReading.CheckFinish()
+		if err != nil {
+		  return err
+		}
+	}
+	return nil
+}
+
+// ==============================================
+// ==============================================
+
+
+func(r *Reading) ComputeExtraReadingTime() error {
+  klog.InfoS("ComputeExtraReadingTime")
+	err := r.ComputeWeekExtraReadingTime()
+	if err != nil {
+	  return err
+	}
+	return nil
+}
+
+
+func(r *Reading) ComputeWeekExtraReadingTime() error {
+  klog.InfoS("ComputeWeekExtraReadingTime")
+	for _, wReading := range r.WeekReadingInfo {
+	  err := wReading.ComputeExtraReadingTime()
+		if err != nil {
+		  return err
+		}
+	}
+	return nil
 }
 
 

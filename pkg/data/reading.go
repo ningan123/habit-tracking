@@ -78,6 +78,11 @@ func DealReadingData(fileName string) (error) {
 		return err
 	}
 
+	err = GlobalReading.ComputeExtraReadingTime()
+	if err != nil {	  
+		return err
+	}
+
 	GlobalReading.PrintReadingInfo()
 
 	return nil

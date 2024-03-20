@@ -63,7 +63,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")  
 	fmt.Fprintf(w, "<body>\n")  
 	fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th>weekNum</th><th>weekReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish</th></tr>\n")  
+	fmt.Fprintf(w, "<tr><th>weekNum</th><th>weekReadingTime</th><th>targetReadingTime</th><th>extraReadingTime</th><th>content</th><th>finish</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalReading.WeekOrderReadingInfo { 
@@ -75,6 +75,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 		fmt.Fprintf(w, "<td>%s</td>", item.WeekNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.WeekReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime) 
+		fmt.Fprintf(w, "<td>%s</td>", item.ExtraReadingTime) 
 		fmt.Fprintf(w, "<td>%s</td>", item.WeekReadingTimeOfDifferentContentStr) 		
 		if item.IsFinish {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
