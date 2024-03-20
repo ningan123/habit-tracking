@@ -45,6 +45,7 @@ func TestFormatDurationSub(t *testing.T) {
 		{"1h20min", "30min", "50min"},
 		{"1h20min", "1h30min", "-10min"},
 		{"1h20min", "1h20min", "0"},
+		{"1h20min", "2h20min", "-1h"},
 	}
 
 	for _, tc := range testCases {

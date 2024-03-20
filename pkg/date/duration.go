@@ -37,10 +37,11 @@ func parseDuration(s string) (time.Duration, error) {
 func parseDurationToString(duration time.Duration) string {
 	// 提取小时和剩余的分钟数  
 	hours := int(duration.Hours())  
-	remainingMinutes := int(duration.Minutes()) % 60  
+	remainingMinutes := int(duration.Minutes()) % 60 
+	// klog.InfoS("parseDurationToString", "hours", hours, "remainingMinutes", remainingMinutes) 
 	
 	// 返回格式化后的字符串  
-	if hours > 0 {
+	if hours != 0 {
 		if remainingMinutes == 0 {
 			return fmt.Sprintf("%dh", hours)
 		} else {
@@ -69,6 +70,7 @@ func FormatDurationSub(durationStr1, durationStr2 string) (string, error) {
 
 	// 将两个时长相减
 	subDuration := duration1 - duration2  
+	// klog.InfoS("FormatDurationSub", "subDuration", subDuration)
 
 	return parseDurationToString(subDuration), nil
 }
