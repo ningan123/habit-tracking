@@ -44,7 +44,7 @@ func (m *MonthReading) ComputeReadingTime() error {
 		}
 
 		// 计算MonthReadingTimeOfDifferentContent
-		for content, conReadingTime := range dayReading.DayReadingTimeOfDifferentContent {
+		for content, conReadingTime := range dayReading.ReadingTimeOfDifferentContent {
 			if _, ok := m.MonthReadingTimeOfDifferentContent[content]; !ok {
 				m.MonthReadingTimeOfDifferentContent[content] = conReadingTime
 			} else {
@@ -55,7 +55,7 @@ func (m *MonthReading) ComputeReadingTime() error {
 				m.MonthReadingTimeOfDifferentContent[content] = conSum
 			}
 		}
-	  sum, err := hDate.FormatDurationSum(m.MonthReadingTime, dayReading.DayReadingTime)
+	  sum, err := hDate.FormatDurationSum(m.MonthReadingTime, dayReading.ReadingTime)
 		if err != nil {
 			return err 
 		}

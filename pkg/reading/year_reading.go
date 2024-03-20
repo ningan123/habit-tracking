@@ -43,7 +43,7 @@ func (y *YearReading) ComputeReadingTime() error {
 		}
 
 		// 计算YearReadingTimeOfDifferentContent
-		for content, conReadingTime := range dayReading.DayReadingTimeOfDifferentContent {
+		for content, conReadingTime := range dayReading.ReadingTimeOfDifferentContent {
 			if _, ok := y.YearReadingTimeOfDifferentContent[content]; !ok {
 				y.YearReadingTimeOfDifferentContent[content] = conReadingTime
 			} else {
@@ -54,7 +54,7 @@ func (y *YearReading) ComputeReadingTime() error {
 				y.YearReadingTimeOfDifferentContent[content] = conSum
 			}
 		}
-	  sum, err := hDate.FormatDurationSum(y.YearReadingTime, dayReading.DayReadingTime)
+	  sum, err := hDate.FormatDurationSum(y.YearReadingTime, dayReading.ReadingTime)
 		if err != nil {
 			return err 
 		}

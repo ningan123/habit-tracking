@@ -24,10 +24,10 @@ func DayHtmlTable(w http.ResponseWriter) {
 		  continue
 		}
 		fmt.Fprintf(w, "<tr>")
-		fmt.Fprintf(w, "<td>%s</td>", item.DayDate)
-		fmt.Fprintf(w, "<td>%s</td>", item.DayReadingTime) 
+		fmt.Fprintf(w, "<td>%s</td>", item.Date)
+		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTime) 
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime) 
-		fmt.Fprintf(w, "<td>%s</td>", item.DayReadingTimeOfDifferentContentStr)
+		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTimeOfDifferentContentStr)
 		if item.IsFinish {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
 		} else {

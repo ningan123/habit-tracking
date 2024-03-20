@@ -41,7 +41,7 @@ func (w *WeekReading) ComputeReadingTime() error {
 		}
 
 		// 计算WeekReadingTimeOfDifferentContent
-		for content, conReadingTime := range dayReading.DayReadingTimeOfDifferentContent {
+		for content, conReadingTime := range dayReading.ReadingTimeOfDifferentContent {
 			if _, ok := w.WeekReadingTimeOfDifferentContent[content]; !ok {
 				// klog.InfoS("Week-Day contentReadingTime", "date", dayReading.DayDate, "contentReadingTime", conReadingTime)
 				w.WeekReadingTimeOfDifferentContent[content] = conReadingTime
@@ -56,7 +56,7 @@ func (w *WeekReading) ComputeReadingTime() error {
 		}
 
 		// 计算WeekReadingTime
-	  sum, err := hDate.FormatDurationSum(w.WeekReadingTime, dayReading.DayReadingTime)
+	  sum, err := hDate.FormatDurationSum(w.WeekReadingTime, dayReading.ReadingTime)
 		if err != nil {
 			return err 
 		}
