@@ -41,19 +41,27 @@ func parseDurationToString(duration time.Duration) string {
 	// klog.InfoS("parseDurationToString", "hours", hours, "remainingMinutes", remainingMinutes) 
 	
 	// 返回格式化后的字符串  
-	if hours != 0 {
+	if hours > 0 {
 		if remainingMinutes == 0 {
 			return fmt.Sprintf("%dh", hours)
 		} else {
 			return fmt.Sprintf("%dh%dmin", hours, remainingMinutes)
 		}
-	} else {		
+	} else if hours == 0 {		
 		if remainingMinutes == 0 {
 			return "0"
 		} else {
 			return fmt.Sprintf("%dmin", remainingMinutes)
 		}		
-	}  
+	} else {
+		if remainingMinutes == 0 {
+			return fmt.Sprintf("%dh", hours) 
+		} else {
+			return fmt.Sprintf("%dh%dmin", hours, -remainingMinutes)
+		}
+	}
+
+	return ""
 }
 
 
