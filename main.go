@@ -50,6 +50,7 @@ func main() {
 
 	http.HandleFunc("/getup", hRoute.GetupHandler)
 	http.HandleFunc("/getup/day", hRoute.DayGetupHandler)  
+	http.HandleFunc("/getup/week", hRoute.WeekGetupHandler)  
   
 	// 启动服务器  
 	log.Printf("Starting server on port %s", port)  

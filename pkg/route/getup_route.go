@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// 定义处理函数，用于处理/reading路径的请求
+// 定义处理函数，用于处理/getup路径的请求
 func GetupHandler(w http.ResponseWriter, r *http.Request) {  
 	fmt.Fprintf(w, `<!DOCTYPE html>  
 <html lang="en">  
@@ -35,4 +35,13 @@ func DayGetupHandler (w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
   
 	DayGetupHtmlTable(w)
+}
+
+
+// 定义处理函数，用于处理/getup/week路径的请求  
+func WeekGetupHandler (w http.ResponseWriter, r *http.Request) {
+	// 设置响应头，指定内容类型为HTML  
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
+  
+	WeekGetupHtmlTable(w)
 }
