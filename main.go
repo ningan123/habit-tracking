@@ -47,6 +47,9 @@ func main() {
 	http.HandleFunc("/reading/month", hRoute.MonthReadingHandler) 
 	http.HandleFunc("/reading/year", hRoute.YearReadingHandler) 
 	http.HandleFunc("/reading/all", hRoute.AllReadingHandler) 
+
+	http.HandleFunc("/getup", hRoute.GetupHandler)
+	http.HandleFunc("/getup/day", hRoute.DayGetupHandler)  
   
 	// 启动服务器  
 	log.Printf("Starting server on port %s", port)  

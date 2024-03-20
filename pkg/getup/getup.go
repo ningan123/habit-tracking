@@ -7,6 +7,9 @@ import (
 	hDate "ningan.com/habit-tracking/pkg/date"
 )
 
+var (
+	TargetDayGetupTime string = "7:30"
+)
 
 type Getup struct {
 	RawInfo map[string]string // 原始数据

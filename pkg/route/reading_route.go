@@ -18,6 +18,7 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
     <p>Here are some links:</p>  
     <ul>  
 		    <li><a href="/reading">Link to reading</a></li>  
+				<li><a href="/getup">Link to getup</a></li>
         <li><a href="/a">Link to A</a></li>  
         <li><a href="/b">Link to B</a></li>  
     </ul>  
