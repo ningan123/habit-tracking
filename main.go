@@ -26,13 +26,13 @@ func main() {
 	port := fmt.Sprintf(":%d", *port)
 
 	// reading
-	err := hData.DealReadingData(*dataPath+"/data.txt")
+	err := hData.DealReadingData(*dataPath+"/reading.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// getup
-	err = hData.DealGetupData(*dataPath+"/data.txt")
+	err = hData.DealGetupData(*dataPath+"/getup.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

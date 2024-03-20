@@ -12,7 +12,7 @@ var GlobalReading *hReading.Reading
 
 func DealReadingData(fileName string) (error) {  
 	// 调用readFileToMap函数读取文件并生成map  
-	dataMap, _, err := readFileToMap(fileName)  
+	dataMap, err := readFileToMap(fileName)  
 	if err != nil {  
 		fmt.Println("Error reading file:", err)  
 		return err
