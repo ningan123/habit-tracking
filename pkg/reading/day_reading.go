@@ -15,6 +15,7 @@ type DayReading struct {
 	Date string // 具体日期
 	Weekday time.Weekday // 星期几
 	Month time.Month // 几月
+	WeekNum string // 几周
 	Year int // 哪一年
 	DayOfYear int // 一年中的第几天
 	DayOfMonth int // 一个月中的第几天
@@ -45,6 +46,7 @@ func NewDayReading(date string, year int, dayOfYear int, month time.Month, dayOf
 		Weekday: weekday,
 		DayOfYear: dayOfYear,
 		DayOfMonth: dayOfMonth,
+		WeekNum: weekNum,
 		Month: month,
 		Year: year,
 		ReadingTime: "0min",
