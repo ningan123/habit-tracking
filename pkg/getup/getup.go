@@ -2,6 +2,7 @@ package getup
 
 import (
 	"fmt"
+	"sort"
 
 	"k8s.io/klog/v2"
 	hDate "ningan.com/habit-tracking/pkg/date"
@@ -14,6 +15,7 @@ var (
 type Getup struct {
 	RawInfo map[string]string // 原始数据
 	DayGetupInfo map[string]*DayGetup
+	DayOrderGetupInfo []*DayGetup
 }
 
 
@@ -73,4 +75,55 @@ func (g *Getup) CheckDayFinish() error {
 		}
 	}
   return nil
+}
+
+
+
+
+
+// ==================================================
+// ==================================================
+
+func (g *Getup) ConvertGetupInfoToOrderGetupInfo() error {
+	klog.InfoS("ConverGetupInfoToOrderGetupInfo")
+
+	err := g.ConvertDayGetupInfoToDayOrderGetupInfo() 
+	if err != nil {
+		return err
+	}
+
+	// err = r.ConvertWeekGetupInfoToWeekOrderGetupInfo()
+	// if err != nil {
+	// 	return err
+	// }
+
+	// err = r.ConvertMonthGetupInfoToMonthOrderGetupInfo()
+	// if err != nil {
+	// 	return err
+	// }
+
+	// err = r.ConvertYearGetupInfoToYearOrderGetupInfo()
+	// if err != nil {
+	// 	return err
+	// }
+
+	return nil
+}
+
+
+func (g *Getup) ConvertDayGetupInfoToDayOrderGetupInfo() error {
+	klog.InfoS("ConvertDayGetupInfoToDayOrderGetupInfo")
+	// 提取key并排序
+	keys := make([]string, 0, len(g.DayGetupInfo))
+	for k := range g.DayGetupInfo {
+	  keys = append(keys, k)
+	}
+	sort.Sort(hDate.ByDate(keys))
+
+	// 按照排序后的键顺序提取值到切片 
+	g.DayOrderGetupInfo = make([]*DayGetup, len(keys))
+	for i, k := range keys {
+	  g.DayOrderGetupInfo[i] = g.DayGetupInfo[k]
+	}
+	return nil
 }

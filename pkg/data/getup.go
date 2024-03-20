@@ -12,7 +12,7 @@ func DealGetupData(fileName string) (error) {
 	// 调用readFileToMap函数读取文件并生成map  
 	dataMap, err := readFileToMap(fileName)  
 	if err != nil {  
-		fmt.Println("Error reading file:", err)  
+		fmt.Println("Error Getup file:", err)  
 		return err
 	}  
 
@@ -28,6 +28,11 @@ func DealGetupData(fileName string) (error) {
 		return err
 	}
 
+	err = GlobalGetup.ConvertGetupInfoToOrderGetupInfo()
+	if err != nil {
+		return err
+	}
+	
 	err = GlobalGetup.CheckFinish()
 	if err != nil {
 		return err

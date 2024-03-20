@@ -19,7 +19,7 @@ func DayGetupHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "<tr><th>date</th><th>weekNum</th><th>weekday</th><th>time</th><th>targetTime</th><th>finish</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
-	for _, item := range hData.GlobalGetup.DayGetupInfo { 
+	for _, item := range hData.GlobalGetup.DayOrderGetupInfo { 
 		if item == nil {
 		  continue
 		}
