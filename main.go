@@ -25,8 +25,14 @@ func main() {
 	flag.Parse()
 	port := fmt.Sprintf(":%d", *port)
 
-	// 
-	err := hData.DealReadingData(*dataPath+"/reading.txt")
+	// reading
+	err := hData.DealReadingData(*dataPath+"/data.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// getup
+	err = hData.DealGetupData(*dataPath+"/data.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
