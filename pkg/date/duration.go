@@ -60,8 +60,6 @@ func parseDurationToString(duration time.Duration) string {
 			return fmt.Sprintf("%dh%dmin", hours, -remainingMinutes)
 		}
 	}
-
-	return ""
 }
 
 
