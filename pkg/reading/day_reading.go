@@ -12,15 +12,16 @@ import (
 
 type DayReading struct {
   DayRawInfo  string
-	DayDate string // 具体日期
-	DayWeek time.Weekday // 星期几
-	DayMonth time.Month // 几月
-	DayYear int // 哪一年
+	Date string // 具体日期
+	Weekday time.Weekday // 星期几
+	Month time.Month // 几月
+	WeekNum string // 几周
+	Year int // 哪一年
 	DayOfYear int // 一年中的第几天
 	DayOfMonth int // 一个月中的第几天
-	DayReadingTime string // 这一天总共的阅读时长
-	DayReadingTimeOfDifferentContent map[string]string
-	DayReadingTimeOfDifferentContentStr string
+	ReadingTime string // 这一天总共的阅读时长
+	ReadingTimeOfDifferentContent map[string]string
+	ReadingTimeOfDifferentContentStr string
 	ContentInfoList []ContentInfo 
 	IsFinish bool
 	TargetReadingTime string
@@ -41,14 +42,15 @@ func NewDayReading(date string, year int, dayOfYear int, month time.Month, dayOf
 
 	return &DayReading{
 		DayRawInfo: dayRawInfo,
-		DayDate: date,
-		DayWeek: weekday,
+		Date: date,
+		Weekday: weekday,
 		DayOfYear: dayOfYear,
 		DayOfMonth: dayOfMonth,
-		DayMonth: month,
-		DayYear: year,
-		DayReadingTime: "0min",
-		DayReadingTimeOfDifferentContent: make(map[string]string),
+		WeekNum: weekNum,
+		Month: month,
+		Year: year,
+		ReadingTime: "0min",
+		ReadingTimeOfDifferentContent: make(map[string]string),
 		ContentInfoList: contentInfoList,
 		TargetReadingTime: TargetDayReadingTime,
 	}, nil
@@ -82,26 +84,26 @@ func (d *DayReading) ComputeReadingTime () error {
 	// 假设阅读时间等于ContentInfoList中每个ContentInfo的ReadingTime的和
 	for _, contentInfo := range d.ContentInfoList {
 		// 计算DayReadingTimeOfDifferentContent
-		if _, ok := d.DayReadingTimeOfDifferentContent[contentInfo.Content]; !ok {
-			d.DayReadingTimeOfDifferentContent[contentInfo.Content] = contentInfo.ReadingTime
+		if _, ok := d.ReadingTimeOfDifferentContent[contentInfo.Content]; !ok {
+			d.ReadingTimeOfDifferentContent[contentInfo.Content] = contentInfo.ReadingTime
 		} else {
-			conSum, err := hDate.FormatDurationSum(d.DayReadingTimeOfDifferentContent[contentInfo.Content], contentInfo.ReadingTime)
+			conSum, err := hDate.FormatDurationSum(d.ReadingTimeOfDifferentContent[contentInfo.Content], contentInfo.ReadingTime)
 			if err != nil {
 				return err
 			}
-			d.DayReadingTimeOfDifferentContent[contentInfo.Content] = conSum
+			d.ReadingTimeOfDifferentContent[contentInfo.Content] = conSum
 		}
 		
 		// 计算DayReadingTime
-	  sum, err := hDate.FormatDurationSum(d.DayReadingTime, contentInfo.ReadingTime)
+	  sum, err := hDate.FormatDurationSum(d.ReadingTime, contentInfo.ReadingTime)
 		if err != nil {
 			return err 
 		}
-		d.DayReadingTime = sum
+		d.ReadingTime = sum
 	}
 
-	for k,v := range d.DayReadingTimeOfDifferentContent {
-	  d.DayReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+	for k,v := range d.ReadingTimeOfDifferentContent {
+	  d.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
 	}
 	return nil
 }
@@ -109,13 +111,13 @@ func (d *DayReading) ComputeReadingTime () error {
 
 func (d *DayReading) Print() {
 	for _, conInfo := range d.ContentInfoList {
-		klog.InfoS("day reading info", "date", d.DayDate,"readingTime", d.DayReadingTime,  "content", conInfo.Content, "contentReadingTime", conInfo.ReadingTime)
+		klog.InfoS("day reading info", "date", d.Date,"readingTime", d.ReadingTime,  "content", conInfo.Content, "contentReadingTime", conInfo.ReadingTime)
 	}
 }
 
 // 只要阅读时长>=target时长，就认为完成
 func (d *DayReading) CheckFinish() error {
-  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(d.DayReadingTime, d.TargetReadingTime)
+  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(d.ReadingTime, d.TargetReadingTime)
 	if err != nil {
 		return err
 	}
