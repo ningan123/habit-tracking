@@ -109,7 +109,7 @@ func(r *Reading) GenWeekReadingInfo() error {
       return err
 		}
 
-		r.WeekReadingInfo[weekNum].WeekRawInfo[weekday.String()] = dReading
+		r.WeekReadingInfo[weekNum].RawInfo[weekday.String()] = dReading
 	   
   }  
   return nil
@@ -140,7 +140,7 @@ func(r *Reading) GenMonthReadingInfo() error {
       return err
     }
 
-		r.MonthReadingInfo[monthNum].MonthRawInfo[dayOfMonth] = dReading	   
+		r.MonthReadingInfo[monthNum].RawInfo[dayOfMonth] = dReading	   
   }  
   return nil
 }

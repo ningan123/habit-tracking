@@ -73,10 +73,10 @@ func WeekReadingHtmlTable(w http.ResponseWriter) {
 		
 		fmt.Fprintf(w, "<tr>")  
 		fmt.Fprintf(w, "<td>%s</td>", item.WeekNum)
-		fmt.Fprintf(w, "<td>%s</td>", item.WeekReadingTime)  
+		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime) 
 		fmt.Fprintf(w, "<td>%s</td>", item.ExtraReadingTime) 
-		fmt.Fprintf(w, "<td>%s</td>", item.WeekReadingTimeOfDifferentContentStr) 		
+		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTimeOfDifferentContentStr) 		
 		if item.IsFinish {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
 		} else {
@@ -85,10 +85,10 @@ func WeekReadingHtmlTable(w http.ResponseWriter) {
 		fmt.Fprintf(w, "</tr>\n")  
 		
 
-		// for content, conReadingTime := range item.WeekReadingTimeOfDifferentContent {
+		// for content, conReadingTime := range item.ReadingTimeOfDifferentContent {
 		// 	fmt.Fprintf(w, "<tr>")  
 		// 	fmt.Fprintf(w, "<td>%d</td>", item.WeekNum)
-		// 	fmt.Fprintf(w, "<td>%s</td>", item.WeekReadingTime)  
+		// 	fmt.Fprintf(w, "<td>%s</td>", item.ReadingTime)  
 		// 	fmt.Fprintf(w, "<td>%s</td>", content)  
 		// 	fmt.Fprintf(w, "<td>%s</td>", conReadingTime)  
 		// 	fmt.Fprintf(w, "</tr>\n")  
@@ -120,9 +120,9 @@ func MonthReadingHtmlTable(w http.ResponseWriter) {
 
 		fmt.Fprintf(w, "<tr>")  
 		fmt.Fprintf(w, "<td>%s</td>", item.MonthNum)
-		fmt.Fprintf(w, "<td>%s</td>", item.MonthReadingTime)  
+		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime) 
-		fmt.Fprintf(w, "<td>%s</td>", item.MonthReadingTimeOfDifferentContentStr)
+		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTimeOfDifferentContentStr)
 		if item.IsFinish {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
 		} else {
@@ -130,10 +130,10 @@ func MonthReadingHtmlTable(w http.ResponseWriter) {
 		}  
 		fmt.Fprintf(w, "</tr>\n")  
 
-		// for content, conReadingTime := range item.MonthReadingTimeOfDifferentContent {
+		// for content, conReadingTime := range item.ReadingTimeOfDifferentContent {
 		// 	fmt.Fprintf(w, "<tr>")  
 		// 	fmt.Fprintf(w, "<td>%d</td>", item.MonthNum)
-		// 	fmt.Fprintf(w, "<td>%s</td>", item.MonthReadingTime)  
+		// 	fmt.Fprintf(w, "<td>%s</td>", item.ReadingTime)  
 		// 	fmt.Fprintf(w, "<td>%s</td>", content)  
 		// 	fmt.Fprintf(w, "<td>%s</td>", conReadingTime)  
 		// 	fmt.Fprintf(w, "</tr>\n")  
@@ -164,9 +164,9 @@ func YearReadingHtmlTable(w http.ResponseWriter) {
 		} 
 		fmt.Fprintf(w, "<tr>")  
 		fmt.Fprintf(w, "<td>%s</td>", item.YearNum)
-		fmt.Fprintf(w, "<td>%s</td>", item.YearReadingTime)  
+		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime)  
-		fmt.Fprintf(w, "<td>%s</td>", item.YearReadingTimeOfDifferentContentStr) 
+		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTimeOfDifferentContentStr) 
 		if item.IsFinish {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
 		} else {
@@ -174,7 +174,7 @@ func YearReadingHtmlTable(w http.ResponseWriter) {
 		}   
 		fmt.Fprintf(w, "</tr>\n")  
 
-		// for content, conReadingTime := range item.YearReadingTimeOfDifferentContent {
+		// for content, conReadingTime := range item.ReadingTimeOfDifferentContent {
 		// 	fmt.Fprintf(w, "<tr>")  
 		// 	fmt.Fprintf(w, "<td>%d</td>", item.YearNum)
 		// 	fmt.Fprintf(w, "<td>%s</td>", item.YearReadingTime)  
