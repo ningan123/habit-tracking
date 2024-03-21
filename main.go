@@ -25,8 +25,14 @@ func main() {
 	flag.Parse()
 	port := fmt.Sprintf(":%d", *port)
 
-	// 
+	// reading
 	err := hData.DealReadingData(*dataPath+"/reading.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// getup
+	err = hData.DealGetupData(*dataPath+"/getup.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,6 +47,10 @@ func main() {
 	http.HandleFunc("/reading/month", hRoute.MonthReadingHandler) 
 	http.HandleFunc("/reading/year", hRoute.YearReadingHandler) 
 	http.HandleFunc("/reading/all", hRoute.AllReadingHandler) 
+
+	http.HandleFunc("/getup", hRoute.GetupHandler)
+	http.HandleFunc("/getup/day", hRoute.DayGetupHandler)  
+	http.HandleFunc("/getup/week", hRoute.WeekGetupHandler)  
   
 	// 启动服务器  
 	log.Printf("Starting server on port %s", port)  
