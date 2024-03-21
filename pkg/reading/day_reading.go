@@ -11,7 +11,7 @@ import (
 )
 
 type DayReading struct {
-  DayRawInfo  string
+  RawInfo  string
 	Date string // 具体日期
 	Weekday time.Weekday // 星期几
 	Month time.Month // 几月
@@ -34,14 +34,14 @@ type ContentInfo struct {
 }
 
 
-func NewDayReading(date string, year int, dayOfYear int, month time.Month, dayOfMonth int, weekNum string, weekday time.Weekday, dayRawInfo string) (*DayReading, error) {
-	contentInfoList, err := SplitRawInfo(dayRawInfo)
+func NewDayReading(date string, year int, dayOfYear int, month time.Month, dayOfMonth int, weekNum string, weekday time.Weekday, rawInfo string) (*DayReading, error) {
+	contentInfoList, err := SplitRawInfo(rawInfo)
 	if err != nil {
 		return nil, err
 	}
 
 	return &DayReading{
-		DayRawInfo: dayRawInfo,
+		RawInfo: rawInfo,
 		Date: date,
 		Weekday: weekday,
 		DayOfYear: dayOfYear,
