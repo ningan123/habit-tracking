@@ -8,7 +8,7 @@ import (
 )
 
 
-func DayHtmlTable(w http.ResponseWriter) {
+func DayReadingHtmlTable(w http.ResponseWriter) {
 	// 构造HTML表格的开头  
 	fmt.Fprintf(w, "<html>\n")  
 	fmt.Fprintf(w, "<head>\n")  
@@ -55,7 +55,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</html>\n")  	
 }
 
-func WeekHtmlTable(w http.ResponseWriter) {
+func WeekReadingHtmlTable(w http.ResponseWriter) {
 	// 构造HTML表格的开头  
 	fmt.Fprintf(w, "<html>\n")  
 	fmt.Fprintf(w, "<head>\n")  
@@ -102,7 +102,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 }
 
 
-func MonthHtmlTable(w http.ResponseWriter) {
+func MonthReadingHtmlTable(w http.ResponseWriter) {
 	// 构造HTML表格的开头  
 	fmt.Fprintf(w, "<html>\n")  
 	fmt.Fprintf(w, "<head>\n")  
@@ -147,7 +147,7 @@ func MonthHtmlTable(w http.ResponseWriter) {
 }
 
 
-func YearHtmlTable(w http.ResponseWriter) {
+func YearReadingHtmlTable(w http.ResponseWriter) {
 	// 构造HTML表格的开头  
 	fmt.Fprintf(w, "<html>\n")  
 	fmt.Fprintf(w, "<head>\n")  
