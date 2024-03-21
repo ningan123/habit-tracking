@@ -38,10 +38,10 @@ func WeekHtmlTable(w http.ResponseWriter) {
 		if rItem == nil {
 			continue
 		}
-		fmt.Fprintf(w, "<td>%s</td>", rItem.WeekReadingTime)  
+		fmt.Fprintf(w, "<td>%s</td>", rItem.ReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", rItem.TargetReadingTime) 
 		fmt.Fprintf(w, "<td>%s</td>", rItem.ExtraReadingTime) 
-		fmt.Fprintf(w, "<td>%s</td>", rItem.WeekReadingTimeOfDifferentContentStr) 		
+		fmt.Fprintf(w, "<td>%s</td>", rItem.ReadingTimeOfDifferentContentStr) 		
 		if rItem.IsFinish {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
 		} else {
