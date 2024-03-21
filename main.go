@@ -26,7 +26,7 @@ func main() {
 	port := fmt.Sprintf(":%d", *port)
 
 	// reading
-	err := hData.DealReadingData(*dataPath+"/reading.txt")
+	err := hData.DealPianoData(*dataPath+"/reading.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -37,16 +37,29 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// piano
+	err = hData.DealPianoData(*dataPath+"/piano.txt")
+	if err != nil {
+		log.Fatal(err)
+	}	
+
 	// 设置路由  
 	http.HandleFunc("/", hRoute.RootHandler)  
 	http.HandleFunc("/a", hRoute.AHandler)  
 	http.HandleFunc("/b", hRoute.BHandler)  
-	http.HandleFunc("/reading", hRoute.ReadingHandler) 
+	http.HandleFunc("/reading", hRoute. ReadingHandler) 
 	http.HandleFunc("/reading/day", hRoute.DayReadingHandler)  
 	http.HandleFunc("/reading/week", hRoute.WeekReadingHandler) 
 	http.HandleFunc("/reading/month", hRoute.MonthReadingHandler) 
 	http.HandleFunc("/reading/year", hRoute.YearReadingHandler) 
 	http.HandleFunc("/reading/all", hRoute.AllReadingHandler) 
+
+	http.HandleFunc("/piano", hRoute.PianoHandler) 
+	http.HandleFunc("/piano/day", hRoute.DayPianoHandler)  
+	http.HandleFunc("/piano/week", hRoute.WeekPianoHandler) 
+	http.HandleFunc("/piano/month", hRoute.MonthPianoHandler) 
+	http.HandleFunc("/piano/year", hRoute.YearPianoHandler) 
+	http.HandleFunc("/piano/all", hRoute.AllPianoHandler) 
 
 	http.HandleFunc("/getup", hRoute.GetupHandler)
 	http.HandleFunc("/getup/day", hRoute.DayGetupHandler)  
