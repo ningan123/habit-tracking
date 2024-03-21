@@ -67,10 +67,10 @@ func AllReadingHandler (w http.ResponseWriter, r *http.Request) {
 	// 设置响应头，指定内容类型为HTML  
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
   
-	DayHtmlTable(w)
-	WeekHtmlTable(w)
-	MonthHtmlTable(w)
-	YearHtmlTable(w)
+	DayReadingHtmlTable(w)
+	WeekReadingHtmlTable(w)
+	MonthReadingHtmlTable(w)
+	YearReadingHtmlTable(w)
 }
 
 
@@ -79,7 +79,7 @@ func DayReadingHandler (w http.ResponseWriter, r *http.Request) {
 	// 设置响应头，指定内容类型为HTML  
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
   
-	DayHtmlTable(w)
+	DayReadingHtmlTable(w)
 }
 
 
@@ -88,7 +88,7 @@ func WeekReadingHandler (w http.ResponseWriter, r *http.Request) {
 	// 设置响应头，指定内容类型为HTML  
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
   
-	WeekHtmlTable(w)
+	WeekReadingHtmlTable(w)
 }
 
 
@@ -98,7 +98,7 @@ func MonthReadingHandler (w http.ResponseWriter, r *http.Request) {
 	// 设置响应头，指定内容类型为HTML  
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
   
-	MonthHtmlTable(w)
+	MonthReadingHtmlTable(w)
 }
 
 
@@ -109,7 +109,7 @@ func YearReadingHandler (w http.ResponseWriter, r *http.Request) {
 	// 设置响应头，指定内容类型为HTML  
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-  YearHtmlTable(w)
+  YearReadingHtmlTable(w)
 }
 
 
