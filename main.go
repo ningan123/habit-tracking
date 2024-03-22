@@ -26,7 +26,7 @@ func main() {
 	port := fmt.Sprintf(":%d", *port)
 
 	// reading
-	err := hData.DealPianoData(*dataPath+"/reading.txt")
+	err := hData.DealReadingData(*dataPath+"/reading.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
