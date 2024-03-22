@@ -3,17 +3,17 @@ package getup
 
 type WeekGetup struct {
 	WeekNum string
-	WeekRawInfo  map[string]*DayGetup  // string表示周几
+	RawInfo  map[string]*DayGetup  // string表示周几
 	IsFinish bool
 	TargetFinishDays int
 	ActualFinishDays int
 }
 
-func NewWeekGetup(weekNum string, weekRawInfo map[string]*DayGetup ) (*WeekGetup, error) {
+func NewWeekGetup(weekNum string, rawInfo map[string]*DayGetup ) (*WeekGetup, error) {
   return &WeekGetup{
     WeekNum: weekNum,
-		WeekRawInfo: weekRawInfo,
-		TargetFinishDays: 5,
+		RawInfo: rawInfo,
+		TargetFinishDays: TargetWeekFinishDays,
   }, nil
 }
 
@@ -21,7 +21,7 @@ func NewWeekGetup(weekNum string, weekRawInfo map[string]*DayGetup ) (*WeekGetup
 // 只要早起天数大于TargetFinishDays
 func (w *WeekGetup) CheckFinish() error {
 	
-	for _, v := range w.WeekRawInfo {
+	for _, v := range w.RawInfo {
 		err := v.CheckFinish()
 		if err != nil {
 			return err

@@ -28,6 +28,17 @@ func GetupHandler(w http.ResponseWriter, r *http.Request) {
 	
 } 
 
+func AllGetupHandler(w http.ResponseWriter, r *http.Request) {
+  
+	// 设置响应头，指定内容类型为HTML  
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
+  
+	DayGetupHtmlTable(w)
+	WeekGetupHtmlTable(w)
+	MonthGetupHtmlTable(w)
+	YearGetupHtmlTable(w)
+}
+
 
 // 定义处理函数，用于处理/getup/day路径的请求  
 func DayGetupHandler (w http.ResponseWriter, r *http.Request) {
@@ -44,4 +55,24 @@ func WeekGetupHandler (w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
   
 	WeekGetupHtmlTable(w)
+}
+
+
+// 定义处理函数，用于处理/getup/month路径的请求
+func MonthGetupHandler (w http.ResponseWriter, r *http.Request) {
+  
+	// 设置响应头，指定内容类型为HTML  
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")  
+  
+	MonthGetupHtmlTable(w)
+}
+
+
+// 定义处理函数，用于处理/getup/year路径的请求
+func YearGetupHandler (w http.ResponseWriter, r *http.Request) {
+  
+	// 设置响应头，指定内容类型为HTML  
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	YearGetupHtmlTable(w)
 }

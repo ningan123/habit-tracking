@@ -64,6 +64,9 @@ func main() {
 	http.HandleFunc("/getup", hRoute.GetupHandler)
 	http.HandleFunc("/getup/day", hRoute.DayGetupHandler)  
 	http.HandleFunc("/getup/week", hRoute.WeekGetupHandler)  
+	http.HandleFunc("/getup/month", hRoute.MonthGetupHandler)  
+	http.HandleFunc("/getup/year", hRoute.YearGetupHandler)
+	http.HandleFunc("/getup/all", hRoute.AllGetupHandler) 
 
 
 	http.HandleFunc("/day", hRoute.DayHandler)
