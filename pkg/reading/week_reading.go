@@ -9,16 +9,16 @@ import (
 
 type WeekReading struct {
 	WeekNum string
-	WeekReadingTime string 
-	WeekReadingTimeOfDifferentContent map[string]string 
-	WeekReadingTimeOfDifferentContentStr string
-	WeekRawInfo  map[string]*DayReading  // string表示周几
+	ReadingTime string 
+	ReadingTimeOfDifferentContent map[string]string 
+	ReadingTimeOfDifferentContentStr string
+	RawInfo  map[string]*DayReading  // string表示周几
 	IsFinish bool
 	TargetReadingTime string
 	ExtraReadingTime string
 }
 
-func NewWeekReading(weekNum string, weekRawInfo map[string]*DayReading ) (*WeekReading, error) {
+func NewWeekReading(weekNum string, rawInfo map[string]*DayReading ) (*WeekReading, error) {
 	tReadingTime, err := hDate.FormatDurationMultiply(TargetDayReadingTime, 7)
 	if err != nil {
 		klog.Errorf("format duration error: %v", err)
@@ -27,70 +27,70 @@ func NewWeekReading(weekNum string, weekRawInfo map[string]*DayReading ) (*WeekR
 
   return &WeekReading{
     WeekNum: weekNum,
-		WeekReadingTime: "0min",
-		WeekReadingTimeOfDifferentContent : make(map[string]string),
-		WeekRawInfo: weekRawInfo,
+		ReadingTime: "0min",
+		ReadingTimeOfDifferentContent : make(map[string]string),
+		RawInfo: rawInfo,
 		TargetReadingTime: tReadingTime,
   }, nil
 }
 
 func (w *WeekReading) ComputeReadingTime() error {
-	for _, dayReading := range w.WeekRawInfo {
+	for _, dayReading := range w.RawInfo {
 		err := dayReading.ComputeReadingTime()
 		if err != nil {
 			return err
 		}
 
-		// 计算WeekReadingTimeOfDifferentContent
+		// 计算ReadingTimeOfDifferentContent
 		for content, conReadingTime := range dayReading.ReadingTimeOfDifferentContent {
-			if _, ok := w.WeekReadingTimeOfDifferentContent[content]; !ok {
+			if _, ok := w.ReadingTimeOfDifferentContent[content]; !ok {
 				// klog.InfoS("Week-Day contentReadingTime", "date", dayReading.DayDate, "contentReadingTime", conReadingTime)
-				w.WeekReadingTimeOfDifferentContent[content] = conReadingTime
+				w.ReadingTimeOfDifferentContent[content] = conReadingTime
 			} else {
-				conSum, err := hDate.FormatDurationSum(w.WeekReadingTimeOfDifferentContent[content], conReadingTime)
+				conSum, err := hDate.FormatDurationSum(w.ReadingTimeOfDifferentContent[content], conReadingTime)
 				if err != nil {
 					return err 
 				}
-				w.WeekReadingTimeOfDifferentContent[content] = conSum
+				w.ReadingTimeOfDifferentContent[content] = conSum
 			}
-			// klog.InfoS("Week-Day contentReadingTime", "WeekReadingTimeOfDifferentContent", w.WeekReadingTimeOfDifferentContent)
+			// klog.InfoS("Week-Day contentReadingTime", "ReadingTimeOfDifferentContent", w.ReadingTimeOfDifferentContent)
 		}
 
-		// 计算WeekReadingTime
-	  sum, err := hDate.FormatDurationSum(w.WeekReadingTime, dayReading.ReadingTime)
+		// 计算ReadingTime
+	  sum, err := hDate.FormatDurationSum(w.ReadingTime, dayReading.ReadingTime)
 		if err != nil {
 			return err 
 		}
-		w.WeekReadingTime = sum		
+		w.ReadingTime = sum		
 	}
 
-	for k, v := range w.WeekReadingTimeOfDifferentContent {
-		w.WeekReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+	for k, v := range w.ReadingTimeOfDifferentContent {
+		w.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
 	}
 	
 	return nil
 }
 
 func (w *WeekReading) Print() {
-	for content, conReadingTime := range w.WeekReadingTimeOfDifferentContent {
-		klog.InfoS("week reading info", "weekNum", w.WeekNum, "readingTime", w.WeekReadingTime, "content", content, "contentReadingTime", conReadingTime)
+	for content, conReadingTime := range w.ReadingTimeOfDifferentContent {
+		klog.InfoS("week reading info", "weekNum", w.WeekNum, "readingTime", w.ReadingTime, "content", content, "contentReadingTime", conReadingTime)
 	}
 }
 
 
 // 只要阅读时长>=target时长，就认为完成
 func (w *WeekReading) CheckFinish() error {
-  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(w.WeekReadingTime, w.TargetReadingTime)
+  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(w.ReadingTime, w.TargetReadingTime)
 	if err != nil {
 		return err
 	}
-	// klog.InfoS("week reading info", "weekNum", w.WeekNum, "readingTime", w.WeekReadingTime, "targetReadingTime", w.TargetReadingTime, "isFinish", res)
+	// klog.InfoS("week reading info", "weekNum", w.WeekNum, "readingTime", w.ReadingTime, "targetReadingTime", w.TargetReadingTime, "isFinish", res)
 	w.IsFinish = res
 	return nil
 }
 
 func (w *WeekReading) ComputeExtraReadingTime() error {
-  sub, err := hDate.FormatDurationSub(w.WeekReadingTime, w.TargetReadingTime)
+  sub, err := hDate.FormatDurationSub(w.ReadingTime, w.TargetReadingTime)
 	if err != nil {
 	  return err
 	}

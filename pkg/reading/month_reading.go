@@ -9,17 +9,17 @@ import (
 
 type MonthReading struct {
 	MonthNum string
-	MonthReadingTime string 
+	ReadingTime string 
 	DaysInMonth int
-	MonthReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
-	MonthReadingTimeOfDifferentContentStr string
-	MonthRawInfo  map[int]*DayReading  // int表示几号
+	ReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
+	ReadingTimeOfDifferentContentStr string
+	RawInfo  map[int]*DayReading  // int表示几号
 	IsFinish bool
 	TargetReadingTime string
 }
 
 
-func NewMonthReading(month string, monthRawInfo map[int]*DayReading, daysInMonth int) (*MonthReading, error) {
+func NewMonthReading(month string, rawInfo map[int]*DayReading, daysInMonth int) (*MonthReading, error) {
 	tReadingTime, err := hDate.FormatDurationMultiply(TargetDayReadingTime, daysInMonth)
 	if err != nil {
 		klog.Errorf("format duration error: %v", err)
@@ -28,42 +28,42 @@ func NewMonthReading(month string, monthRawInfo map[int]*DayReading, daysInMonth
 
 	return &MonthReading{
 		MonthNum: month, 
-		MonthReadingTime: "0min",
-		MonthReadingTimeOfDifferentContent: make(map[string]string),
-		MonthRawInfo: monthRawInfo,
+		ReadingTime: "0min",
+		ReadingTimeOfDifferentContent: make(map[string]string),
+		RawInfo: rawInfo,
 		DaysInMonth: daysInMonth,
 		TargetReadingTime: tReadingTime,
 	},nil
 }
 
 func (m *MonthReading) ComputeReadingTime() error {
-	for _, dayReading := range m.MonthRawInfo {
+	for _, dayReading := range m.RawInfo {
 		err := dayReading.ComputeReadingTime()
 		if err != nil {
 			return err
 		}
 
-		// 计算MonthReadingTimeOfDifferentContent
+		// 计算ReadingTimeOfDifferentContent
 		for content, conReadingTime := range dayReading.ReadingTimeOfDifferentContent {
-			if _, ok := m.MonthReadingTimeOfDifferentContent[content]; !ok {
-				m.MonthReadingTimeOfDifferentContent[content] = conReadingTime
+			if _, ok := m.ReadingTimeOfDifferentContent[content]; !ok {
+				m.ReadingTimeOfDifferentContent[content] = conReadingTime
 			} else {
-				conSum, err := hDate.FormatDurationSum(m.MonthReadingTimeOfDifferentContent[content], conReadingTime)
+				conSum, err := hDate.FormatDurationSum(m.ReadingTimeOfDifferentContent[content], conReadingTime)
 				if err != nil {
 					return err 
 				}
-				m.MonthReadingTimeOfDifferentContent[content] = conSum
+				m.ReadingTimeOfDifferentContent[content] = conSum
 			}
 		}
-	  sum, err := hDate.FormatDurationSum(m.MonthReadingTime, dayReading.ReadingTime)
+	  sum, err := hDate.FormatDurationSum(m.ReadingTime, dayReading.ReadingTime)
 		if err != nil {
 			return err 
 		}
-		m.MonthReadingTime = sum
+		m.ReadingTime = sum
 	}
 
-	for k,v := range m.MonthReadingTimeOfDifferentContent {
-	  m.MonthReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+	for k,v := range m.ReadingTimeOfDifferentContent {
+	  m.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
 	}
 
 	return nil
@@ -71,8 +71,8 @@ func (m *MonthReading) ComputeReadingTime() error {
 
 
 func (m *MonthReading) Print() {
-	for content, conReadingTime := range m.MonthReadingTimeOfDifferentContent {
-		klog.InfoS("month reading info", "monthNum", m.MonthNum, "readingTime", m.MonthReadingTime, "content", content, "contentReadingTime", conReadingTime)
+	for content, conReadingTime := range m.ReadingTimeOfDifferentContent {
+		klog.InfoS("month reading info", "monthNum", m.MonthNum, "readingTime", m.ReadingTime, "content", content, "contentReadingTime", conReadingTime)
 	}
 	
 }
@@ -80,7 +80,7 @@ func (m *MonthReading) Print() {
 
 // 只要阅读时长>=target时长，就认为完成
 func (m *MonthReading) CheckFinish() error {
-  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(m.MonthReadingTime, m.TargetReadingTime)
+  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(m.ReadingTime, m.TargetReadingTime)
 	if err != nil {
 		return err
 	}
