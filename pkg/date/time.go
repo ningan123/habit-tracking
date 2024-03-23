@@ -1,7 +1,6 @@
 package date
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -55,7 +54,6 @@ func ParseStr(str string)(time.Time, error)  {
 		if err != nil {
 			return parsedTime, err
 		}
-		fmt.Println(parsedTime)
 		klog.V(2).InfoS("ParseStr +1", "parsedTime", parsedTime)
 		return parsedTime, nil
 	} else {
