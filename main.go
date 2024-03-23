@@ -16,17 +16,13 @@ var (
 	dataPath = flag.String("data-path", "./data/test", "data-path")
 )
 
-
-
-  
-
   
 func main() {  
 	flag.Parse()
 	port := fmt.Sprintf(":%d", *port)
 
 	// reading
-	err := hData.DealReadingData(*dataPath+"/reading.txt")
+	err := hData.DealReadingData(*dataPath+"/data.xlsx", *dataPath+"/output_reading.txt", "阅读")
 	if err != nil {
 		log.Fatal(err)
 	}
