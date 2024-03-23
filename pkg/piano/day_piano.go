@@ -13,7 +13,7 @@ import (
 type DayPiano struct {
   RawInfo  string
 	Date string // 具体日期
-	Weekday time.Weekday // 星期几
+	Weekday string // 星期几
 	Month time.Month // 几月
 	WeekNum string // 几周
 	Year int // 哪一年
@@ -34,7 +34,7 @@ type ContentInfo struct {
 }
 
 
-func NewDayPiano(date string, year int, dayOfYear int, month time.Month, dayOfMonth int, weekNum string, weekday time.Weekday, rawInfo string) (*DayPiano, error) {
+func NewDayPiano(date string, year int, dayOfYear int, month time.Month, dayOfMonth int, weekNum string, weekday string, rawInfo string) (*DayPiano, error) {
 	contentInfoList, err := SplitRawInfo(rawInfo)
 	if err != nil {
 		return nil, err

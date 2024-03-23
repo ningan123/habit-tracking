@@ -109,7 +109,7 @@ func(r *Piano) GenWeekPianoInfo() error {
       return err
 		}
 
-		r.WeekPianoInfo[weekNum].RawInfo[weekday.String()] = dPiano
+		r.WeekPianoInfo[weekNum].RawInfo[weekday] = dPiano
 	   
   }  
   return nil
