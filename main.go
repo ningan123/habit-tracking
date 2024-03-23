@@ -27,22 +27,26 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// getup
-	err = hData.DealGetupData(*dataPath+"/data.xlsx", *dataPath+"/output_getup.txt", "起床")
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	// piano
 	err = hData.DealPianoData(*dataPath+"/data.xlsx", *dataPath+"/output_piano.txt", "练琴")
 	if err != nil {
 		log.Fatal(err)
 	}	
 
+	// getup
+	err = hData.DealGetupData(*dataPath+"/data.xlsx", *dataPath+"/output_getup.txt", "起床")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// sleep
+	err = hData.DealSleepData(*dataPath+"/data.xlsx", *dataPath+"/output_sleep.txt", "睡觉")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// 设置路由  
 	http.HandleFunc("/", hRoute.RootHandler)  
-	http.HandleFunc("/a", hRoute.AHandler)  
-	http.HandleFunc("/b", hRoute.BHandler)  
 	http.HandleFunc("/reading", hRoute. ReadingHandler) 
 	http.HandleFunc("/reading/day", hRoute.DayReadingHandler)  
 	http.HandleFunc("/reading/week", hRoute.WeekReadingHandler) 
@@ -64,6 +68,12 @@ func main() {
 	http.HandleFunc("/getup/year", hRoute.YearGetupHandler)
 	http.HandleFunc("/getup/all", hRoute.AllGetupHandler) 
 
+	http.HandleFunc("/sleep", hRoute.SleepHandler)
+	http.HandleFunc("/sleep/day", hRoute.DaySleepHandler)  
+	http.HandleFunc("/sleep/week", hRoute.WeekSleepHandler)  
+	http.HandleFunc("/sleep/month", hRoute.MonthSleepHandler)  
+	http.HandleFunc("/sleep/year", hRoute.YearSleepHandler)
+	http.HandleFunc("/sleep/all", hRoute.AllSleepHandler) 
 
 	http.HandleFunc("/day", hRoute.DayHandler)
 	http.HandleFunc("/week", hRoute.WeekHandler)  
