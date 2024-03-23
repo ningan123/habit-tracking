@@ -66,6 +66,10 @@ func SplitRawInfo(rawInfo string) ([]ContentInfo, error) {
 	// 转换为[]ContentInfo{ContentInfo{Content: "内容1", PianoTime: "时长1"}, ContentInfo{Content: "内容2", PianoTime: "时长2"}}
 	// 然后返回这个数组
 
+	if rawInfo == "" || rawInfo == "×" {
+	  return nil, nil
+	}
+	
 	rawInfoList := strings.Split(rawInfo, ";")
 	for _, str := range rawInfoList {
 		strList := strings.Split(str, ",")

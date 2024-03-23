@@ -34,7 +34,7 @@ func main() {
 	}
 
 	// piano
-	err = hData.DealPianoData(*dataPath+"/piano.txt")
+	err = hData.DealPianoData(*dataPath+"/data.xlsx", *dataPath+"/output_piano.txt", "练琴")
 	if err != nil {
 		log.Fatal(err)
 	}	
