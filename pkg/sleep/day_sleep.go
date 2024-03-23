@@ -3,7 +3,9 @@ package sleep
 import (
 	"time"
 
+	"k8s.io/klog/v2"
 	hDate "ningan.com/habit-tracking/pkg/date"
+	hString "ningan.com/habit-tracking/pkg/string"
 )
 
 
@@ -43,11 +45,13 @@ func (d *DaySleep) CheckFinish() error {
 	if d.RawInfo == "" || d.RawInfo == "×" {
 	  return nil
 	}
+	klog.V(2).InfoS("check day sleep", "date", d.Date, "rawInfo", d.RawInfo)
 
-	res, err := hDate.IsStr1BeforeOrEqualStr2(d.RawInfo, d.TargetTime)
+	res, err := hDate.IsStr1BeforeOrEqualStr2(hString.StrTrimPrefix(d.RawInfo, "~"), d.TargetTime)
 	if err != nil {
 		return err
 	}
 	d.IsFinish = res
 	return nil
 }
+
