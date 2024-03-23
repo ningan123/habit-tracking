@@ -14,6 +14,10 @@ func TestIsStr1BeforeOrEqualStr2(t *testing.T) {
 		{"6:00", "6:00", true},
 		{"7:30", "7:30", true},
 		{"8:00", "7:30", false},
+		{"23:30", "23:30", true},
+		{"23:40", "23:30", false},
+		{"00:00+1", "23:30", false},
+		{"00:10+1", "23:30", false},
 	}
 
 	// Iterate through test cases
