@@ -226,28 +226,28 @@ func TestGetDateDetails(t *testing.T) {
 		expectMonth      time.Month
 		expectedWeekYear int
 		expectedWeek      int
-		expectedWeekday   time.Weekday
+		expectedWeekday   string
 		expectedDayOfMonth int
 		expectedDayOfYear int
 		expectedDaysInMonth int
 		expectedDaysInYear int
 	}{
-		{"2021-01-01", 2021, 1, 2020, 53, time.Friday, 1, 1, 31, 365},
-		{"2021-01-02", 2021, 1, 2020, 53, time.Saturday, 2, 2, 31, 365},
-		{"2021-01-03", 2021, 1, 2020, 53, time.Sunday, 3, 3, 31, 365},
-		{"2021-01-04", 2021, 1, 2021, 1, time.Monday, 4, 4, 31, 365},
-		{"2021-01-05", 2021, 1, 2021, 1, time.Tuesday, 5, 5, 31, 365},
-		{"2021-12-27", 2021, 12, 2021, 52, time.Monday, 27, 361, 31, 365},
-		{"2021-12-28", 2021, 12, 2021, 52, time.Tuesday, 28, 362, 31, 365},
-		{"2024-01-01", 2024, 1, 2024, 1, time.Monday, 1, 1, 31, 366},
-		{"2024-01-02", 2024, 1, 2024, 1, time.Tuesday, 2, 2, 31, 366},
-		{"2024-01-03", 2024, 1, 2024, 1, time.Wednesday, 3, 3, 31, 366},
-		{"2024-01-04", 2024, 1, 2024, 1, time.Thursday, 4, 4, 31, 366},
-		{"2024-01-05", 2024, 1, 2024, 1, time.Friday, 5, 5, 31, 366},
-		{"2024-01-06", 2024, 1, 2024, 1, time.Saturday, 6, 6, 31, 366},
-		{"2024-01-07", 2024, 1, 2024, 1, time.Sunday, 7, 7, 31, 366},
-		{"2024-01-08", 2024, 1, 2024, 2, time.Monday, 8, 8, 31, 366},
-		{"2024-02-01", 2024, 2, 2024, 5, time.Thursday, 1, 32, 29, 366},
+		{"2021-01-01", 2021, 1, 2020, 53, "五", 1, 1, 31, 365},
+		{"2021-01-02", 2021, 1, 2020, 53, "六", 2, 2, 31, 365},
+		{"2021-01-03", 2021, 1, 2020, 53, "日", 3, 3, 31, 365},
+		{"2021-01-04", 2021, 1, 2021, 1, "一", 4, 4, 31, 365},
+		{"2021-01-05", 2021, 1, 2021, 1, "二", 5, 5, 31, 365},
+		{"2021-12-27", 2021, 12, 2021, 52, "一", 27, 361, 31, 365},
+		{"2021-12-28", 2021, 12, 2021, 52, "二", 28, 362, 31, 365},
+		{"2024-01-01", 2024, 1, 2024, 1, "一", 1, 1, 31, 366},
+		{"2024-01-02", 2024, 1, 2024, 1, "二", 2, 2, 31, 366},
+		{"2024-01-03", 2024, 1, 2024, 1, "三", 3, 3, 31, 366},
+		{"2024-01-04", 2024, 1, 2024, 1, "四", 4, 4, 31, 366},
+		{"2024-01-05", 2024, 1, 2024, 1, "五", 5, 5, 31, 366},
+		{"2024-01-06", 2024, 1, 2024, 1, "六", 6, 6, 31, 366},
+		{"2024-01-07", 2024, 1, 2024, 1, "日", 7, 7, 31, 366},
+		{"2024-01-08", 2024, 1, 2024, 2, "一", 8, 8, 31, 366},
+		{"2024-02-01", 2024, 2, 2024, 5, "四", 1, 32, 29, 366},
 		
 	}
 
@@ -264,3 +264,24 @@ func TestGetDateDetails(t *testing.T) {
 }
 
 
+func TestWeekdayToChinese(t *testing.T) {
+	testCases := []struct {
+		weekday time.Weekday
+		expectedChinese string
+	}{
+		{time.Sunday, "日"},
+		{time.Monday, "一"},
+		{time.Tuesday, "二"},
+		{time.Wednesday, "三"},
+		{time.Thursday, "四"},
+		{time.Friday, "五"},
+		{time.Saturday, "六"},
+	}
+
+	for _, tc := range testCases {
+		chinese := WeekdayToChinese(tc.weekday)
+		if chinese != tc.expectedChinese {
+			t.Errorf("weekdayToChinese(%s) returned %s, expected %s", tc.weekday, chinese, tc.expectedChinese)
+		}
+	}
+}
