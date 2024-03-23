@@ -15,7 +15,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")  
 	fmt.Fprintf(w, "<body>\n")  
 	fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th>date</th><th>weekNum</th><th>weekday</th><th>time</th><th>targetTime</th><th>finish</th><th>ReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish</th></tr>\n")  
+	fmt.Fprintf(w, "<tr><th>date</th><th>weekNum</th><th>weekday</th><th>getup</th><th>targetTime</th><th>finish</th><th>sleep</th><th>targetTime</th><th>finish</th><th>ReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish</th><th>PianoTime</th><th>targetPianoTime</th><th>content</th><th>finish</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalGetup.DayOrderGetupInfo { 
@@ -34,6 +34,18 @@ func DayHtmlTable(w http.ResponseWriter) {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
 		}
 
+		sItem := hData.GlobalSleep.DaySleepInfo[item.Date]
+		if sItem == nil {
+		  continue
+		}
+		fmt.Fprintf(w, "<td>%s</td>", sItem.RawInfo)
+		fmt.Fprintf(w, "<td>%s</td>", sItem.TargetTime)
+		if sItem.IsFinish {
+		  fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
+		} else {
+		  fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
+		}
+
 		rItem := hData.GlobalReading.DayReadingInfo[item.Date]
 		if rItem == nil {
 		  continue
@@ -45,6 +57,19 @@ func DayHtmlTable(w http.ResponseWriter) {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
 		} else {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
+		}
+
+		pItem := hData.GlobalPiano.DayPianoInfo[item.Date]
+		if pItem == nil {
+		  continue
+		}
+		fmt.Fprintf(w, "<td>%s</td>", pItem.PianoTime)
+		fmt.Fprintf(w, "<td>%s</td>", pItem.TargetPianoTime)
+		fmt.Fprintf(w, "<td>%s</td>", pItem.PianoTimeOfDifferentContentStr)
+		if pItem.IsFinish {
+		  fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
+		} else {
+		  fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
 		}
 		
 		fmt.Fprintf(w, "</tr>\n")
