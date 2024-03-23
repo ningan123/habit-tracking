@@ -110,7 +110,7 @@ func(r *Getup) GenWeekGetupInfo() error {
       return err
 		}
 
-		r.WeekGetupInfo[weekNum].RawInfo[weekday.String()] = dGetup
+		r.WeekGetupInfo[weekNum].RawInfo[weekday] = dGetup
 	   
   }  
   return nil

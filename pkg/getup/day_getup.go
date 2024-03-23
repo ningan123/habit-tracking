@@ -11,7 +11,7 @@ type DayGetup struct {
   RawInfo  string
 
 	Date string // 具体日期
-	Weekday time.Weekday // 星期几
+	Weekday string // 星期几
 	Month time.Month // 几月
 	WeekNum string // 几周
 	Year int // 哪一年
@@ -22,7 +22,7 @@ type DayGetup struct {
 	TargetTime string
 }
 
-func NewDayGetup(date string, year int, dayOfYear int, month time.Month, dayOfMonth int, weekNum string, weekday time.Weekday, rawInfo string) (*DayGetup, error) {
+func NewDayGetup(date string, year int, dayOfYear int, month time.Month, dayOfMonth int, weekNum string, weekday string, rawInfo string) (*DayGetup, error) {
 	return &DayGetup{
 		RawInfo: rawInfo,
 		Date: date,
