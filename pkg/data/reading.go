@@ -9,15 +9,13 @@ import (
 var GlobalReading *hReading.Reading
 
 
-
-func DealReadingData(fileName string) (error) {  
-	// 调用readFileToMap函数读取文件并生成map  
-	dataMap, err := readFileToMap(fileName)  
-	if err != nil {  
+func DealReadingData(input, output, target string) (error) {  
+	dataMap, err :=readExcelAndCreateMapDataAndWriteFile(input, output, target) 
+	if err != nil {
 		fmt.Println("Error reading file:", err)  
 		return err
-	}  
-  
+	}
+
 	// 打印生成的map  
 	for date, rawData := range dataMap {  
 		fmt.Printf("Date: %s, RawData: %s\n", date, rawData)  
