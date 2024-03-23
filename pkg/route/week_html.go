@@ -16,7 +16,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")  
 	fmt.Fprintf(w, "<body>\n")  
 	fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th>weekNum</th><th>actualFinishDays</th><th>targetFinishDays</th><th>finish</th><th>weekReadingTime</th><th>targetReadingTime</th><th>extraReadingTime</th><th>content</th><th>finish</th></tr>\n")  
+	fmt.Fprintf(w, "<tr><th>weekNum</th><th>getupDays</th><th>getupTargetDays</th><th>finish</th><th>sleepDays</th><th>sleepTargetDays</th><th>finish</th><th>weekReadingTime</th><th>targetReadingTime</th><th>extraReadingTime</th><th>content</th><th>finish</th><th>weekPianoTime</th><th>targetPianoTime</th><th>extraPianoTime</th><th>content</th><th>finish</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalGetup.WeekOrderGetupInfo { 
@@ -34,6 +34,18 @@ func WeekHtmlTable(w http.ResponseWriter) {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
 		}  
 
+		sItem := hData.GlobalSleep.WeekSleepInfo[item.WeekNum]
+		if sItem == nil {
+			continue
+		}
+		fmt.Fprintf(w, "<td>%d</td>", sItem.ActualFinishDays)
+		fmt.Fprintf(w, "<td>%d</td>", sItem.TargetFinishDays)
+		if sItem.IsFinish {
+			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
+		} else {
+			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
+		}
+
 		rItem := hData.GlobalReading.WeekReadingInfo[item.WeekNum]
 		if rItem == nil {
 			continue
@@ -46,7 +58,21 @@ func WeekHtmlTable(w http.ResponseWriter) {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
 		} else {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
-		}  
+		} 
+		
+		pItem := hData.GlobalPiano.WeekPianoInfo[item.WeekNum]
+		if pItem == nil {
+			continue
+		}
+		fmt.Fprintf(w, "<td>%s</td>", pItem.PianoTime)
+		fmt.Fprintf(w, "<td>%s</td>", pItem.TargetPianoTime)
+		fmt.Fprintf(w, "<td>%s</td>", pItem.ExtraPianoTime)
+		fmt.Fprintf(w, "<td>%s</td>", pItem.PianoTimeOfDifferentContentStr)
+		if pItem.IsFinish {
+		  fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
+		} else {
+		  fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
+		}
 
 		fmt.Fprintf(w, "</tr>\n")  	
 	}  
