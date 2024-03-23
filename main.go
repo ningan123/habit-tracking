@@ -28,7 +28,7 @@ func main() {
 	}
 
 	// getup
-	err = hData.DealGetupData(*dataPath+"/getup.txt")
+	err = hData.DealGetupData(*dataPath+"/data.xlsx", *dataPath+"/output_getup.txt", "起床")
 	if err != nil {
 		log.Fatal(err)
 	}

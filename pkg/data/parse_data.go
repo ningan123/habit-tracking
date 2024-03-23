@@ -75,7 +75,7 @@ func readExcelAndCreateMapDataAndWriteFile(input string, output string, target s
 	for _, row := range rows[1:] { // 跳过标题行  
 		if len(row) > columnIndex {  
 			date := row[0]  
-			data := row[columnIndex]  
+			data := row[columnIndex]
 			dataMap[date] = data  
 
 			_, err := fmt.Fprintf(file, "%s %s\n", date, data)  
