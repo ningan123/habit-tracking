@@ -39,24 +39,24 @@ func NewPiano(rawInfo map[string]string) *Piano {
 // ==============================================
 // ==============================================
 
-func(r *Piano) GenPianoInfo() error {
+func (p *Piano) GenPianoInfo() error {
 	klog.Info("Generate Piano Info")
-	err := r.GenDayPianoInfo()
+	err := p.GenDayPianoInfo()
 	if err != nil {
 		return err
 	}
 
-	err = r.GenWeekPianoInfo()
+	err = p.GenWeekPianoInfo()
 	if err != nil {
 		return err
 	}
 
-	err = r.GenMonthPianoInfo()
+	err = p.GenMonthPianoInfo()
 	if err != nil {
 		return err
 	}
 
-	err = r.GenYearPianoInfo()
+	err = p.GenYearPianoInfo()
 	if err != nil {
 		return err
 	}
@@ -65,9 +65,9 @@ func(r *Piano) GenPianoInfo() error {
 }
 
 
-func(r *Piano) GenDayPianoInfo() error {
+func (p *Piano) GenDayPianoInfo() error {
 	klog.InfoS("GenDayPianoInfo")
-  for date, info := range r.RawInfo {
+  for date, info := range p.RawInfo {
 		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
@@ -80,15 +80,15 @@ func(r *Piano) GenDayPianoInfo() error {
       return err
     }
 		
-		r.DayPianoInfo[date] = dPiano
+		p.DayPianoInfo[date] = dPiano
   }  
   return nil
 }
 
 
-func(r *Piano) GenWeekPianoInfo() error {
+func (p *Piano) GenWeekPianoInfo() error {
 	klog.InfoS("GenWeekPianoInfo")
-  for date, info := range r.RawInfo {
+  for date, info := range p.RawInfo {
 		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
@@ -96,9 +96,9 @@ func(r *Piano) GenWeekPianoInfo() error {
 		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
 		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
-		if r.WeekPianoInfo[weekNum] == nil {
+		if p.WeekPianoInfo[weekNum] == nil {
 			weekRawInfo := make(map[string]*DayPiano)
-			r.WeekPianoInfo[weekNum], err = NewWeekPiano(weekNum, weekRawInfo)
+			p.WeekPianoInfo[weekNum], err = NewWeekPiano(weekNum, weekRawInfo)
 			if err != nil {
 			  return err
 			}
@@ -109,16 +109,16 @@ func(r *Piano) GenWeekPianoInfo() error {
       return err
 		}
 
-		r.WeekPianoInfo[weekNum].RawInfo[weekday] = dPiano
+		p.WeekPianoInfo[weekNum].RawInfo[weekday] = dPiano
 	   
   }  
   return nil
 }
 
 
-func(r *Piano) GenMonthPianoInfo() error {
+func (p *Piano) GenMonthPianoInfo() error {
 	klog.InfoS("GenMonthPianoInfo")
-  for date, info := range r.RawInfo {
+  for date, info := range p.RawInfo {
 		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
@@ -126,9 +126,9 @@ func(r *Piano) GenMonthPianoInfo() error {
 		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
 		monthNum := fmt.Sprintf("%d-%02d", year, month)
-		if r.MonthPianoInfo[monthNum] == nil {
+		if p.MonthPianoInfo[monthNum] == nil {
 		  monthRawInfo := make(map[int]*DayPiano)
-			r.MonthPianoInfo[monthNum], err = NewMonthPiano(monthNum, monthRawInfo, daysInMonth)
+			p.MonthPianoInfo[monthNum], err = NewMonthPiano(monthNum, monthRawInfo, daysInMonth)
 			if err != nil {
 			  return err
 			}
@@ -140,15 +140,15 @@ func(r *Piano) GenMonthPianoInfo() error {
       return err
     }
 
-		r.MonthPianoInfo[monthNum].RawInfo[dayOfMonth] = dPiano	   
+		p.MonthPianoInfo[monthNum].RawInfo[dayOfMonth] = dPiano	   
   }  
   return nil
 }
 
 
-func(r *Piano) GenYearPianoInfo() error {
+func (p *Piano) GenYearPianoInfo() error {
 	klog.InfoS("GenYearPianoInfo")
-  for date, info := range r.RawInfo {
+  for date, info := range p.RawInfo {
 		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
@@ -156,9 +156,9 @@ func(r *Piano) GenYearPianoInfo() error {
 		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
 		yearNum := fmt.Sprintf("%d", year)
-		if r.YearPianoInfo[yearNum] == nil {
+		if p.YearPianoInfo[yearNum] == nil {
 			yearRawInfo := make(map[string]*DayPiano)
-			r.YearPianoInfo[yearNum], err = NewYearPiano(yearNum, yearRawInfo, daysInYear)
+			p.YearPianoInfo[yearNum], err = NewYearPiano(yearNum, yearRawInfo, daysInYear)
 			if err != nil {
 			  return err
 			}
@@ -170,7 +170,7 @@ func(r *Piano) GenYearPianoInfo() error {
 			return err
 		}
 
-		r.YearPianoInfo[yearNum].YearRawInfo[date] = dPiano
+		p.YearPianoInfo[yearNum].YearRawInfo[date] = dPiano
 	   
   }  
   return nil
@@ -179,25 +179,25 @@ func(r *Piano) GenYearPianoInfo() error {
 // ==============================================
 // ==============================================
 
-func(r *Piano) ComputePianoTime() error {
+func (p *Piano) ComputePianoTime() error {
 	klog.InfoS("ComputePianoTime")
 
-	err := r.ComputeDayPianoTime()
+	err := p.ComputeDayPianoTime()
 	if err != nil {
 		return err
 	}
 
-	err = r.ComputeWeekPianoTime()
+	err = p.ComputeWeekPianoTime()
 	if err != nil {
 		return err
 	}
 
-	err = r.ComputeMonthPianoTime()
+	err = p.ComputeMonthPianoTime()
 	if err != nil {
 		return err
 	}
 
-	err = r.ComputeYearPianoTime()
+	err = p.ComputeYearPianoTime()
 	if err != nil {
 		return err
 	}
@@ -207,9 +207,9 @@ func(r *Piano) ComputePianoTime() error {
 
 
 
-func(r *Piano) ComputeDayPianoTime() error {
+func (p *Piano) ComputeDayPianoTime() error {
 	klog.InfoS("ComputDayPianoTime")
-	for _, dPiano := range r.DayPianoInfo {
+	for _, dPiano := range p.DayPianoInfo {
 		err := dPiano.ComputePianoTime()
 		if err != nil {
 		  return err
@@ -219,9 +219,9 @@ func(r *Piano) ComputeDayPianoTime() error {
 }
 
 
-func(r *Piano) ComputeWeekPianoTime() error {
+func (p *Piano) ComputeWeekPianoTime() error {
 	klog.InfoS("ComputWeekPianoTime")
-	for _, wPiano := range r.WeekPianoInfo {
+	for _, wPiano := range p.WeekPianoInfo {
 		err := wPiano.ComputePianoTime()
 		if err != nil {
 		  return err
@@ -230,9 +230,9 @@ func(r *Piano) ComputeWeekPianoTime() error {
   return nil
 }
 
-func(r *Piano) ComputeMonthPianoTime() error {
+func (p *Piano) ComputeMonthPianoTime() error {
 	klog.InfoS("ComputMonthPianoTime")
-	for _, mPiano := range r.MonthPianoInfo {
+	for _, mPiano := range p.MonthPianoInfo {
 		err := mPiano.ComputePianoTime()
 		if err != nil {
 		  return err
@@ -242,9 +242,9 @@ func(r *Piano) ComputeMonthPianoTime() error {
 }
 
 
-func(r *Piano) ComputeYearPianoTime() error {
+func (p *Piano) ComputeYearPianoTime() error {
 	klog.InfoS("ComputYearPianoTime")
-	for _, mPiano := range r.YearPianoInfo {
+	for _, mPiano := range p.YearPianoInfo {
 		err := mPiano.ComputePianoTime()
 		if err != nil {
 		  return err
@@ -257,25 +257,25 @@ func(r *Piano) ComputeYearPianoTime() error {
 // ==================================================
 // ==================================================
 
-func (r *Piano) ConvertPianoInfoToOrderPianoInfo() error {
+func (p *Piano) ConvertPianoInfoToOrderPianoInfo() error {
 	klog.InfoS("ConverPianoInfoToOrderPianoInfo")
 
-	err := r.ConvertDayPianoInfoToDayOrderPianoInfo() 
+	err := p.ConvertDayPianoInfoToDayOrderPianoInfo() 
 	if err != nil {
 		return err
 	}
 
-	err = r.ConvertWeekPianoInfoToWeekOrderPianoInfo()
+	err = p.ConvertWeekPianoInfoToWeekOrderPianoInfo()
 	if err != nil {
 		return err
 	}
 
-	err = r.ConvertMonthPianoInfoToMonthOrderPianoInfo()
+	err = p.ConvertMonthPianoInfoToMonthOrderPianoInfo()
 	if err != nil {
 		return err
 	}
 
-	err = r.ConvertYearPianoInfoToYearOrderPianoInfo()
+	err = p.ConvertYearPianoInfoToYearOrderPianoInfo()
 	if err != nil {
 		return err
 	}
@@ -284,75 +284,75 @@ func (r *Piano) ConvertPianoInfoToOrderPianoInfo() error {
 }
 
 
-func (r *Piano) ConvertDayPianoInfoToDayOrderPianoInfo() error {
+func (p *Piano) ConvertDayPianoInfoToDayOrderPianoInfo() error {
 	klog.InfoS("ConvertDayPianoInfoToDayOrderPianoInfo")
 	// 提取key并排序
-	keys := make([]string, 0, len(r.DayPianoInfo))
-	for k := range r.DayPianoInfo {
+	keys := make([]string, 0, len(p.DayPianoInfo))
+	for k := range p.DayPianoInfo {
 	  keys = append(keys, k)
 	}
 	sort.Sort(hDate.ByDate(keys))
 
 	// 按照排序后的键顺序提取值到切片 
-	r.DayOrderPianoInfo = make([]*DayPiano, len(keys))
+	p.DayOrderPianoInfo = make([]*DayPiano, len(keys))
 	for i, k := range keys {
-	  r.DayOrderPianoInfo[i] = r.DayPianoInfo[k]
+	  p.DayOrderPianoInfo[i] = p.DayPianoInfo[k]
 	}
 	return nil
 }
 
 
-func (r *Piano) ConvertWeekPianoInfoToWeekOrderPianoInfo() error {
+func (p *Piano) ConvertWeekPianoInfoToWeekOrderPianoInfo() error {
 	klog.InfoS("ConvertWeekPianoInfoToWeekOrderPianoInfo")
 	// 提取key并排序
-	keys := make([]string, 0, len(r.WeekPianoInfo))
-	for k := range r.WeekPianoInfo {
+	keys := make([]string, 0, len(p.WeekPianoInfo))
+	for k := range p.WeekPianoInfo {
 	  keys = append(keys, k)
 	}
 	sort.Sort(hDate.ByYearWeek(keys))
 
 	// 按照排序后的键顺序提取值到切片 
-	r.WeekOrderPianoInfo = make([]*WeekPiano, len(keys))
+	p.WeekOrderPianoInfo = make([]*WeekPiano, len(keys))
 	for i, k := range keys {
-	  r.WeekOrderPianoInfo[i] = r.WeekPianoInfo[k]
+	  p.WeekOrderPianoInfo[i] = p.WeekPianoInfo[k]
 	}
 
   return nil
 }
 
 
-func (r *Piano) ConvertMonthPianoInfoToMonthOrderPianoInfo() error {
+func (p *Piano) ConvertMonthPianoInfoToMonthOrderPianoInfo() error {
 	klog.InfoS("ConvertMonthPianoInfoToMonthOrderPianoInfo")
 	// 提取key并排序
-	keys := make([]string, 0, len(r.MonthPianoInfo))
-	for k := range r.MonthPianoInfo {
+	keys := make([]string, 0, len(p.MonthPianoInfo))
+	for k := range p.MonthPianoInfo {
 		keys = append(keys, string(k))
 	}
 	sort.Sort(hDate.ByYearMonth(keys))
 
 	// 按照排序后的键顺序提取值到切片 
-	r.MonthOrderPianoInfo = make([]*MonthPiano, len(keys))
+	p.MonthOrderPianoInfo = make([]*MonthPiano, len(keys))
 	for i, k := range keys {
-		r.MonthOrderPianoInfo[i] = r.MonthPianoInfo[k]
+		p.MonthOrderPianoInfo[i] = p.MonthPianoInfo[k]
 	}
 
   return nil
 }
 
 
-func (r *Piano) ConvertYearPianoInfoToYearOrderPianoInfo() error {
+func (p *Piano) ConvertYearPianoInfoToYearOrderPianoInfo() error {
 	klog.InfoS("ConvertYearPianoInfoToYearOrderPianoInfo")
 	// 提取key并排序
-	keys := make([]string, 0, len(r.YearPianoInfo))
-	for k := range r.YearPianoInfo {
+	keys := make([]string, 0, len(p.YearPianoInfo))
+	for k := range p.YearPianoInfo {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 
 	// 按照排序后的键顺序提取值到切片 
-	r.YearOrderPianoInfo = make([]*YearPiano, len(keys))
+	p.YearOrderPianoInfo = make([]*YearPiano, len(keys))
 	for i, k := range keys {
-		r.YearOrderPianoInfo[i] = r.YearPianoInfo[k]
+		p.YearOrderPianoInfo[i] = p.YearPianoInfo[k]
 	}
 
   return nil
@@ -362,14 +362,24 @@ func (r *Piano) ConvertYearPianoInfoToYearOrderPianoInfo() error {
 // ==============================================
 
 
-func (r *Piano) CheckFinish() error {
+func (p *Piano) CheckFinish() error {
 	klog.InfoS("CheckFinish")
-	err := r.CheckDayFinish()
+	err := p.CheckDayFinish()
 	if err != nil {
 	  return err
 	}
 
-	err = r.CheckWeekFinish()
+	err = p.CheckWeekFinish()
+	if err != nil {
+	  return err
+	}
+
+	err = p.CheckMonthFinish()
+	if err != nil {
+	  return err
+	}
+
+	err = p.CheckYearFinish()
 	if err != nil {
 	  return err
 	}
@@ -377,9 +387,9 @@ func (r *Piano) CheckFinish() error {
   return nil
 }
 
-func (r *Piano) CheckDayFinish() error {
+func (p *Piano) CheckDayFinish() error {
 	klog.InfoS("CheckDayFinish")
-	for _, dPiano := range r.DayPianoInfo {
+	for _, dPiano := range p.DayPianoInfo {
 		err := dPiano.CheckFinish()
 		if err != nil {
 		  return err
@@ -388,10 +398,32 @@ func (r *Piano) CheckDayFinish() error {
   return nil
 }
 
-func (r *Piano) CheckWeekFinish() error {
+func (p *Piano) CheckWeekFinish() error {
   klog.InfoS("CheckWeekFinish")
-	for _, wPiano := range r.WeekPianoInfo {
+	for _, wPiano := range p.WeekPianoInfo {
 	  err := wPiano.CheckFinish()
+		if err != nil {
+		  return err
+		}
+	}
+	return nil
+}
+
+func (p *Piano) CheckMonthFinish() error {
+  klog.InfoS("CheckMonthFinish")
+	for _, mPiano := range p.MonthPianoInfo {
+	  err := mPiano.CheckFinish()
+		if err != nil {
+		  return err
+		}
+	}
+	return nil
+}
+
+func (p *Piano) CheckYearFinish() error {
+  klog.InfoS("CheckYearFinish")
+	for _, yPiano := range p.YearPianoInfo {
+	  err := yPiano.CheckFinish()
 		if err != nil {
 		  return err
 		}
@@ -403,9 +435,9 @@ func (r *Piano) CheckWeekFinish() error {
 // ==============================================
 
 
-func(r *Piano) ComputeExtraPianoTime() error {
+func (p *Piano) ComputeExtraPianoTime() error {
   klog.InfoS("ComputeExtraPianoTime")
-	err := r.ComputeWeekExtraPianoTime()
+	err := p.ComputeWeekExtraPianoTime()
 	if err != nil {
 	  return err
 	}
@@ -413,9 +445,9 @@ func(r *Piano) ComputeExtraPianoTime() error {
 }
 
 
-func(r *Piano) ComputeWeekExtraPianoTime() error {
+func (p *Piano) ComputeWeekExtraPianoTime() error {
   klog.InfoS("ComputeWeekExtraPianoTime")
-	for _, wPiano := range r.WeekPianoInfo {
+	for _, wPiano := range p.WeekPianoInfo {
 	  err := wPiano.ComputeExtraPianoTime()
 		if err != nil {
 		  return err
@@ -430,41 +462,41 @@ func(r *Piano) ComputeWeekExtraPianoTime() error {
 
 
 
-func(r *Piano) PrintPianoInfo() {
+func (p *Piano) PrintPianoInfo() {
 	klog.InfoS("PrintPianoInfo")
 
-	r.PrintDayPianoInfo()
-	r.PrintWeekPianoInfo()
-	r.PrintMonthPianoInfo()
-	r.PrintYearPianoInfo()
+	p.PrintDayPianoInfo()
+	p.PrintWeekPianoInfo()
+	p.PrintMonthPianoInfo()
+	p.PrintYearPianoInfo()
 }
 
 
 
-func(r *Piano) PrintDayPianoInfo() {
+func (p *Piano) PrintDayPianoInfo() {
 	klog.InfoS("PrintDayPianoInfo")
-	for _, dPiano := range r.DayPianoInfo {
+	for _, dPiano := range p.DayPianoInfo {
 		dPiano.Print()
 	}
 }
 
-func(r *Piano) PrintWeekPianoInfo() {
+func (p *Piano) PrintWeekPianoInfo() {
 	klog.InfoS("PrintWeekPianoInfo")
-	for _, wPiano := range r.WeekPianoInfo {
+	for _, wPiano := range p.WeekPianoInfo {
 		wPiano.Print()
 	}
 }
 
-func(r *Piano) PrintMonthPianoInfo() {
+func (p *Piano) PrintMonthPianoInfo() {
 	klog.InfoS("PrintMonthPianoInfo")
-	for _, mPiano := range r.MonthPianoInfo {
+	for _, mPiano := range p.MonthPianoInfo {
 		mPiano.Print()
 	}
 }
 
-func(r *Piano) PrintYearPianoInfo() {
+func (p *Piano) PrintYearPianoInfo() {
 	klog.InfoS("PrintYearPianoInfo")
-	for _, yPiano := range r.YearPianoInfo {
+	for _, yPiano := range p.YearPianoInfo {
 		yPiano.Print()
 	}
 }
