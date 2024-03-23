@@ -374,6 +374,11 @@ func (r *Reading) CheckFinish() error {
 	  return err
 	}
 
+	err = r.CheckMonthFinish()
+	if err != nil {
+	  return err
+	}
+
   return nil
 }
 
@@ -392,6 +397,30 @@ func (r *Reading) CheckWeekFinish() error {
   klog.InfoS("CheckWeekFinish")
 	for _, wReading := range r.WeekReadingInfo {
 	  err := wReading.CheckFinish()
+		if err != nil {
+		  return err
+		}
+	}
+	return nil
+}
+
+
+func (r *Reading) CheckMonthFinish() error {
+  klog.InfoS("CheckMonthFinish")
+	for _, mReading := range r.MonthReadingInfo {
+	  err := mReading.CheckFinish()
+		if err != nil {
+		  return err
+		}
+	}
+	return nil
+}
+
+
+func (r *Reading) CheckYearFinish() error {
+  klog.InfoS("CheckYearFinish")
+	for _, yReading := range r.YearReadingInfo {
+	  err := yReading.CheckFinish()
 		if err != nil {
 		  return err
 		}
