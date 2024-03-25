@@ -40,6 +40,10 @@ func NewDayGetup(date string, year int, dayOfYear int, month time.Month, dayOfMo
 
 
 func (d *DayGetup) CheckFinish() error {
+	if d.RawInfo == "" || d.RawInfo == "×" {
+	  return nil
+	}
+	
 	res, err := hDate.IsStr1BeforeOrEqualStr2(hString.StrTrimPrefix(d.RawInfo, "~"), d.TargetTime)
 	if err != nil {
 		return err
