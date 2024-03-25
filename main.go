@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"k8s.io/klog/v2"
 	hData "ningan.com/habit-tracking/pkg/data"
 	hRoute "ningan.com/habit-tracking/pkg/route"
 )
@@ -14,12 +15,14 @@ import (
 var (
 	port = flag.Int("p", 8888, "port")
 	dataPath = flag.String("data-path", "./data/test", "data-path")
+	Version string
 )
 
   
 func main() {  
 	flag.Parse()
 	port := fmt.Sprintf(":%d", *port)
+	klog.InfoS("Show version", "version", Version)
 
 	// reading
 	err := hData.DealReadingData(*dataPath+"/data.xlsx", *dataPath+"/output_reading.txt", "阅读")
