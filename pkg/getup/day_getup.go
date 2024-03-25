@@ -4,6 +4,7 @@ import (
 	"time"
 
 	hDate "ningan.com/habit-tracking/pkg/date"
+	hString "ningan.com/habit-tracking/pkg/string"
 )
 
 
@@ -39,7 +40,7 @@ func NewDayGetup(date string, year int, dayOfYear int, month time.Month, dayOfMo
 
 
 func (d *DayGetup) CheckFinish() error {
-	res, err := hDate.IsStr1BeforeOrEqualStr2(d.RawInfo, d.TargetTime)
+	res, err := hDate.IsStr1BeforeOrEqualStr2(hString.StrTrimPrefix(d.RawInfo, "~"), d.TargetTime)
 	if err != nil {
 		return err
 	}
