@@ -54,6 +54,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// skincare
+	err = hData.DealSkinCareData(*dataPath+"/data.xlsx", *dataPath+"/output_skincare.txt", "护肤")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// 设置路由  
 	http.HandleFunc("/", hRoute.RootHandler)  
 	http.HandleFunc("/reading", hRoute. ReadingHandler) 
@@ -91,6 +97,13 @@ func main() {
 	http.HandleFunc("/facemask/year", hRoute.YearFaceMaskHandler)
 	http.HandleFunc("/facemask/all", hRoute.AllFaceMaskHandler) 
 
+	http.HandleFunc("/skincare", hRoute.SkinCareHandler)
+	http.HandleFunc("/skincare/day", hRoute.DaySkinCareHandler)  
+	http.HandleFunc("/skincare/week", hRoute.WeekSkinCareHandler)  
+	http.HandleFunc("/skincare/month", hRoute.MonthSkinCareHandler)  
+	http.HandleFunc("/skincare/year", hRoute.YearSkinCareHandler)
+	http.HandleFunc("/skincare/all", hRoute.AllSkinCareHandler) 
+	
 	http.HandleFunc("/day", hRoute.DayHandler)
 	http.HandleFunc("/week", hRoute.WeekHandler)  
 
