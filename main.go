@@ -14,7 +14,7 @@ import (
 
 var (
 	port = flag.Int("p", 8888, "port")
-	dataPath = flag.String("data-path", "./data/test", "data-path")
+	dataPath = flag.String("data-path", "./data/real/", "data-path")
 	Version string
 )
 
@@ -48,6 +48,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// facemask
+	err = hData.DealFaceMaskData(*dataPath+"/data.xlsx", *dataPath+"/output_facemask.txt", "敷面膜")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// 设置路由  
 	http.HandleFunc("/", hRoute.RootHandler)  
 	http.HandleFunc("/reading", hRoute. ReadingHandler) 
@@ -77,6 +83,13 @@ func main() {
 	http.HandleFunc("/sleep/month", hRoute.MonthSleepHandler)  
 	http.HandleFunc("/sleep/year", hRoute.YearSleepHandler)
 	http.HandleFunc("/sleep/all", hRoute.AllSleepHandler) 
+
+	http.HandleFunc("/facemask", hRoute.FaceMaskHandler)
+	http.HandleFunc("/facemask/day", hRoute.DayFaceMaskHandler)  
+	http.HandleFunc("/facemask/week", hRoute.WeekFaceMaskHandler)  
+	http.HandleFunc("/facemask/month", hRoute.MonthFaceMaskHandler)  
+	http.HandleFunc("/facemask/year", hRoute.YearFaceMaskHandler)
+	http.HandleFunc("/facemask/all", hRoute.AllFaceMaskHandler) 
 
 	http.HandleFunc("/day", hRoute.DayHandler)
 	http.HandleFunc("/week", hRoute.WeekHandler)  
