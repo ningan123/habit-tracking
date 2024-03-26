@@ -37,7 +37,7 @@ func NewSkinCare(rawInfo map[string]string) *SkinCare {
 }
 
 func(g *SkinCare) GenInfo() error {
-	klog.Info("GenTickTypeInfo")
+	klog.Info("GenInfo")
 	err := g.GenDayInfo()
 	if err != nil {
 		return err
@@ -257,7 +257,7 @@ func (g *SkinCare) CheckYearFinish() error {
 // ==================================================
 
 func (g *SkinCare) ConvertInfoToOrderInfo() error {
-	klog.InfoS("ConverInfoToOrderInfo")
+	klog.InfoS("ConvertInfoToOrderInfo")
 
 	err := g.ConvertDayInfoToDayOrderInfo() 
 	if err != nil {
