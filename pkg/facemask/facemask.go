@@ -39,7 +39,7 @@ func NewFaceMask(rawInfo map[string]string) *FaceMask {
 }
 
 func(g *FaceMask) GenInfo() error {
-	klog.Info("GenTickTypeInfo")
+	klog.Info("GenInfo")
 	err := g.GenDayInfo()
 	if err != nil {
 		return err
@@ -119,7 +119,7 @@ func(r *FaceMask) GenWeekInfo() error {
 
 
 func(g *FaceMask) GenMonthInfo() error {
-	klog.InfoS("GenMontInfo")
+	klog.InfoS("GenMonthInfo")
   for date, info := range g.RawInfo {
 		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
@@ -259,7 +259,7 @@ func (g *FaceMask) CheckYearFinish() error {
 // ==================================================
 
 func (g *FaceMask) ConvertInfoToOrderInfo() error {
-	klog.InfoS("ConverInfoToOrderInfo")
+	klog.InfoS("ConvertInfoToOrderInfo")
 
 	err := g.ConvertDayInfoToDayOrderInfo() 
 	if err != nil {
