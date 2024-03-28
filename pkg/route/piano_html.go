@@ -27,8 +27,8 @@ func DayPianoHtmlTable(w http.ResponseWriter) {
 		}
 
 		cellClass := ""
-		if item.Weekday == "一" {  
-			cellClass = "yellow-cell" // 如果a为1，设置单元格类为yellow-cell  
+		if item.Weekday == "一" {
+			cellClass = "piano-cell"
 		} 
 
 
