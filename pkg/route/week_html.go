@@ -85,7 +85,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 		}
 
 		fItem :=  hData.GlobalFaceMask.WeekInfo[item.WeekNum]
-		if scItem == nil {
+		if fItem == nil {
 		  continue
 		}
 		if fItem.IsFinish {
