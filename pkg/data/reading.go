@@ -48,8 +48,6 @@ func DealReadingData(input, output, target string) (error) {
 		return err
 	}
 
-	GlobalReading.PrintReadingInfo()
-
 	return nil
 	
 }

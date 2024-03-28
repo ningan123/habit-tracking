@@ -72,7 +72,7 @@ func(r *Reading) GenDayReadingInfo() error {
 		if err != nil {
 			return err
 		}
-		klog.InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
 		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
 		dReading, err := NewDayReading(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
@@ -93,7 +93,7 @@ func(r *Reading) GenWeekReadingInfo() error {
 		if err != nil {
 			return err
 		}
-		klog.InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
 		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
 		if r.WeekReadingInfo[weekNum] == nil {
@@ -123,7 +123,7 @@ func(r *Reading) GenMonthReadingInfo() error {
 		if err != nil {
 			return err
 		}
-		klog.InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
 		monthNum := fmt.Sprintf("%d-%02d", year, month)
 		if r.MonthReadingInfo[monthNum] == nil {
@@ -153,7 +153,7 @@ func(r *Reading) GenYearReadingInfo() error {
 		if err != nil {
 			return err
 		}
-		klog.InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
 		yearNum := fmt.Sprintf("%d", year)
 		if r.YearReadingInfo[yearNum] == nil {
