@@ -38,7 +38,7 @@ var GlobalTable = `<!DOCTYPE html>
 <meta charset="UTF-8">  
 <title>Go Table Example</title>  
 <style>  
-    .yellow-cell {  
+    .color-cell {  
         background-color: pink;  
     }  
 </style>  
