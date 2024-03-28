@@ -32,7 +32,6 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 </html>`)  
 }  
 
-
 var GlobalTable = `<!DOCTYPE html>  
 <html lang="en">  
 <head>  
@@ -46,5 +45,3 @@ var GlobalTable = `<!DOCTYPE html>
 </head>  
 <body>  
 <table border="1">`
-
-
