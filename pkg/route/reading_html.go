@@ -9,13 +9,15 @@ import (
 
 
 func DayReadingHtmlTable(w http.ResponseWriter) {
-	// 构造HTML表格的开头  
-	fmt.Fprintf(w, "<html>\n")  
-	fmt.Fprintf(w, "<head>\n")  
-	fmt.Fprintf(w, "<title>MyStruct Table</title>\n")  
-	fmt.Fprintf(w, "</head>\n")  
-	fmt.Fprintf(w, "<body>\n")  
-	fmt.Fprintf(w, "<table border='1'>\n")  
+	fmt.Fprintln(w, GlobalTable)  
+
+	// // 构造HTML表格的开头  
+	// fmt.Fprintf(w, "<html>\n")  
+	// fmt.Fprintf(w, "<head>\n")  
+	// fmt.Fprintf(w, "<title>MyStruct Table</title>\n")  
+	// fmt.Fprintf(w, "</head>\n")  
+	// fmt.Fprintf(w, "<body>\n")  
+	// fmt.Fprintf(w, "<table border='1'>\n")  
 	fmt.Fprintf(w, "<tr><th>date</th><th>weekNum</th><th>weekday</th><th>dayReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
@@ -23,30 +25,26 @@ func DayReadingHtmlTable(w http.ResponseWriter) {
 		if item == nil {
 		  continue
 		}
+
+		cellClass := ""
+		if item.Weekday == "一" {  
+			cellClass = "yellow-cell" // 如果a为1，设置单元格类为yellow-cell  
+		} 
+
 		fmt.Fprintf(w, "<tr>")
-		fmt.Fprintf(w, "<td>%s</td>", item.Date)
-		fmt.Fprintf(w, "<td>%s</td>", item.WeekNum)
-		fmt.Fprintf(w, "<td>%s</td>", item.Weekday)
-		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTime) 
-		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime) 
-		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTimeOfDifferentContentStr)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Date)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.WeekNum)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Weekday)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.ReadingTime) 
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.TargetReadingTime) 
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.ReadingTimeOfDifferentContentStr)
 		if item.IsFinish {
-			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
+			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x2705;")
 		} else {
-			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
+			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x274C;")
 		}
 		
-		fmt.Fprintf(w, "</tr>\n")
-		
-
-		// for content, conReadingTime := range item.DayReadingTimeOfDifferentContent {
-		// 	fmt.Fprintf(w, "<tr>")  
-		// 	fmt.Fprintf(w, "<td>%s</td>", item.DayDate)
-		// 	fmt.Fprintf(w, "<td>%s</td>", item.DayReadingTime)  
-		// 	fmt.Fprintf(w, "<td>%s</td>", content)  
-		// 	fmt.Fprintf(w, "<td>%s</td>", conReadingTime)  
-		// 	fmt.Fprintf(w, "</tr>\n")  
-		// }		
+		fmt.Fprintf(w, "</tr>\n")	
 	}  
   
 	// 构造HTML表格的结尾  
