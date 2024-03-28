@@ -32,3 +32,20 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 </html>`)  
 }  
 
+
+
+var GlobalTable = `<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<title>Go Table Example</title>  
+<style>  
+    .yellow-cell {  
+        background-color: pink;  
+    }  
+</style>  
+</head>  
+<body>  
+<table border="1">`
+
+
