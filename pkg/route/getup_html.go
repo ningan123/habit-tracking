@@ -10,19 +10,7 @@ import (
 
 func DayGetupHtmlTable(w http.ResponseWriter) {
 	// 开始写入HTML  
-	fmt.Fprintln(w, `<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-<meta charset="UTF-8">  
-<title>Go Table Example</title>  
-<style>  
-    .yellow-cell {  
-        background-color: pink;  
-    }  
-</style>  
-</head>  
-<body>  
-<table border="1">`)  
+	fmt.Fprintln(w, GlobalTable)  
 
 	// // 构造HTML表格的开头  
 	// fmt.Fprintf(w, "<html>\n")  
