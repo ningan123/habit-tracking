@@ -16,7 +16,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")  
 	fmt.Fprintf(w, "<body>\n")  
 	fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th>weekNum</th><th>getupDays</th><th>getupTargetDays</th><th>finish</th><th>sleepDays</th><th>sleepTargetDays</th><th>finish</th><th>weekReadingTime</th><th>targetReadingTime</th><th>extraReadingTime</th><th>content</th><th>finish</th><th>weekPianoTime</th><th>targetPianoTime</th><th>extraPianoTime</th><th>content</th><th>finish</th></tr>\n")  
+	fmt.Fprintf(w, "<tr><th>weekNum</th><th>getupDays</th><th>getupTargetDays</th><th>finish</th><th>sleepDays</th><th>sleepTargetDays</th><th>finish</th><th>weekReadingTime</th><th>targetReadingTime</th><th>extraReadingTime</th><th>content</th><th>finish</th><th>weekPianoTime</th><th>targetPianoTime</th><th>extraPianoTime</th><th>content</th><th>finish</th><th>skincare</th><th>facemask</th></tr>\n")  
   
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalGetup.WeekOrderGetupInfo { 
@@ -73,6 +73,26 @@ func WeekHtmlTable(w http.ResponseWriter) {
 		} else {
 		  fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
 		}
+
+		scItem :=  hData.GlobalSkinCare.WeekInfo[item.WeekNum]
+		if scItem == nil {
+		  continue
+		}
+		if scItem.IsFinish {
+		  fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
+		} else {
+		  fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
+		}
+
+		fItem :=  hData.GlobalFaceMask.WeekInfo[item.WeekNum]
+		if scItem == nil {
+		  continue
+		}
+		if fItem.IsFinish {
+		  fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
+		} else {
+		  fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
+		}		
 
 		fmt.Fprintf(w, "</tr>\n")  	
 	}  
