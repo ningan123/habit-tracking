@@ -60,6 +60,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// audiobook
+	err = hData.DealAudiobookData(*dataPath+"/data.xlsx", *dataPath+"/output_audiobook.txt", "听书")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// 设置路由  
 	http.HandleFunc("/", hRoute.RootHandler)  
 	http.HandleFunc("/reading", hRoute. ReadingHandler) 
@@ -103,7 +109,14 @@ func main() {
 	http.HandleFunc("/skincare/month", hRoute.MonthSkinCareHandler)  
 	http.HandleFunc("/skincare/year", hRoute.YearSkinCareHandler)
 	http.HandleFunc("/skincare/all", hRoute.AllSkinCareHandler) 
-	
+
+	http.HandleFunc("/audiobook", hRoute.AudiobookHandler)
+	http.HandleFunc("/audiobook/day", hRoute.DayAudiobookHandler)  
+	http.HandleFunc("/audiobook/week", hRoute.WeekAudiobookHandler)  
+	http.HandleFunc("/audiobook/month", hRoute.MonthAudiobookHandler)  
+	http.HandleFunc("/audiobook/year", hRoute.YearAudiobookHandler)
+	http.HandleFunc("/audiobook/all", hRoute.AllAudiobookHandler) 
+
 	http.HandleFunc("/day", hRoute.DayHandler)
 	http.HandleFunc("/week", hRoute.WeekHandler)  
 
