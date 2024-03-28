@@ -36,10 +36,14 @@ func NewMonthAudiobook(month string, rawInfo map[int]*DayAudiobook, daysInMonth 
 
 func (m *MonthAudiobook) ComputeFinishBooks() error {
   for _, item := range m.RawInfo {
-		// 判断字符串是否以“(完)”结尾
-		if strings.HasSuffix(item.RawInfo, "(完)") {
-			m.FinishBooks++
-		}
+		strList := strings.Split(item.RawInfo, ",")
+
+		for _, str := range strList {
+			// 判断字符串是否以“(完)”结尾
+			if strings.HasSuffix(str, "(完)") {
+				m.FinishBooks++
+			}
+		}  
 	}	
   return nil
 }

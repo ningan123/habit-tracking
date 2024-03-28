@@ -27,12 +27,16 @@ func NewWeekAudiobook(weekNum string, rawInfo map[string]*DayAudiobook) (*WeekAu
 
 func (w *WeekAudiobook) ComputeFinishBooks() error {
   for _, item := range w.RawInfo {
-		// 判断字符串是否以“(完)”结尾
-		if strings.HasSuffix(item.RawInfo, "(完)") {
-			w.FinishBooks++
-		}
-	}
+		strList := strings.Split(item.RawInfo, ",")
 
+		for _, str := range strList {
+			// 判断字符串是否以“(完)”结尾
+			if strings.HasSuffix(str, "(完)") {
+				w.FinishBooks++
+			}
+		}  
+	}
+		
 	return nil
 }
 

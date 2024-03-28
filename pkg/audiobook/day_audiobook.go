@@ -40,11 +40,15 @@ func NewDayAudiobook(date string, year int, dayOfYear int, month time.Month, day
 
 
 func (d *DayAudiobook) ComputeFinishBooks() error {
+	strList := strings.Split(d.RawInfo, ",")
+
+	for _, str := range strList {
 		// 判断字符串是否以“(完)”结尾
-		if strings.HasSuffix(d.RawInfo, "(完)") {
+		if strings.HasSuffix(str, "(完)") {
 			d.FinishBooks++
 		}
-	
+	}
+
   return nil
 }
 

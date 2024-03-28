@@ -30,10 +30,14 @@ func NewYearAudiobook(yearNum string, rawInfo map[string]*DayAudiobook, daysInYe
 
 func (y *YearAudiobook) ComputeFinishBooks() error {
   for _, item := range y.RawInfo {
-		// 判断字符串是否以“(完)”结尾
-		if strings.HasSuffix(item.RawInfo, "(完)") {
-			y.FinishBooks++
-		}
+		strList := strings.Split(item.RawInfo, ",")
+
+		for _, str := range strList {
+			// 判断字符串是否以“(完)”结尾
+			if strings.HasSuffix(str, "(完)") {
+				y.FinishBooks++
+			}
+		} 
 	}	
   return nil
 }
