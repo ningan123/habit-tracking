@@ -49,8 +49,6 @@ func DealPianoData(input, output, target string) (error) {
 		return err
 	}
 
-	GlobalPiano.PrintPianoInfo()
-
 	return nil
 	
 }
