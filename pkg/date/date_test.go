@@ -223,7 +223,8 @@ func TestGetDateDetails(t *testing.T) {
 	testCases := []struct {
 		inputDate        string
 		expectedYear     int
-		expectMonth      time.Month
+		expectedMonth      time.Month
+		expectedMonthNum string
 		expectedWeekYear int
 		expectedWeek      int
 		expectedWeekday   string
@@ -233,34 +234,34 @@ func TestGetDateDetails(t *testing.T) {
 		expectedDaysInMonth int
 		expectedDaysInYear int
 	}{
-		{"2021-01-01", 2021, 1, 2020, 53, "五", "2020-53", 1, 1, 31, 365},
-		{"2021-01-02", 2021, 1, 2020, 53, "六", "2020-53",2, 2, 31, 365},
-		{"2021-01-03", 2021, 1, 2020, 53, "日", "2020-53",3, 3, 31, 365},
-		{"2021-01-04", 2021, 1, 2021, 1, "一", "2021-01", 4, 4, 31, 365},
-		{"2021-01-05", 2021, 1, 2021, 1, "二", "2021-01", 5, 5, 31, 365},
-		{"2021-12-27", 2021, 12, 2021, 52, "一", "2021-52", 27, 361, 31, 365},
-		{"2021-12-28", 2021, 12, 2021, 52, "二", "2021-52", 28, 362, 31, 365},
-		{"2024-01-01", 2024, 1, 2024, 1, "一", "2024-01", 1, 1, 31, 366},
-		{"2024-01-02", 2024, 1, 2024, 1, "二", "2024-01", 2, 2, 31, 366},
-		{"2024-01-03", 2024, 1, 2024, 1, "三", "2024-01", 3, 3, 31, 366},
-		{"2024-01-04", 2024, 1, 2024, 1, "四", "2024-01", 4, 4, 31, 366},
-		{"2024-01-05", 2024, 1, 2024, 1, "五", "2024-01", 5, 5, 31, 366},
-		{"2024-01-06", 2024, 1, 2024, 1, "六", "2024-01", 6, 6, 31, 366},
-		{"2024-01-07", 2024, 1, 2024, 1, "日", "2024-01", 7, 7, 31, 366},
-		{"2024-01-08", 2024, 1, 2024, 2, "一", "2024-02", 8, 8, 31, 366},
-		{"2024-02-01", 2024, 2, 2024, 5, "四", "2024-05", 1, 32, 29, 366},
+		{"2021-01-01", 2021, 1, "2021-01", 2020, 53, "五", "2020-53", 1, 1, 31, 365},
+		{"2021-01-02", 2021, 1, "2021-01", 2020, 53, "六", "2020-53",2, 2, 31, 365},
+		{"2021-01-03", 2021, 1, "2021-01", 2020, 53, "日", "2020-53",3, 3, 31, 365},
+		{"2021-01-04", 2021, 1, "2021-01", 2021, 1, "一", "2021-01", 4, 4, 31, 365},
+		{"2021-01-05", 2021, 1, "2021-01", 2021, 1, "二", "2021-01", 5, 5, 31, 365},
+		{"2021-12-27", 2021, 12, "2021-12", 2021, 52, "一", "2021-52", 27, 361, 31, 365},
+		{"2021-12-28", 2021, 12, "2021-12", 2021, 52, "二", "2021-52", 28, 362, 31, 365},
+		{"2024-01-01", 2024, 1, "2024-01", 2024, 1, "一", "2024-01", 1, 1, 31, 366},
+		{"2024-01-02", 2024, 1, "2024-01", 2024, 1, "二", "2024-01", 2, 2, 31, 366},
+		{"2024-01-03", 2024, 1, "2024-01", 2024, 1, "三", "2024-01", 3, 3, 31, 366},
+		{"2024-01-04", 2024, 1, "2024-01", 2024, 1, "四", "2024-01", 4, 4, 31, 366},
+		{"2024-01-05", 2024, 1, "2024-01", 2024, 1, "五", "2024-01", 5, 5, 31, 366},
+		{"2024-01-06", 2024, 1, "2024-01", 2024, 1, "六", "2024-01", 6, 6, 31, 366},
+		{"2024-01-07", 2024, 1, "2024-01", 2024, 1, "日", "2024-01", 7, 7, 31, 366},
+		{"2024-01-08", 2024, 1, "2024-01", 2024, 2, "一", "2024-02", 8, 8, 31, 366},
+		{"2024-02-01", 2024, 2, "2024-02", 2024, 5, "四", "2024-05", 1, 32, 29, 366},
 		
 	}
 
 	// 遍历测试用例表
 	for _, tc := range testCases {
-		year, month, weekYear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := GetDateDetails(tc.inputDate)
+		year, month, monthNum, weekYear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := GetDateDetails(tc.inputDate)
 		if err != nil {
 			t.Errorf("getDateDetails(%s) returned error: %v", tc.inputDate, err)
 		}
 		
-		if year != tc.expectedYear || month != tc.expectMonth || weekYear != tc.expectedWeekYear || week != tc.expectedWeek || weekday != tc.expectedWeekday || weekNum != tc.expectedWeekNum || dayOfMonth != tc.expectedDayOfMonth || dayOfYear != tc.expectedDayOfYear || daysInMonth != tc.expectedDaysInMonth || daysInYear != tc.expectedDaysInYear {
-			t.Errorf("getDateDetails(%s) returned (%d, %d, %d, %d, %s, %s, %d, %d, %d, %d), expected (%d, %d, %d, %d, %s, %s, %d, %d, %d, %d)", tc.inputDate, year, month, weekYear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, tc.expectedYear, tc.expectMonth, tc.expectedWeekYear, tc.expectedWeek, tc.expectedWeekday, tc.expectedWeekNum, tc.expectedDayOfMonth, tc.expectedDayOfYear, tc.expectedDaysInMonth, tc.expectedDaysInYear)
+		if year != tc.expectedYear || month != tc.expectedMonth || monthNum != tc.expectedMonthNum || weekYear != tc.expectedWeekYear || week != tc.expectedWeek || weekday != tc.expectedWeekday || weekNum != tc.expectedWeekNum || dayOfMonth != tc.expectedDayOfMonth || dayOfYear != tc.expectedDayOfYear || daysInMonth != tc.expectedDaysInMonth || daysInYear != tc.expectedDaysInYear {
+			t.Errorf("getDateDetails(%s) returned (%d, %d, %s, %d, %d, %s, %s, %d, %d, %d, %d), expected (%d, %d, %s, %d, %d, %s, %s, %d, %d, %d, %d)", tc.inputDate, year, month, monthNum, weekYear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, tc.expectedYear, tc.expectedMonth, tc.expectedMonthNum,  tc.expectedWeekYear, tc.expectedWeek, tc.expectedWeekday, tc.expectedWeekNum, tc.expectedDayOfMonth, tc.expectedDayOfYear, tc.expectedDaysInMonth, tc.expectedDaysInYear)
 		}
 	}
 }
