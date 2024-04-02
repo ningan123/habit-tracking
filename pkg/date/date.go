@@ -68,11 +68,11 @@ func dateWeek(date time.Time) (int, int, time.Weekday) {
 
 
 
-func GetDateDetails(inputDate string) (int, time.Month, int, int, string, int, int, int, int, error) {
+func GetDateDetails(inputDate string) (int, time.Month, int, int, string, string, int, int, int, int, error) {
 	// 将输入的日期解析为time.Time类型
 	date, err := time.Parse("2006-01-02", inputDate)
 	if err != nil {
-		return 0, 0, 0, 0, "", 0, 0, 0,0, fmt.Errorf("无效的日期格式: %s", err)
+		return 0, 0, 0, 0, "", "", 0, 0, 0,0, fmt.Errorf("无效的日期格式: %s", err)
 	}
 
 	year := date.Year()
@@ -80,15 +80,15 @@ func GetDateDetails(inputDate string) (int, time.Month, int, int, string, int, i
 	
 	weekyear, week := date.ISOWeek()
 	weekday := WeekdayToChinese(date.Weekday())  // 星期几
+	weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
 
 	dayOfMonth := date.Day()
 	dayOfYear := dayOfYear(date) 
 
 	daysInMonth := daysInMonth(date)
 	daysInYear := daysInYear(date)
-	
-	
-	return year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, nil
+
+	return year, month, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, nil
 }
 
 // 根据Weekday类型返回中文星期几  
