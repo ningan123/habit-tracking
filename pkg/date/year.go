@@ -5,7 +5,12 @@ type Year struct {
 	DaysInYear int // 一年多少天
 }
 
-func NewYear(yearNum string, daysInYear int) (*Year, error) {
+func NewYear(date string) (*Year, error) {
+	_, yearNum,_, _, _,  _, _, _, _, _, _, daysInYear, err := GetDateDetails(date)
+	if err != nil {
+		return nil, err
+	}	
+
   return &Year{
 		YearNum: yearNum,
 		DaysInYear: daysInYear,

@@ -6,8 +6,12 @@ type Month struct {
 	DaysInMonth int
 }
 
+func NewMonth(date string) (*Month, error) {
+	_, _, _,monthNum, _,  _, _, _, _, _, daysInMonth, _, err := GetDateDetails(date)
+	if err != nil {
+		return nil, err
+	}	
 
-func NewMonth(monthNum string, daysInMonth int) (*Month, error) {
 	return &Month{
 		MonthNum: monthNum, 
 		DaysInMonth: daysInMonth,
