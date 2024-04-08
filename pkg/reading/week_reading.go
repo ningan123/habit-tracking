@@ -8,7 +8,7 @@ import (
 )
 
 type WeekReading struct {
-	WeekNum string
+	Week *hDate.Week
 	ReadingTime string 
 	ReadingTimeOfDifferentContent map[string]string 
 	ReadingTimeOfDifferentContentStr string
@@ -26,7 +26,9 @@ func NewWeekReading(weekNum string, rawInfo map[string]*DayReading ) (*WeekReadi
 	}
 
   return &WeekReading{
-    WeekNum: weekNum,
+    Week: &hDate.Week{
+			WeekNum: weekNum,
+		},
 		ReadingTime: "0min",
 		ReadingTimeOfDifferentContent : make(map[string]string),
 		RawInfo: rawInfo,
@@ -73,7 +75,7 @@ func (w *WeekReading) ComputeReadingTime() error {
 
 func (w *WeekReading) Print() {
 	for content, conReadingTime := range w.ReadingTimeOfDifferentContent {
-		klog.InfoS("week reading info", "weekNum", w.WeekNum, "readingTime", w.ReadingTime, "content", content, "contentReadingTime", conReadingTime)
+		klog.InfoS("week reading info", "weekNum", w.Week.WeekNum, "readingTime", w.ReadingTime, "content", content, "contentReadingTime", conReadingTime)
 	}
 }
 

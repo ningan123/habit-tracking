@@ -27,14 +27,14 @@ func DayReadingHtmlTable(w http.ResponseWriter) {
 		}
 
 		cellClass := ""
-		if item.Weekday == "一" {
+		if item.Day.Weekday == "一" {
 			cellClass = "color-cell"
 		} 
 
 		fmt.Fprintf(w, "<tr>")
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Date)
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.WeekNum)
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Weekday)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.Date)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.WeekNum)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.Weekday)
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.ReadingTime) 
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.TargetReadingTime) 
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.ReadingTimeOfDifferentContentStr)
@@ -70,7 +70,7 @@ func WeekReadingHtmlTable(w http.ResponseWriter) {
 		}  
 		
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.WeekNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Week.WeekNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime) 
 		fmt.Fprintf(w, "<td>%s</td>", item.ExtraReadingTime) 
@@ -117,7 +117,7 @@ func MonthReadingHtmlTable(w http.ResponseWriter) {
 		} 
 
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.MonthNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Month.MonthNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime) 
 		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTimeOfDifferentContentStr)
@@ -161,7 +161,7 @@ func YearReadingHtmlTable(w http.ResponseWriter) {
 			continue
 		} 
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.YearNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Year.YearNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetReadingTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.ReadingTimeOfDifferentContentStr) 

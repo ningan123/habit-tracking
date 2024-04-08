@@ -1,17 +1,23 @@
 package tick_type
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
 
 type YearTickType struct {
-	YearNum string
+	Year *hDate.Year
 	RawInfo  map[string]*DayTickType  // string表示周几
 	IsFinish bool
 	TargetFinishDays int
 	ActualFinishDays int
 }
 
-func NewYearTickType(yearNum string, rawInfo map[string]*DayTickType, targetYearFinishDays int ) (*YearTickType, error) {
+func NewYearTickType(yearNum string, daysInYear int, rawInfo map[string]*DayTickType, targetYearFinishDays int ) (*YearTickType, error) {
   return &YearTickType{
-    YearNum: yearNum,
+    Year: &hDate.Year{
+			YearNum: yearNum,
+			DaysInYear: daysInYear,
+		},
 		RawInfo: rawInfo,
 		TargetFinishDays: targetYearFinishDays,
   }, nil

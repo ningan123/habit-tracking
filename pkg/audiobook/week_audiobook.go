@@ -6,8 +6,13 @@ import (
 	"k8s.io/klog/v2"
 )
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
+
+
 type WeekAudiobook struct {
-	WeekNum string
+	Week *hDate.Week
 	RawInfo map[string]*DayAudiobook 
 	TargetFinishBooks int
 
@@ -17,9 +22,10 @@ type WeekAudiobook struct {
 
 func NewWeekAudiobook(weekNum string, rawInfo map[string]*DayAudiobook) (*WeekAudiobook, error) {
   return &WeekAudiobook{
-    WeekNum: weekNum,
+    Week: &hDate.Week{
+			WeekNum: weekNum,
+		},
 		RawInfo: rawInfo,
-
 		TargetFinishBooks: TargetWeekFinishBooks,
   }, nil
 }
@@ -49,5 +55,5 @@ func (w *WeekAudiobook) CheckFinish() error {
 }
 
 func (w *WeekAudiobook) Print() {
-  klog.InfoS("WeekAudiobook" , "weekNum", w.WeekNum, "finishBooks", w.FinishBooks, "targetFinishBooks", w.TargetFinishBooks, "isFinish", w.IsFinish)
+  klog.InfoS("WeekAudiobook" , "weekNum", w.Week.WeekNum, "finishBooks", w.FinishBooks, "targetFinishBooks", w.TargetFinishBooks, "isFinish", w.IsFinish)
 }

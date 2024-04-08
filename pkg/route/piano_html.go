@@ -27,15 +27,15 @@ func DayPianoHtmlTable(w http.ResponseWriter) {
 		}
 
 		cellClass := ""
-		if item.Weekday == "一" {
+		if item.Day.Weekday == "一" {
 			cellClass = "piano-cell"
 		} 
 
 
 		fmt.Fprintf(w, "<tr>")
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Date)
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.WeekNum)
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Weekday)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.Date)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.WeekNum)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.Weekday)
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.PianoTime) 
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.TargetPianoTime) 
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.PianoTimeOfDifferentContentStr)
@@ -72,7 +72,7 @@ func WeekPianoHtmlTable(w http.ResponseWriter) {
 		}  
 		
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.WeekNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Week.WeekNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.PianoTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetPianoTime) 
 		fmt.Fprintf(w, "<td>%s</td>", item.ExtraPianoTime) 
@@ -119,7 +119,7 @@ func MonthPianoHtmlTable(w http.ResponseWriter) {
 		} 
 
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.MonthNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Month.MonthNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.PianoTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetPianoTime) 
 		fmt.Fprintf(w, "<td>%s</td>", item.PianoTimeOfDifferentContentStr)
@@ -163,7 +163,7 @@ func YearPianoHtmlTable(w http.ResponseWriter) {
 			continue
 		} 
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.YearNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Year.YearNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.PianoTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetPianoTime)  
 		fmt.Fprintf(w, "<td>%s</td>", item.PianoTimeOfDifferentContentStr) 

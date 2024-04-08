@@ -8,8 +8,7 @@ import (
 )
 
 type YearReading struct {
-  YearNum string // 年份
-	DaysInYear int // 一年多少天
+	Year *hDate.Year
   ReadingTime string  // 年总阅读时长
 	YearRawInfo map[string]*DayReading  
   ReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
@@ -18,7 +17,7 @@ type YearReading struct {
 	TargetReadingTime string
 }
 
-func NewYearReading(yearNum string, yearRawInfo map[string]*DayReading, daysInYear int) (*YearReading, error) {
+func NewYearReading(yearNum string, daysInYear int, yearRawInfo map[string]*DayReading) (*YearReading, error) {
 	tReadingTime, err := hDate.FormatDurationMultiply(TargetDayReadingTime, daysInYear)
 	if err != nil {
 		klog.Errorf("format duration error: %v", err)
@@ -26,8 +25,11 @@ func NewYearReading(yearNum string, yearRawInfo map[string]*DayReading, daysInYe
 	}
 
   return &YearReading{
+		Year: &hDate.Year{
+			YearNum: yearNum,
+			DaysInYear: daysInYear,
+		},
     YearRawInfo: yearRawInfo,
-		YearNum: yearNum,
     ReadingTimeOfDifferentContent: make(map[string]string),
     ReadingTime: "0min",
 		TargetReadingTime: tReadingTime,
@@ -72,8 +74,8 @@ func (y *YearReading) ComputeReadingTime() error {
 
 func (y *YearReading) Print() {
 	for content, conReadingTime := range y.ReadingTimeOfDifferentContent {
-		klog.InfoS("year reading info", "yearNum", y.YearNum, "readingTime", y.ReadingTime, "content", content, "contentReadingTime", conReadingTime)
-	}	
+		klog.InfoS("year reading info", "yearNum", y.Year.YearNum, "readingTime", y.ReadingTime, "content", content, "contentReadingTime", conReadingTime)
+	}
 }
 
 

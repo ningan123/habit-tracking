@@ -27,14 +27,14 @@ func DaySkinCareHtmlTable(w http.ResponseWriter) {
 		}
 
 		cellClass := ""
-		if item.Weekday == "一" {
+		if item.Day.Weekday == "一" {
 			cellClass = "color-cell"
 		} 
 
 		fmt.Fprintf(w, "<tr>")
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Date)
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.WeekNum)
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Weekday)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.Date)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.WeekNum)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.Weekday)
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass,item.RawInfo) 
 		if item.IsFinish {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x2705;")
@@ -71,7 +71,7 @@ func WeekSkinCareHtmlTable(w http.ResponseWriter) {
 		}  
 		
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.WeekNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Week.WeekNum)
 		fmt.Fprintf(w, "<td>%d</td>", item.ActualFinishDays)  
 		fmt.Fprintf(w, "<td>%d</td>", item.TargetFinishDays) 
 		if item.IsFinish {
@@ -108,7 +108,7 @@ func MonthSkinCareHtmlTable(w http.ResponseWriter) {
 		} 
 
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.MonthNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Month.MonthNum)
 		fmt.Fprintf(w, "<td>%d</td>", item.ActualFinishDays)  
 		fmt.Fprintf(w, "<td>%d</td>", item.TargetFinishDays) 
 		if item.IsFinish {
@@ -151,7 +151,7 @@ func YearSkinCareHtmlTable(w http.ResponseWriter) {
 			continue
 		} 
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.YearNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Year.YearNum)
 		fmt.Fprintf(w, "<td>%d</td>", item.ActualFinishDays)  
 		fmt.Fprintf(w, "<td>%d</td>", item.TargetFinishDays) 
 		if item.IsFinish {

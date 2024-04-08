@@ -1,8 +1,11 @@
 package tick_type
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
 
 type WeekTickType struct {
-	WeekNum string
+	Week *hDate.Week
 	RawInfo  map[string]*DayTickType  // string表示周几
 	IsFinish bool
 	TargetFinishDays int
@@ -11,7 +14,9 @@ type WeekTickType struct {
 
 func NewWeekTickType(weekNum string, rawInfo map[string]*DayTickType, targetWeekFinishDays int ) (*WeekTickType, error) {
   return &WeekTickType{
-    WeekNum: weekNum,
+    Week: &hDate.Week{
+			WeekNum: weekNum,
+		},
 		RawInfo: rawInfo,
 		TargetFinishDays: targetWeekFinishDays,
   }, nil

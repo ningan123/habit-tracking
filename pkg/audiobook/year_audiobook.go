@@ -7,12 +7,16 @@ import (
 	"k8s.io/klog/v2"
 )
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
+
+
+
 type YearAudiobook struct {
-  YearNum string // 年份
-	DaysInYear int // 一年多少天
+  Year *hDate.Year
 	RawInfo map[string]*DayAudiobook
 	TargetFinishBooks int
-	  
 	IsFinish bool
 	FinishBooks int
 }
@@ -20,10 +24,11 @@ type YearAudiobook struct {
 func NewYearAudiobook(yearNum string, rawInfo map[string]*DayAudiobook, daysInYear int) (*YearAudiobook, error) {
 
   return &YearAudiobook{
+		Year: &hDate.Year{
+			YearNum: yearNum,
+			DaysInYear: daysInYear,
+		},
     RawInfo: rawInfo,
-		YearNum: yearNum,
-		DaysInYear: daysInYear,
-    
 		TargetFinishBooks: int(math.Ceil(float64(daysInYear) / 3.5)),
   },nil
 }
@@ -51,5 +56,5 @@ func (y *YearAudiobook) CheckFinish() error {
 }
 
 func (y *YearAudiobook) Print() {
-	klog.InfoS("YearAudiobook" , "yearNum", y.YearNum, "daysInYear", y.DaysInYear, "targetFinishBooks", y.TargetFinishBooks, "finishBooks", y.FinishBooks, "isFinish", y.IsFinish)
+	klog.InfoS("YearAudiobook" , "yearNum", y.Year.YearNum, "daysInYear", y.Year.DaysInYear, "targetFinishBooks", y.TargetFinishBooks, "finishBooks", y.FinishBooks, "isFinish", y.IsFinish)
 }

@@ -1,7 +1,6 @@
 package facemask
 
 import (
-	"fmt"
 	"sort"
 
 	"k8s.io/klog/v2"
@@ -66,15 +65,14 @@ func(g *FaceMask) GenInfo() error {
 
 func(g *FaceMask) GenDayInfo() error {
 	klog.InfoS("GenDayInfo")
-  for date, info := range g.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range g.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
-		dTickType, err := hTickType.NewDayTickType(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dTickType, err := hTickType.NewDayTickType(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
     }
@@ -89,14 +87,13 @@ func(g *FaceMask) GenDayInfo() error {
 
 func(r *FaceMask) GenWeekInfo() error {
 	klog.InfoS("GenWeekInfo")
-  for date, info := range r.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range r.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
 		if r.WeekInfo[weekNum] == nil {
 			weekRawInfo := make(map[string]*hTickType.DayTickType)
 			r.WeekInfo[weekNum], err = hTickType.NewWeekTickType(weekNum, weekRawInfo, FaceMaskTargetWeekFinishDays)
@@ -105,7 +102,7 @@ func(r *FaceMask) GenWeekInfo() error {
 			}
 		}
 		
-		dTickType, err := hTickType.NewDayTickType(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dTickType, err := hTickType.NewDayTickType(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
 		}
@@ -120,24 +117,22 @@ func(r *FaceMask) GenWeekInfo() error {
 
 func(g *FaceMask) GenMonthInfo() error {
 	klog.InfoS("GenMonthInfo")
-  for date, info := range g.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range g.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
-		monthNum := fmt.Sprintf("%d-%02d", year, month)
 		if g.MonthInfo[monthNum] == nil {
 		  monthRawInfo := make(map[int]*hTickType.DayTickType)
-			g.MonthInfo[monthNum], err = hTickType.NewMonthTickType(monthNum, monthRawInfo, FaceMaskTargetMonthFinishDays)
+			g.MonthInfo[monthNum], err = hTickType.NewMonthTickType(monthNum,daysInMonth, monthRawInfo, FaceMaskTargetMonthFinishDays)
 			if err != nil {
 			  return err
 			}
 		}
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
-
-		dTickType, err := hTickType.NewDayTickType(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		
+		dTickType, err := hTickType.NewDayTickType(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
     }
@@ -152,24 +147,22 @@ func(g *FaceMask) GenMonthInfo() error {
 
 func(r *FaceMask) GenYearInfo() error {
 	klog.InfoS("GenYearInfo")
-  for date, info := range r.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range r.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
-		yearNum := fmt.Sprintf("%d", year)
 		if r.YearInfo[yearNum] == nil {
 			yearRawInfo := make(map[string]*hTickType.DayTickType)
-			r.YearInfo[yearNum], err = hTickType.NewYearTickType(yearNum, yearRawInfo, FaceMaskTargetYearFinishDays)
+			r.YearInfo[yearNum], err = hTickType.NewYearTickType(yearNum, daysInYear, yearRawInfo, FaceMaskTargetYearFinishDays)
 			if err != nil {
 			  return err
 			}
 		}
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
-
-		dTickType, err := hTickType.NewDayTickType(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		
+		dTickType, err := hTickType.NewDayTickType(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
 		if err != nil {
 			return err
 		}

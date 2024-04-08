@@ -1,17 +1,23 @@
 package tick_type
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
 
 type MonthTickType struct {
-	MonthNum string
+	Month *hDate.Month
 	RawInfo  map[int]*DayTickType   // int表示几号
 	IsFinish bool
 	TargetFinishDays int
 	ActualFinishDays int
 }
 
-func NewMonthTickType(weekNum string, rawInfo map[int]*DayTickType, targetMonthFinishDays int ) (*MonthTickType, error) {
+func NewMonthTickType(monthNum string, daysInMonth int, rawInfo map[int]*DayTickType, targetMonthFinishDays int ) (*MonthTickType, error) {
   return &MonthTickType{
-    MonthNum: weekNum,
+    Month: &hDate.Month{
+			MonthNum: monthNum,
+			DaysInMonth: daysInMonth, 
+		},
 		RawInfo: rawInfo,
 		TargetFinishDays: targetMonthFinishDays,
   }, nil

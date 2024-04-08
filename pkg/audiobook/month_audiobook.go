@@ -7,12 +7,15 @@ import (
 	"k8s.io/klog/v2"
 )
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
+
+
 type MonthAudiobook struct {
-	MonthNum string
-	DaysInMonth int
+	Month *hDate.Month
 	RawInfo map[int]*DayAudiobook
 	TargetFinishBooks int
-
 	IsFinish bool
 	FinishBooks int
 }
@@ -23,12 +26,13 @@ math.Ceil 向上取整，返回不小于参数的最小整数。
 math.Round 四舍五入取整，返回最接近参数的整数。
 使用类型转换（如int(num / 3.5)）会截断小数部分，这类似于向零取整。
 */
-func NewMonthAudiobook(month string, rawInfo map[int]*DayAudiobook, daysInMonth int) (*MonthAudiobook, error) {
+func NewMonthAudiobook(monthNum string, daysInMonth int, rawInfo map[int]*DayAudiobook) (*MonthAudiobook, error) {
 	return &MonthAudiobook{
-		MonthNum: month, 
+		Month: &hDate.Month{
+			MonthNum: monthNum,
+			DaysInMonth: daysInMonth, 
+		},
 		RawInfo: rawInfo,
-		DaysInMonth: daysInMonth,
-
 		TargetFinishBooks: int(math.Ceil(float64(daysInMonth) / 3.5)),
 	},nil
 }
@@ -57,5 +61,5 @@ func (m *MonthAudiobook) CheckFinish() error {
 }
 
 func (m *MonthAudiobook) Print()  {
-  klog.InfoS("MonthAudiobook", "month", m.MonthNum, "finish", m.IsFinish, "finishBooks", m.FinishBooks, "targetFinishBooks", m.TargetFinishBooks)
+  klog.InfoS("MonthAudiobook", "month", m.Month.MonthNum, "finish", m.IsFinish, "finishBooks", m.FinishBooks, "targetFinishBooks", m.TargetFinishBooks)
 }

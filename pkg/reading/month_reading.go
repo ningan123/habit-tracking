@@ -8,9 +8,8 @@ import (
 )
 
 type MonthReading struct {
-	MonthNum string
+	Month *hDate.Month
 	ReadingTime string 
-	DaysInMonth int
 	ReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
 	ReadingTimeOfDifferentContentStr string
 	RawInfo  map[int]*DayReading  // int表示几号
@@ -19,7 +18,7 @@ type MonthReading struct {
 }
 
 
-func NewMonthReading(month string, rawInfo map[int]*DayReading, daysInMonth int) (*MonthReading, error) {
+func NewMonthReading(monthNum string, daysInMonth int, rawInfo map[int]*DayReading) (*MonthReading, error) {
 	tReadingTime, err := hDate.FormatDurationMultiply(TargetDayReadingTime, daysInMonth)
 	if err != nil {
 		klog.Errorf("format duration error: %v", err)
@@ -27,11 +26,13 @@ func NewMonthReading(month string, rawInfo map[int]*DayReading, daysInMonth int)
 	}
 
 	return &MonthReading{
-		MonthNum: month, 
+		Month: &hDate.Month{
+			MonthNum: monthNum,
+			DaysInMonth: daysInMonth, 
+		},
 		ReadingTime: "0min",
 		ReadingTimeOfDifferentContent: make(map[string]string),
 		RawInfo: rawInfo,
-		DaysInMonth: daysInMonth,
 		TargetReadingTime: tReadingTime,
 	},nil
 }
@@ -67,14 +68,13 @@ func (m *MonthReading) ComputeReadingTime() error {
 	}
 
 	return nil
-}	
+}
 
 
 func (m *MonthReading) Print() {
 	for content, conReadingTime := range m.ReadingTimeOfDifferentContent {
-		klog.InfoS("month reading info", "monthNum", m.MonthNum, "readingTime", m.ReadingTime, "content", content, "contentReadingTime", conReadingTime)
+		klog.InfoS("month reading info", "monthNum", m.Month.MonthNum, "readingTime", m.ReadingTime, "content", content, "contentReadingTime", conReadingTime)
 	}
-	
 }
 
 
