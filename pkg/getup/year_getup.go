@@ -12,7 +12,7 @@ type YearGetup struct {
 	ActualFinishDays int
 }
 
-func NewYearGetup(yearNum string, daysInYear int, rawInfo map[string]*DayGetup ) (*YearGetup, error) {
+func NewYearGetup(yearNum string, daysInYear int, rawInfo map[string]*DayGetup) (*YearGetup, error) {
   return &YearGetup{
 		Year: &hDate.Year{
 			YearNum: yearNum,
