@@ -1,17 +1,23 @@
 package sleep
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
 
 type MonthSleep struct {
-	MonthNum string
+	Month *hDate.Month
 	RawInfo  map[int]*DaySleep   // int表示几号
 	IsFinish bool
 	TargetFinishDays int
 	ActualFinishDays int
 }
 
-func NewMonthSleep(weekNum string, rawInfo map[int]*DaySleep ) (*MonthSleep, error) {
+func NewMonthSleep(monthNum string, daysInMonth int,  rawInfo map[int]*DaySleep ) (*MonthSleep, error) {
   return &MonthSleep{
-    MonthNum: weekNum,
+    Month: &hDate.Month{
+			MonthNum: monthNum,
+			DaysInMonth: daysInMonth, 
+		},
 		RawInfo: rawInfo,
 		TargetFinishDays: TargetMonthFinishDays,
   }, nil

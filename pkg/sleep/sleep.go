@@ -1,7 +1,6 @@
 package sleep
 
 import (
-	"fmt"
 	"sort"
 
 	"k8s.io/klog/v2"
@@ -66,15 +65,14 @@ func(g *Sleep) GenSleepInfo() error {
 
 func(g *Sleep) GenDaySleepInfo() error {
 	klog.InfoS("GenDaySleepInfo")
-  for date, info := range g.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range g.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
-		dSleep, err := NewDaySleep(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dSleep, err := NewDaySleep(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
     }
@@ -89,14 +87,13 @@ func(g *Sleep) GenDaySleepInfo() error {
 
 func(r *Sleep) GenWeekSleepInfo() error {
 	klog.InfoS("GenWeekSleepInfo")
-  for date, info := range r.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range r.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
 		if r.WeekSleepInfo[weekNum] == nil {
 			weekRawInfo := make(map[string]*DaySleep)
 			r.WeekSleepInfo[weekNum], err = NewWeekSleep(weekNum, weekRawInfo)
@@ -105,7 +102,7 @@ func(r *Sleep) GenWeekSleepInfo() error {
 			}
 		}
 		
-		dSleep, err := NewDaySleep(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dSleep, err := NewDaySleep(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
 		}
@@ -120,24 +117,22 @@ func(r *Sleep) GenWeekSleepInfo() error {
 
 func(g *Sleep) GenMonthSleepInfo() error {
 	klog.InfoS("GenMonthSleepInfo")
-  for date, info := range g.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range g.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
-		monthNum := fmt.Sprintf("%d-%02d", year, month)
 		if g.MonthSleepInfo[monthNum] == nil {
 		  monthRawInfo := make(map[int]*DaySleep)
-			g.MonthSleepInfo[monthNum], err = NewMonthSleep(monthNum, monthRawInfo)
+			g.MonthSleepInfo[monthNum], err = NewMonthSleep(monthNum, daysInMonth, monthRawInfo)
 			if err != nil {
 			  return err
 			}
 		}
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
 
-		dSleep, err := NewDaySleep(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dSleep, err := NewDaySleep(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
     }
@@ -152,28 +147,25 @@ func(g *Sleep) GenMonthSleepInfo() error {
 
 func(r *Sleep) GenYearSleepInfo() error {
 	klog.InfoS("GenYearSleepInfo")
-  for date, info := range r.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range r.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
-		yearNum := fmt.Sprintf("%d", year)
 		if r.YearSleepInfo[yearNum] == nil {
 			yearRawInfo := make(map[string]*DaySleep)
-			r.YearSleepInfo[yearNum], err = NewYearSleep(yearNum, yearRawInfo)
+			r.YearSleepInfo[yearNum], err = NewYearSleep(yearNum, daysInYear, yearRawInfo)
 			if err != nil {
 			  return err
 			}
 		}
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
 
-		dSleep, err := NewDaySleep(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dSleep, err := NewDaySleep(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
 		if err != nil {
 			return err
 		}
-
 		r.YearSleepInfo[yearNum].RawInfo[date] = dSleep
 	   
   }  

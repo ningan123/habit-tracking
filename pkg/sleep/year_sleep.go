@@ -1,17 +1,23 @@
 package sleep
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
 
 type YearSleep struct {
-	YearNum string
+	Year *hDate.Year
 	RawInfo  map[string]*DaySleep  // string表示周几
 	IsFinish bool
 	TargetFinishDays int
 	ActualFinishDays int
 }
 
-func NewYearSleep(yearNum string, rawInfo map[string]*DaySleep ) (*YearSleep, error) {
+func NewYearSleep(yearNum string, daysInYear int, rawInfo map[string]*DaySleep ) (*YearSleep, error) {
   return &YearSleep{
-    YearNum: yearNum,
+    Year: &hDate.Year{
+			YearNum: yearNum,
+			DaysInYear: daysInYear,
+		},
 		RawInfo: rawInfo,
 		TargetFinishDays: TargetYearFinishDays,
   }, nil

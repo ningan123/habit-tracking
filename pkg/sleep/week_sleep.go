@@ -1,8 +1,12 @@
 package sleep
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
+
 
 type WeekSleep struct {
-	WeekNum string
+	Week *hDate.Week
 	RawInfo  map[string]*DaySleep  // string表示周几
 	IsFinish bool
 	TargetFinishDays int
@@ -11,7 +15,9 @@ type WeekSleep struct {
 
 func NewWeekSleep(weekNum string, rawInfo map[string]*DaySleep ) (*WeekSleep, error) {
   return &WeekSleep{
-    WeekNum: weekNum,
+    Week: &hDate.Week{
+			WeekNum: weekNum,
+		},
 		RawInfo: rawInfo,
 		TargetFinishDays: TargetWeekFinishDays,
   }, nil
@@ -30,7 +36,6 @@ func (w *WeekSleep) CheckFinish() error {
 			w.ActualFinishDays++
 		}
 	}
-	// fmt.Println("w.ActualFinishDays", w.ActualFinishDays)
 
 	if w.ActualFinishDays >= w.TargetFinishDays {
 		w.IsFinish = true
