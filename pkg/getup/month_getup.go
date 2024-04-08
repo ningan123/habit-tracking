@@ -6,7 +6,6 @@ import (
 
 type MonthGetup struct {
 	Month *hDate.Month
-	MonthNum string
 	RawInfo  map[int]*DayGetup   // int表示几号
 	IsFinish bool
 	TargetFinishDays int

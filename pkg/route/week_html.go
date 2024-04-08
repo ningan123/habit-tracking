@@ -27,7 +27,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 		} 
 		
 		fmt.Fprintf(w, "<tr>")  
-				fmt.Fprintf(w, "<td>%s</td>", item.WeekNum)
+				fmt.Fprintf(w, "<td>%s</td>", item.Week.WeekNum)
 				fmt.Fprintf(w, "<td>%d</td>", item.ActualFinishDays)  
 				fmt.Fprintf(w, "<td>%d</td>", item.TargetFinishDays) 
 		if item.IsFinish {
@@ -36,7 +36,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 					fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
 		}  
 
-		sItem := hData.GlobalSleep.WeekSleepInfo[item.WeekNum]
+		sItem := hData.GlobalSleep.WeekSleepInfo[item.Week.WeekNum]
 		if sItem == nil {
 			continue
 		}
@@ -48,7 +48,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 					fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
 		}
 
-		rItem := hData.GlobalReading.WeekReadingInfo[item.WeekNum]
+		rItem := hData.GlobalReading.WeekReadingInfo[item.Week.WeekNum]
 		if rItem == nil {
 			continue
 		}
@@ -62,7 +62,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 					fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
 		} 
 		
-		pItem := hData.GlobalPiano.WeekPianoInfo[item.WeekNum]
+		pItem := hData.GlobalPiano.WeekPianoInfo[item.Week.WeekNum]
 		if pItem == nil {
 			continue
 		}
@@ -76,7 +76,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 		  		fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
 		}
 
-		scItem :=  hData.GlobalSkinCare.WeekInfo[item.WeekNum]
+		scItem :=  hData.GlobalSkinCare.WeekInfo[item.Week.WeekNum]
 		if scItem == nil {
 		  continue
 		}
@@ -86,7 +86,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 		  		fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
 		}
 
-		fItem :=  hData.GlobalFaceMask.WeekInfo[item.WeekNum]
+		fItem :=  hData.GlobalFaceMask.WeekInfo[item.Week.WeekNum]
 		if fItem == nil {
 		  continue
 		}
@@ -97,7 +97,7 @@ func WeekHtmlTable(w http.ResponseWriter) {
 		}
 		
 
-		aItem :=  hData.GlobalAudiobook.WeekInfo[item.WeekNum]
+		aItem :=  hData.GlobalAudiobook.WeekInfo[item.Week.WeekNum]
 		if aItem == nil {
 		  continue
 		}

@@ -14,7 +14,6 @@ type DayGetup struct {
 }
 
 func NewDayGetup(date string, weekday string, weekNum string, monthNum string, yearNum string, dayOfMonth int, dayOfYear int, rawInfo string) (*DayGetup, error) {
-
 	return &DayGetup{
 		Day: &hDate.Day{
 			Date: date,

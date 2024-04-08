@@ -7,7 +7,6 @@ import (
 
 type WeekGetup struct {
 	Week *hDate.Week
-	WeekNum string
 	RawInfo  map[string]*DayGetup  // string表示周几
 	IsFinish bool
 	TargetFinishDays int

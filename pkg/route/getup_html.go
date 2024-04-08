@@ -73,7 +73,7 @@ func WeekGetupHtmlTable(w http.ResponseWriter) {
 		}  
 		
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.WeekNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Week.WeekNum)
 		fmt.Fprintf(w, "<td>%d</td>", item.ActualFinishDays)  
 		fmt.Fprintf(w, "<td>%d</td>", item.TargetFinishDays) 
 		if item.IsFinish {
@@ -110,7 +110,7 @@ func MonthGetupHtmlTable(w http.ResponseWriter) {
 		} 
 
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.MonthNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Month.MonthNum)
 		fmt.Fprintf(w, "<td>%d</td>", item.ActualFinishDays)  
 		fmt.Fprintf(w, "<td>%d</td>", item.TargetFinishDays) 
 		if item.IsFinish {
@@ -153,7 +153,7 @@ func YearGetupHtmlTable(w http.ResponseWriter) {
 			continue
 		} 
 		fmt.Fprintf(w, "<tr>")  
-		fmt.Fprintf(w, "<td>%s</td>", item.YearNum)
+		fmt.Fprintf(w, "<td>%s</td>", item.Year.YearNum)
 		fmt.Fprintf(w, "<td>%d</td>", item.ActualFinishDays)  
 		fmt.Fprintf(w, "<td>%d</td>", item.TargetFinishDays) 
 		if item.IsFinish {

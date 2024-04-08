@@ -6,7 +6,6 @@ import (
 
 type YearGetup struct {
 	Year *hDate.Year
-	YearNum string
 	RawInfo  map[string]*DayGetup  // string表示周几
 	IsFinish bool
 	TargetFinishDays int
@@ -19,7 +18,6 @@ func NewYearGetup(yearNum string, daysInYear int, rawInfo map[string]*DayGetup )
 			YearNum: yearNum,
 			DaysInYear: daysInYear,
 		},
-    YearNum: yearNum,
 		RawInfo: rawInfo,
 		TargetFinishDays: TargetYearFinishDays,
   }, nil
