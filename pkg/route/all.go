@@ -41,7 +41,16 @@ var GlobalTable = `<!DOCTYPE html>
 <style>  
     .color-cell {  
         background-color: pink;  
-    }  
+    }
+		.fixed-header{  
+				background-color: #f2f2f2;  
+				position: sticky;  
+				top: 0; /* 这将使表头固定在视口的顶部 */  
+				z-index: 1; /* 确保表头在其他内容之上 */  
+				border-collapse: collapse; 
+				padding: 8px;
+		}  
+			
 </style>  
 </head>  
 <body>  

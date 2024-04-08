@@ -16,8 +16,8 @@ func DayHtmlTable(w http.ResponseWriter) {
 	// fmt.Fprintf(w, "<title>MyStruct Table</title>\n")  
 	// fmt.Fprintf(w, "</head>\n")  
 	// fmt.Fprintf(w, "<body>\n")  
-	// fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th>date</th><th>weekNum</th><th>weekday</th><th>getup</th><th>targetTime</th><th>finish</th><th>sleep</th><th>targetTime</th><th>finish</th><th>ReadingTime</th><th>targetReadingTime</th><th>content</th><th>finish</th><th>PianoTime</th><th>targetPianoTime</th><th>content</th><th>finish</th><th>skincare</th><th>facemask</th><th>audiobook</th><th>finish</th></tr>\n")  
+	// fmt.Fprintf(w, "<table border='1'>\n") 	  
+	fmt.Fprintf(w, "<tr><th class='%s'>date</th><th class='%s'>weekNum</th><th class='%s'>weekday</th><th class='%s'>getup</th><th class='%s'>targetTime</th><th class='%s'>finish</th><th class='%s'>sleep</th><th class='%s'>targetTime</th><th class='%s'>finish</th><th class='%s'>ReadingTime</th><th class='%s'>targetReadingTime</th><th class='%s'>content</th><th class='%s'>finish</th><th class='%s'>PianoTime</th><th class='%s'>targetPianoTime</th><th class='%s'>content</th><th class='%s'>finish</th><th class='%s'>skincare</th><th class='%s'>facemask</th><th class='%s'>audiobook</th><th class='%s'>finish</th></tr>\n", "fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header")  
   
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalGetup.DayOrderGetupInfo { 
