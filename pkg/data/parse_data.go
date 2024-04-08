@@ -71,7 +71,7 @@ func readExcelAndCreateMapDataAndWriteFile(input string, output string, target s
 	defer file.Close()  
   
 	dataMap := make(map[string]string)  
-	rows := f.GetRows("习惯总结") // 假设数据在Sheet1中  
+	rows := f.GetRows("Sheet1") // 假设数据在Sheet1中  
 	for _, row := range rows[1:] { // 跳过标题行  
 		if len(row) > columnIndex {  
 			date := row[0]  
