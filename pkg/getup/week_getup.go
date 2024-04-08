@@ -1,7 +1,12 @@
 package getup
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
+
 
 type WeekGetup struct {
+	Week *hDate.Week
 	WeekNum string
 	RawInfo  map[string]*DayGetup  // string表示周几
 	IsFinish bool
@@ -11,7 +16,9 @@ type WeekGetup struct {
 
 func NewWeekGetup(weekNum string, rawInfo map[string]*DayGetup ) (*WeekGetup, error) {
   return &WeekGetup{
-    WeekNum: weekNum,
+		Week: &hDate.Week{
+			WeekNum: weekNum,
+		},
 		RawInfo: rawInfo,
 		TargetFinishDays: TargetWeekFinishDays,
   }, nil
@@ -30,7 +37,6 @@ func (w *WeekGetup) CheckFinish() error {
 			w.ActualFinishDays++
 		}
 	}
-	// fmt.Println("w.ActualFinishDays", w.ActualFinishDays)
 
 	if w.ActualFinishDays >= w.TargetFinishDays {
 		w.IsFinish = true

@@ -1,7 +1,11 @@
 package getup
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
 
 type MonthGetup struct {
+	Month *hDate.Month
 	MonthNum string
 	RawInfo  map[int]*DayGetup   // int表示几号
 	IsFinish bool
@@ -9,9 +13,12 @@ type MonthGetup struct {
 	ActualFinishDays int
 }
 
-func NewMonthGetup(weekNum string, rawInfo map[int]*DayGetup ) (*MonthGetup, error) {
+func NewMonthGetup(monthNum string, daysInMonth int, rawInfo map[int]*DayGetup ) (*MonthGetup, error) {
   return &MonthGetup{
-    MonthNum: weekNum,
+		Month: &hDate.Month{
+			MonthNum: monthNum,
+			DaysInMonth: daysInMonth, 
+		},
 		RawInfo: rawInfo,
 		TargetFinishDays: TargetMonthFinishDays,
   }, nil

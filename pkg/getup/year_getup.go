@@ -1,7 +1,11 @@
 package getup
 
+import (
+	hDate "ningan.com/habit-tracking/pkg/date"
+)
 
 type YearGetup struct {
+	Year *hDate.Year
 	YearNum string
 	RawInfo  map[string]*DayGetup  // string表示周几
 	IsFinish bool
@@ -9,8 +13,12 @@ type YearGetup struct {
 	ActualFinishDays int
 }
 
-func NewYearGetup(yearNum string, rawInfo map[string]*DayGetup ) (*YearGetup, error) {
+func NewYearGetup(yearNum string, daysInYear int, rawInfo map[string]*DayGetup ) (*YearGetup, error) {
   return &YearGetup{
+		Year: &hDate.Year{
+			YearNum: yearNum,
+			DaysInYear: daysInYear,
+		},
     YearNum: yearNum,
 		RawInfo: rawInfo,
 		TargetFinishDays: TargetYearFinishDays,

@@ -28,14 +28,14 @@ func DayGetupHtmlTable(w http.ResponseWriter) {
 		}
 
 		cellClass := ""
-		if item.Weekday == "一" {
+		if item.Day.Weekday == "一" {
 			cellClass = "color-cell"
 		} 
 
 		fmt.Fprintf(w, "<tr>")
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Date)
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.WeekNum)
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Weekday)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.Date)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.WeekNum)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.Weekday)
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.RawInfo) 
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.TargetTime) 
 		if item.IsFinish {

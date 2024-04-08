@@ -25,14 +25,14 @@ func DayHtmlTable(w http.ResponseWriter) {
 		  continue
 		}
 		cellClass := ""
-		if item.Weekday == "一" {
+		if item.Day.Weekday == "一" {
 			cellClass = "color-cell"
 		} 
 
 		fmt.Fprintf(w, "<tr>")
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Date)
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.WeekNum)
-		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Weekday)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.Date)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.WeekNum)
+		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.Day.Weekday)
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.RawInfo) 
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, item.TargetTime) 
 		if item.IsFinish {
@@ -41,7 +41,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x274C;")
 		}
 
-		sItem := hData.GlobalSleep.DaySleepInfo[item.Date]
+		sItem := hData.GlobalSleep.DaySleepInfo[item.Day.Date]
 		if sItem == nil {
 		  continue
 		}
@@ -54,7 +54,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x274C;")
 		}
 
-		rItem := hData.GlobalReading.DayReadingInfo[item.Date]
+		rItem := hData.GlobalReading.DayReadingInfo[item.Day.Date]
 		if rItem == nil {
 		  continue
 		}
@@ -67,7 +67,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x274C;")
 		}
 
-		pItem := hData.GlobalPiano.DayPianoInfo[item.Date]
+		pItem := hData.GlobalPiano.DayPianoInfo[item.Day.Date]
 		if pItem == nil {
 		  continue
 		}
@@ -80,7 +80,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x274C;")
 		}
 
-		scItem := hData.GlobalSkinCare.DayInfo[item.Date]
+		scItem := hData.GlobalSkinCare.DayInfo[item.Day.Date]
 		if scItem == nil {
 		  continue
 		}
@@ -90,7 +90,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x274C;")
 		}
 		
-		fItem := hData.GlobalFaceMask.DayInfo[item.Date]
+		fItem := hData.GlobalFaceMask.DayInfo[item.Day.Date]
 		if fItem == nil {
 		  continue
 		}
@@ -100,7 +100,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x274C;")
 		}
 
-		aItem := hData.GlobalAudiobook.DayInfo[item.Date]
+		aItem := hData.GlobalAudiobook.DayInfo[item.Day.Date]
 		if aItem == nil {
 		  continue
 		}

@@ -1,7 +1,6 @@
 package getup
 
 import (
-	"fmt"
 	"sort"
 
 	"k8s.io/klog/v2"
@@ -66,15 +65,14 @@ func(g *Getup) GenGetupInfo() error {
 
 func(g *Getup) GenDayGetupInfo() error {
 	klog.InfoS("GenDayGetupInfo")
-  for date, info := range g.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range g.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
-		
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
-		dGetup, err := NewDayGetup(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+
+		dGetup, err := NewDayGetup(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
     }
@@ -89,14 +87,13 @@ func(g *Getup) GenDayGetupInfo() error {
 
 func(r *Getup) GenWeekGetupInfo() error {
 	klog.InfoS("GenWeekGetupInfo")
-  for date, info := range r.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range r.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
 		if r.WeekGetupInfo[weekNum] == nil {
 			weekRawInfo := make(map[string]*DayGetup)
 			r.WeekGetupInfo[weekNum], err = NewWeekGetup(weekNum, weekRawInfo)
@@ -105,7 +102,7 @@ func(r *Getup) GenWeekGetupInfo() error {
 			}
 		}
 		
-		dGetup, err := NewDayGetup(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dGetup, err := NewDayGetup(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
 		}
@@ -120,27 +117,25 @@ func(r *Getup) GenWeekGetupInfo() error {
 
 func(g *Getup) GenMonthGetupInfo() error {
 	klog.InfoS("GenMonthGetupInfo")
-  for date, info := range g.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range g.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
-		monthNum := fmt.Sprintf("%d-%02d", year, month)
 		if g.MonthGetupInfo[monthNum] == nil {
 		  monthRawInfo := make(map[int]*DayGetup)
-			g.MonthGetupInfo[monthNum], err = NewMonthGetup(monthNum, monthRawInfo)
+			g.MonthGetupInfo[monthNum], err = NewMonthGetup(monthNum, daysInMonth, monthRawInfo)
 			if err != nil {
 			  return err
 			}
 		}
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
 
-		dGetup, err := NewDayGetup(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dGetup, err := NewDayGetup(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
-    }
+		}
 
 		g.MonthGetupInfo[monthNum].RawInfo[dayOfMonth] = dGetup	   
   }  
@@ -152,28 +147,25 @@ func(g *Getup) GenMonthGetupInfo() error {
 
 func(r *Getup) GenYearGetupInfo() error {
 	klog.InfoS("GenYearGetupInfo")
-  for date, info := range r.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range r.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
-		yearNum := fmt.Sprintf("%d", year)
 		if r.YearGetupInfo[yearNum] == nil {
 			yearRawInfo := make(map[string]*DayGetup)
-			r.YearGetupInfo[yearNum], err = NewYearGetup(yearNum, yearRawInfo)
+			r.YearGetupInfo[yearNum], err = NewYearGetup(yearNum, daysInYear, yearRawInfo)
 			if err != nil {
 			  return err
 			}
 		}
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
 
-		dGetup, err := NewDayGetup(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
-		if err != nil {
-			return err
+		dGetup, err := NewDayGetup(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
+    if err != nil {
+      return err
 		}
-
 		r.YearGetupInfo[yearNum].RawInfo[date] = dGetup
 	   
   }  
