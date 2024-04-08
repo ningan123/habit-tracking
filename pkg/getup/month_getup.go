@@ -12,7 +12,7 @@ type MonthGetup struct {
 	ActualFinishDays int
 }
 
-func NewMonthGetup(monthNum string, daysInMonth int, rawInfo map[int]*DayGetup ) (*MonthGetup, error) {
+func NewMonthGetup(monthNum string, daysInMonth int, rawInfo map[int]*DayGetup) (*MonthGetup, error) {
   return &MonthGetup{
 		Month: &hDate.Month{
 			MonthNum: monthNum,
