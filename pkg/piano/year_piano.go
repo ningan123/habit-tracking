@@ -8,17 +8,16 @@ import (
 )
 
 type YearPiano struct {
-  YearNum string // 年份
-	DaysInYear int // 一年多少天
+	Year *hDate.Year
   PianoTime string   
-	YearRawInfo map[string]*DayPiano  
+	RawInfo map[string]*DayPiano  
   PianoTimeOfDifferentContent map[string]string
 	PianoTimeOfDifferentContentStr string	
 	IsFinish bool
 	TargetPianoTime string
 }
 
-func NewYearPiano(yearNum string, yearRawInfo map[string]*DayPiano, daysInYear int) (*YearPiano, error) {
+func NewYearPiano(yearNum string, daysInYear int, rawInfo map[string]*DayPiano) (*YearPiano, error) {
 	tPianoTime, err := hDate.FormatDurationMultiply(TargetDayPianoTime, daysInYear)
 	if err != nil {
 		klog.Errorf("format duration error: %v", err)
@@ -26,8 +25,11 @@ func NewYearPiano(yearNum string, yearRawInfo map[string]*DayPiano, daysInYear i
 	}
 
   return &YearPiano{
-    YearRawInfo: yearRawInfo,
-		YearNum: yearNum,
+		Year: &hDate.Year{
+			YearNum: yearNum,
+			DaysInYear: daysInYear,
+		},
+    RawInfo: rawInfo,
     PianoTimeOfDifferentContent: make(map[string]string),
     PianoTime: "0min",
 		TargetPianoTime: tPianoTime,
@@ -36,7 +38,7 @@ func NewYearPiano(yearNum string, yearRawInfo map[string]*DayPiano, daysInYear i
 
 
 func (y *YearPiano) ComputePianoTime() error {
-	for _, dayPiano := range y.YearRawInfo {
+	for _, dayPiano := range y.RawInfo {
 		err := dayPiano.ComputePianoTime()
 		if err != nil {
 			return err
@@ -72,7 +74,7 @@ func (y *YearPiano) ComputePianoTime() error {
 
 func (y *YearPiano) Print() {
 	for content, conPianoTime := range y.PianoTimeOfDifferentContent {
-		klog.InfoS("year piano info", "yearNum", y.YearNum, "pianoTime", y.PianoTime, "content", content, "contentPianoTime", conPianoTime)
+		klog.InfoS("year piano info", "yearNum", y.Year.YearNum, "pianoTime", y.PianoTime, "content", content, "contentPianoTime", conPianoTime)
 	}	
 }
 

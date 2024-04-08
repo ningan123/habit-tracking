@@ -4,21 +4,14 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"time"
 
 	"k8s.io/klog/v2"
 	hDate "ningan.com/habit-tracking/pkg/date"
 )
 
 type DayPiano struct {
+	Day *hDate.Day
   RawInfo  string
-	Date string // 具体日期
-	Weekday string // 星期几
-	Month time.Month // 几月
-	WeekNum string // 几周
-	Year int // 哪一年
-	DayOfYear int // 一年中的第几天
-	DayOfMonth int // 一个月中的第几天
 	PianoTime string 
 	PianoTimeOfDifferentContent map[string]string
 	PianoTimeOfDifferentContentStr string
@@ -34,21 +27,23 @@ type ContentInfo struct {
 }
 
 
-func NewDayPiano(date string, year int, dayOfYear int, month time.Month, dayOfMonth int, weekNum string, weekday string, rawInfo string) (*DayPiano, error) {
+func NewDayPiano(date string, weekday string, weekNum string, monthNum string, yearNum string, dayOfMonth int, dayOfYear int, rawInfo string) (*DayPiano, error) {
 	contentInfoList, err := SplitRawInfo(rawInfo)
 	if err != nil {
 		return nil, err
 	}
 
 	return &DayPiano{
+		Day: &hDate.Day{
+			Date: date,
+			Weekday: weekday,
+			WeekNum: weekNum,
+			MonthNum: monthNum,
+			YearNum: yearNum,
+			DayOfMonth: dayOfMonth,
+			DayOfYear: dayOfYear,
+		},
 		RawInfo: rawInfo,
-		Date: date,
-		Weekday: weekday,
-		DayOfYear: dayOfYear,
-		DayOfMonth: dayOfMonth,
-		WeekNum: weekNum,
-		Month: month,
-		Year: year,
 		PianoTime: "0min",
 		PianoTimeOfDifferentContent: make(map[string]string),
 		ContentInfoList: contentInfoList,
@@ -115,7 +110,7 @@ func (d *DayPiano) ComputePianoTime () error {
 
 func (d *DayPiano) Print() {
 	for _, conInfo := range d.ContentInfoList {
-		klog.InfoS("day piano info", "date", d.Date,"pianoTime", d.PianoTime,  "content", conInfo.Content, "contentPianoTime", conInfo.PianoTime)
+		klog.InfoS("day piano info", "date", d.Day.Date,"pianoTime", d.PianoTime,  "content", conInfo.Content, "contentPianoTime", conInfo.PianoTime)
 	}
 }
 

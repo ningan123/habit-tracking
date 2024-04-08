@@ -8,9 +8,8 @@ import (
 )
 
 type MonthPiano struct {
-	MonthNum string
+	Month *hDate.Month
 	PianoTime string 
-	DaysInMonth int
 	PianoTimeOfDifferentContent map[string]string 
 	PianoTimeOfDifferentContentStr string
 	RawInfo  map[int]*DayPiano  // int表示几号
@@ -19,7 +18,7 @@ type MonthPiano struct {
 }
 
 
-func NewMonthPiano(month string, rawInfo map[int]*DayPiano, daysInMonth int) (*MonthPiano, error) {
+func NewMonthPiano(monthNum string, daysInMonth int, rawInfo map[int]*DayPiano) (*MonthPiano, error) {
 	tPianoTime, err := hDate.FormatDurationMultiply(TargetDayPianoTime, daysInMonth)
 	if err != nil {
 		klog.Errorf("format duration error: %v", err)
@@ -27,11 +26,13 @@ func NewMonthPiano(month string, rawInfo map[int]*DayPiano, daysInMonth int) (*M
 	}
 
 	return &MonthPiano{
-		MonthNum: month, 
+		Month: &hDate.Month{
+			MonthNum: monthNum,
+			DaysInMonth: daysInMonth, 
+		},
 		PianoTime: "0min",
 		PianoTimeOfDifferentContent: make(map[string]string),
 		RawInfo: rawInfo,
-		DaysInMonth: daysInMonth,
 		TargetPianoTime: tPianoTime,
 	},nil
 }
@@ -72,7 +73,7 @@ func (m *MonthPiano) ComputePianoTime() error {
 
 func (m *MonthPiano) Print() {
 	for content, conPianoTime := range m.PianoTimeOfDifferentContent {
-		klog.InfoS("month piano info", "monthNum", m.MonthNum, "pianoTime", m.PianoTime, "content", content, "contentPianoTime", conPianoTime)
+		klog.InfoS("month piano info", "monthNum", m.Month.MonthNum, "pianoTime", m.PianoTime, "content", content, "contentPianoTime", conPianoTime)
 	}
 	
 }

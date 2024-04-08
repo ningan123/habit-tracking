@@ -8,7 +8,7 @@ import (
 )
 
 type WeekPiano struct {
-	WeekNum string
+	Week *hDate.Week
 	PianoTime string 
 	PianoTimeOfDifferentContent map[string]string 
 	PianoTimeOfDifferentContentStr string
@@ -26,7 +26,9 @@ func NewWeekPiano(weekNum string, rawInfo map[string]*DayPiano ) (*WeekPiano, er
 	}
 
   return &WeekPiano{
-    WeekNum: weekNum,
+    Week: &hDate.Week{
+			WeekNum: weekNum,
+		},
 		PianoTime: "0min",
 		PianoTimeOfDifferentContent : make(map[string]string),
 		RawInfo: rawInfo,
@@ -73,7 +75,7 @@ func (w *WeekPiano) ComputePianoTime() error {
 
 func (w *WeekPiano) Print() {
 	for content, conPianoTime := range w.PianoTimeOfDifferentContent {
-		klog.InfoS("week piano info", "weekNum", w.WeekNum, "pianoTime", w.PianoTime, "content", content, "contentPianoTime", conPianoTime)
+		klog.InfoS("week piano info", "weekNum", w.Week.WeekNum, "pianoTime", w.PianoTime, "content", content, "contentPianoTime", conPianoTime)
 	}
 }
 

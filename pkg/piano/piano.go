@@ -1,7 +1,6 @@
 package piano
 
 import (
-	"fmt"
 	"sort"
 
 	"k8s.io/klog/v2"
@@ -67,15 +66,14 @@ func (p *Piano) GenPianoInfo() error {
 
 func (p *Piano) GenDayPianoInfo() error {
 	klog.InfoS("GenDayPianoInfo")
-  for date, info := range p.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range p.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
-		dPiano, err := NewDayPiano(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dPiano, err := NewDayPiano(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
     }
@@ -88,14 +86,13 @@ func (p *Piano) GenDayPianoInfo() error {
 
 func (p *Piano) GenWeekPianoInfo() error {
 	klog.InfoS("GenWeekPianoInfo")
-  for date, info := range p.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range p.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
 		if p.WeekPianoInfo[weekNum] == nil {
 			weekRawInfo := make(map[string]*DayPiano)
 			p.WeekPianoInfo[weekNum], err = NewWeekPiano(weekNum, weekRawInfo)
@@ -104,7 +101,7 @@ func (p *Piano) GenWeekPianoInfo() error {
 			}
 		}
 		
-		dPiano, err := NewDayPiano(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dPiano, err := NewDayPiano(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
 		}
@@ -118,24 +115,22 @@ func (p *Piano) GenWeekPianoInfo() error {
 
 func (p *Piano) GenMonthPianoInfo() error {
 	klog.InfoS("GenMonthPianoInfo")
-  for date, info := range p.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range p.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 		
-		monthNum := fmt.Sprintf("%d-%02d", year, month)
 		if p.MonthPianoInfo[monthNum] == nil {
 		  monthRawInfo := make(map[int]*DayPiano)
-			p.MonthPianoInfo[monthNum], err = NewMonthPiano(monthNum, monthRawInfo, daysInMonth)
+			p.MonthPianoInfo[monthNum], err = NewMonthPiano(monthNum, daysInMonth, monthRawInfo)
 			if err != nil {
 			  return err
 			}
 		}
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week) 
 
-		dPiano, err := NewDayPiano(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		dPiano, err := NewDayPiano(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
     if err != nil {
       return err
     }
@@ -148,29 +143,27 @@ func (p *Piano) GenMonthPianoInfo() error {
 
 func (p *Piano) GenYearPianoInfo() error {
 	klog.InfoS("GenYearPianoInfo")
-  for date, info := range p.RawInfo {
-		year, month, weekyear, week, weekday, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
+  for date, rawInfo := range p.RawInfo {
+		year, yearNum, month, monthNum, weekyear, week, weekday, weekNum, dayOfMonth, dayOfYear, daysInMonth, daysInYear, err := hDate.GetDateDetails(date)
 		if err != nil {
 			return err
 		}
-		klog.V(2).InfoS("date detail", "date", date, "year", year, "month", month, "weekyear", weekyear, "week", week, "weekday", weekday, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
+		klog.V(2).InfoS("date detail", "date", date, "year", year, "yearNum", yearNum, "month", month, "monthNum", monthNum, "weekyear", weekyear, "week", week, "weekday", weekday, "weekNum", weekNum, "dayOfMonth", dayOfMonth, "dayOfYear", dayOfYear, "daysInMonth", daysInMonth, "daysInYear", daysInYear)
 
-		yearNum := fmt.Sprintf("%d", year)
 		if p.YearPianoInfo[yearNum] == nil {
 			yearRawInfo := make(map[string]*DayPiano)
-			p.YearPianoInfo[yearNum], err = NewYearPiano(yearNum, yearRawInfo, daysInYear)
+			p.YearPianoInfo[yearNum], err = NewYearPiano(yearNum, daysInYear, yearRawInfo)
 			if err != nil {
 			  return err
 			}
 		}
-		weekNum := fmt.Sprintf("%d-%02d", weekyear, week)
-
-		dPiano, err := NewDayPiano(date, year,dayOfYear, month, dayOfMonth, weekNum, weekday, info)
+		
+		dPiano, err := NewDayPiano(date, weekday, weekNum, monthNum, yearNum, dayOfMonth, dayOfYear, rawInfo)
 		if err != nil {
 			return err
 		}
 
-		p.YearPianoInfo[yearNum].YearRawInfo[date] = dPiano
+		p.YearPianoInfo[yearNum].RawInfo[date] = dPiano
 	   
   }  
   return nil
