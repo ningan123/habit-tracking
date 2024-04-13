@@ -15,6 +15,7 @@ import (
 var (
 	port = flag.Int("p", 8888, "port")
 	dataPath = flag.String("data-path", "./data/real", "data-path")
+	dataFileName = flag.String("data-filename", "data.xlsx", "data-filename")
 	Version string
 )
 
@@ -25,43 +26,43 @@ func main() {
 	klog.InfoS("Show version", "version", Version)
 
 	// reading
-	err := hData.DealReadingData(*dataPath+"/data.xlsx", *dataPath+"/output_reading.txt", "阅读")
+	err := hData.DealReadingData(*dataPath+"/"+*dataFileName, *dataPath+"/output_reading.txt", "阅读")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// piano
-	err = hData.DealPianoData(*dataPath+"/data.xlsx", *dataPath+"/output_piano.txt", "练琴")
+	err = hData.DealPianoData(*dataPath+"/"+*dataFileName, *dataPath+"/output_piano.txt", "练琴")
 	if err != nil {
 		log.Fatal(err)
 	}	
 
 	// getup
-	err = hData.DealGetupData(*dataPath+"/data.xlsx", *dataPath+"/output_getup.txt", "起床")
+	err = hData.DealGetupData(*dataPath+"/"+*dataFileName, *dataPath+"/output_getup.txt", "起床")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// sleep
-	err = hData.DealSleepData(*dataPath+"/data.xlsx", *dataPath+"/output_sleep.txt", "睡觉")
+	err = hData.DealSleepData(*dataPath+"/"+*dataFileName, *dataPath+"/output_sleep.txt", "睡觉")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// facemask
-	err = hData.DealFaceMaskData(*dataPath+"/data.xlsx", *dataPath+"/output_facemask.txt", "敷面膜")
+	err = hData.DealFaceMaskData(*dataPath+"/"+*dataFileName, *dataPath+"/output_facemask.txt", "敷面膜")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// skincare
-	err = hData.DealSkinCareData(*dataPath+"/data.xlsx", *dataPath+"/output_skincare.txt", "护肤")
+	err = hData.DealSkinCareData(*dataPath+"/"+*dataFileName, *dataPath+"/output_skincare.txt", "护肤")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// audiobook
-	err = hData.DealAudiobookData(*dataPath+"/data.xlsx", *dataPath+"/output_audiobook.txt", "听书")
+	err = hData.DealAudiobookData(*dataPath+"/"+*dataFileName, *dataPath+"/output_audiobook.txt", "听书")
 	if err != nil {
 		log.Fatal(err)
 	}
