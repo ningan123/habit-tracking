@@ -14,7 +14,7 @@ import (
 
 var (
 	port = flag.Int("p", 8888, "port")
-	dataPath = flag.String("data-path", "./data/real/", "data-path")
+	dataPath = flag.String("data-path", "./data/real", "data-path")
 	Version string
 )
 
