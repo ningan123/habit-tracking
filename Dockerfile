@@ -1,5 +1,10 @@
-FROM xxx
+FROM alpine
 
-ADD ./bin/habit-tracking /root/bin/habit-tracking
+ADD ./bin/habit-tracking /root/habit-tracking
 
-ENTRYPOINT ["/bin/sh","-c","/root/bin/habit-tracking"]
+WORKDIR /root
+
+RUN pwd
+RUN ls -la /root
+
+ENTRYPOINT ["/bin/sh","-c","/root/habit-tracking"]
