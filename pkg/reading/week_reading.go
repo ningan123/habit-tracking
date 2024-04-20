@@ -67,7 +67,7 @@ func (w *WeekReading) ComputeReadingTime() error {
 	}
 
 	for k, v := range w.ReadingTimeOfDifferentContent {
-		w.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+		w.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
 	
 	return nil

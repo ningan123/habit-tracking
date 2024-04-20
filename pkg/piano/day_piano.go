@@ -102,7 +102,7 @@ func (d *DayPiano) ComputePianoTime () error {
 	}
 
 	for k,v := range d.PianoTimeOfDifferentContent {
-	  d.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+	  d.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
 	return nil
 }

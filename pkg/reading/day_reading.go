@@ -102,7 +102,7 @@ func (d *DayReading) ComputeReadingTime () error {
 	}
 
 	for k,v := range d.ReadingTimeOfDifferentContent {
-	  d.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+	  d.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
 	return nil
 }

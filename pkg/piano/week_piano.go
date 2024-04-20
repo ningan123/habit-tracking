@@ -67,7 +67,7 @@ func (w *WeekPiano) ComputePianoTime() error {
 	}
 
 	for k, v := range w.PianoTimeOfDifferentContent {
-		w.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+		w.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
 	
 	return nil
