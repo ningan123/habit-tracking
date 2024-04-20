@@ -72,4 +72,4 @@ var GlobalTable = `<!DOCTYPE html>
 </style>  
 </head>  
 <body>  
-<table border="1" width="1800px">`
+<table border="1">`

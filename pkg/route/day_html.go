@@ -17,13 +17,13 @@ func DayHtmlTable(w http.ResponseWriter) {
 	// fmt.Fprintf(w, "</head>\n")  
 	// fmt.Fprintf(w, "<body>\n")  
 	// fmt.Fprintf(w, "<table border='1'>\n") 	
-	fmt.Fprintf(w,"<tr><th class='%s'>date</th><th class='%s'>weekNum</th><th class='%s'>weekday</th>","fixed-header","fixed-header","fixed-header")  
-	fmt.Fprintf(w,"<th class='%s'>getup</th><th class='%s'>targetTime</th><th class='%s'>finish</th>","fixed-header2","fixed-header2","fixed-header2") 
-	fmt.Fprintf(w,"<th class='%s'>sleep</th><th class='%s'>targetTime</th><th class='%s'>finish</th>","fixed-header3","fixed-header3","fixed-header3") 
-	fmt.Fprintf(w,"<th class='%s'>ReadingTime</th><th class='%s'>targetReadingTime</th><th class='%s'>content</th><th class='%s'>finish</th>","fixed-header2","fixed-header2","fixed-header2","fixed-header2") 
-	fmt.Fprintf(w,"<th class='%s'>PianoTime</th><th class='%s'>targetPianoTime</th><th class='%s'>content</th><th class='%s'>finish</th>","fixed-header3","fixed-header3","fixed-header3","fixed-header3") 
+	fmt.Fprintf(w,"<tr><th class='%s'>dateDateDate</th><th class='%s'>weekNum</th><th class='%s'>weekday</th>","fixed-header","fixed-header","fixed-header")  
+	fmt.Fprintf(w,"<th class='%s'>getup</th><th class='%s'>target</th><th class='%s'>finish</th>","fixed-header2","fixed-header2","fixed-header2") 
+	fmt.Fprintf(w,"<th class='%s'>sleep</th><th class='%s'>target</th><th class='%s'>finish</th>","fixed-header3","fixed-header3","fixed-header3") 
+	fmt.Fprintf(w,"<th class='%s'>reading</th><th class='%s'>target</th><th class='%s'>readingcContentContent</th><th class='%s'>finish</th>","fixed-header2","fixed-header2","fixed-header2","fixed-header2") 
+	fmt.Fprintf(w,"<th class='%s'>piano</th><th class='%s'>target</th><th class='%s'>pianoContentContent</th><th class='%s'>finish</th>","fixed-header3","fixed-header3","fixed-header3","fixed-header3") 
 	fmt.Fprintf(w,"<th class='%s'>skincare</th><th class='%s'>facemask</th>","fixed-header2","fixed-header2") 
-	fmt.Fprintf(w, "<th class='%s'>audiobook</th><th class='%s'>finish</th></tr>\n","fixed-header3","fixed-header3")  
+	fmt.Fprintf(w, "<th class='%s'>audiobookContentContent</th><th class='%s'>finish</th></tr>\n","fixed-header3","fixed-header3")  
   
 
 	// 遍历数据并构造表格的行  
