@@ -30,6 +30,7 @@ type ContentInfo struct {
 func NewDayReading(date string, weekday string, weekNum string, monthNum string, yearNum string, dayOfMonth int, dayOfYear int, rawInfo string) (*DayReading, error) {
 	contentInfoList, err := SplitRawInfo(rawInfo)
 	if err != nil {
+		klog.ErrorS(err, "date raw info error", "date", date)
 		return nil, err
 	}
 
