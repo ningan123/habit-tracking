@@ -30,6 +30,7 @@ type ContentInfo struct {
 func NewDayPiano(date string, weekday string, weekNum string, monthNum string, yearNum string, dayOfMonth int, dayOfYear int, rawInfo string) (*DayPiano, error) {
 	contentInfoList, err := SplitRawInfo(rawInfo)
 	if err != nil {
+		klog.ErrorS(err, "date raw info error", "date", date)
 		return nil, err
 	}
 
@@ -65,10 +66,10 @@ func SplitRawInfo(rawInfo string) ([]ContentInfo, error) {
 	  return nil, nil
 	}
 	
-	rawInfoList := strings.Split(rawInfo, ";")
+	rawInfoList := strings.Split(rawInfo, "；")
 	for _, str := range rawInfoList {
-		strList := strings.Split(str, ",")
-		if len(strList) != 2 {
+		strList := strings.Split(str, "：")
+		if len(strList) != 2 {	
 			errMsg := fmt.Sprintf("error split raw info: %s", str)
 			return nil, errors.New(errMsg)
 		}
