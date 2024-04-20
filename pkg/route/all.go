@@ -42,16 +42,34 @@ var GlobalTable = `<!DOCTYPE html>
     .color-cell {  
         background-color: pink;  
     }
-		.fixed-header{  
-				background-color: #f2f2f2;  
-				position: sticky;  
-				top: 0; /* 这将使表头固定在视口的顶部 */  
-				z-index: 1; /* 确保表头在其他内容之上 */  
-				border-collapse: collapse; 
-				padding: 8px;
-		}  
+
+	.fixed-header{  
+		background-color: #f2f2f2;  
+		position: sticky;  
+		top: 0; /* 这将使表头固定在视口的顶部 */  
+		z-index: 1; /* 确保表头在其他内容之上 */  
+		border-collapse: collapse; 
+		padding: 8px;
+	} 
+	.fixed-header2{  
+		background-color: #63B8FF;  
+		position: sticky;  
+		top: 0; /* 这将使表头固定在视口的顶部 */  
+		z-index: 1; /* 确保表头在其他内容之上 */  
+		border-collapse: collapse; 
+		padding: 8px;
+	}   
+
+	.fixed-header3{  
+		background-color: 	#90EE90;  
+		position: sticky;  
+		top: 0; /* 这将使表头固定在视口的顶部 */  
+		z-index: 1; /* 确保表头在其他内容之上 */  
+		border-collapse: collapse; 
+		padding: 8px;
+	}   
 			
 </style>  
 </head>  
 <body>  
-<table border="1">`
+<table border="1" width="1800px">`

@@ -18,7 +18,13 @@ func WeekHtmlTable(w http.ResponseWriter) {
 	// fmt.Fprintf(w, "</head>\n")  
 	// fmt.Fprintf(w, "<body>\n")  
 	// fmt.Fprintf(w, "<table border='1'>\n")  
-	fmt.Fprintf(w, "<tr><th class='%s'>weekNum</th><th class='%s'>getupDays</th><th class='%s'>getupTargetDays</th><th class='%s'>finish</th><th class='%s'>sleepDays</th><th class='%s'>sleepTargetDays</th><th class='%s'>finish</th><th class='%s'>weekReadingTime</th><th class='%s'>targetReadingTime</th><th class='%s'>extraReadingTime</th><th class='%s'>content</th><th class='%s'>finish</th><th class='%s'>weekPianoTime</th><th class='%s'>targetPianoTime</th><th class='%s'>extraPianoTime</th><th class='%s'>content</th><th class='%s'>finish</th><th class='%s'>skincare</th><th class='%s'>facemask</th><th class='%s'>AudioBooks</th><th class='%s'>AudioTargetBooks</th><th class='%s'>finish</th></tr>\n", "fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header","fixed-header")  
+	fmt.Fprintf(w, "<tr><th class='%s'>weekNum</th>","fixed-header")  
+	fmt.Fprintf(w, "<th class='%s'>getupDays</th><th class='%s'>getupTargetDays</th><th class='%s'>finish</th>","fixed-header2","fixed-header2","fixed-header2")  
+	fmt.Fprintf(w, "<th class='%s'>sleepDays</th><th class='%s'>sleepTargetDays</th><th class='%s'>finish</th>","fixed-header3","fixed-header3","fixed-header3")  
+	fmt.Fprintf(w, "<th class='%s'>weekReadingTime</th><th class='%s'>targetReadingTime</th><th class='%s'>extraReadingTime</th><th class='%s'>content</th><th class='%s'>finish</th>","fixed-header2","fixed-header2","fixed-header2","fixed-header2","fixed-header2")  
+	fmt.Fprintf(w, "<th class='%s'>weekPianoTime</th><th class='%s'>targetPianoTime</th><th class='%s'>extraPianoTime</th><th class='%s'>content</th><th class='%s'>finish</th>","fixed-header3","fixed-header3","fixed-header3","fixed-header3","fixed-header3")  
+	fmt.Fprintf(w, "<th class='%s'>skincare</th><th class='%s'>facemask</th>","fixed-header2","fixed-header2")  
+	fmt.Fprintf(w, "<th class='%s'>AudioBooks</th><th class='%s'>AudioTargetBooks</th><th class='%s'>finish</th></tr>\n", "fixed-header3","fixed-header3","fixed-header3")  
   
 	// 遍历数据并构造表格的行  
 	for _, item := range hData.GlobalGetup.WeekOrderGetupInfo { 
