@@ -10,22 +10,20 @@ import (
 )
 
 type DayPiano struct {
-	Day *hDate.Day
-  RawInfo  string
-	PianoTime string 
-	PianoTimeOfDifferentContent map[string]string
+	Day                            *hDate.Day
+	RawInfo                        string
+	PianoTime                      string
+	PianoTimeOfDifferentContent    map[string]string
 	PianoTimeOfDifferentContentStr string
-	ContentInfoList []ContentInfo 
-	IsFinish bool
-	TargetPianoTime string
+	ContentInfoList                []ContentInfo
+	IsFinish                       bool
+	TargetPianoTime                string
 }
-
 
 type ContentInfo struct {
-	Content string 
+	Content   string
 	PianoTime string
 }
-
 
 func NewDayPiano(date string, weekday string, weekNum string, monthNum string, yearNum string, dayOfMonth int, dayOfYear int, rawInfo string) (*DayPiano, error) {
 	contentInfoList, err := SplitRawInfo(rawInfo)
@@ -36,19 +34,19 @@ func NewDayPiano(date string, weekday string, weekNum string, monthNum string, y
 
 	return &DayPiano{
 		Day: &hDate.Day{
-			Date: date,
-			Weekday: weekday,
-			WeekNum: weekNum,
-			MonthNum: monthNum,
-			YearNum: yearNum,
+			Date:       date,
+			Weekday:    weekday,
+			WeekNum:    weekNum,
+			MonthNum:   monthNum,
+			YearNum:    yearNum,
 			DayOfMonth: dayOfMonth,
-			DayOfYear: dayOfYear,
+			DayOfYear:  dayOfYear,
 		},
-		RawInfo: rawInfo,
-		PianoTime: "0min",
+		RawInfo:                     rawInfo,
+		PianoTime:                   "0min",
 		PianoTimeOfDifferentContent: make(map[string]string),
-		ContentInfoList: contentInfoList,
-		TargetPianoTime: TargetDayPianoTime,
+		ContentInfoList:             contentInfoList,
+		TargetPianoTime:             TargetDayPianoTime,
 	}, nil
 }
 
@@ -63,24 +61,23 @@ func SplitRawInfo(rawInfo string) ([]ContentInfo, error) {
 	// 然后返回这个数组
 
 	if rawInfo == "" || rawInfo == "×" {
-	  return nil, nil
+		return nil, nil
 	}
-	
-	rawInfoList := strings.Split(rawInfo, "；")
+
+	rawInfoList := strings.Split(rawInfo, "；\n")
 	for _, str := range rawInfoList {
 		strList := strings.Split(str, "：")
-		if len(strList) != 2 {	
+		if len(strList) != 2 {
 			errMsg := fmt.Sprintf("error split raw info: %s", str)
 			return nil, errors.New(errMsg)
 		}
 		contentInfoList = append(contentInfoList, ContentInfo{Content: strList[0], PianoTime: strList[1]})
-		
+
 	}
 	return contentInfoList, nil
 }
 
-
-func (d *DayPiano) ComputePianoTime () error {
+func (d *DayPiano) ComputePianoTime() error {
 	// 假设总时间等于ContentInfoList中每个ContentInfo的PianoTime的和
 	for _, contentInfo := range d.ContentInfoList {
 		// 计算DayPianoTimeOfDifferentContent
@@ -93,31 +90,30 @@ func (d *DayPiano) ComputePianoTime () error {
 			}
 			d.PianoTimeOfDifferentContent[contentInfo.Content] = conSum
 		}
-		
+
 		// 计算DayPianoTime
-	  sum, err := hDate.FormatDurationSum(d.PianoTime, contentInfo.PianoTime)
+		sum, err := hDate.FormatDurationSum(d.PianoTime, contentInfo.PianoTime)
 		if err != nil {
-			return err 
+			return err
 		}
 		d.PianoTime = sum
 	}
 
-	for k,v := range d.PianoTimeOfDifferentContent {
-	  d.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
+	for k, v := range d.PianoTimeOfDifferentContent {
+		d.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
 	return nil
 }
 
-
 func (d *DayPiano) Print() {
 	for _, conInfo := range d.ContentInfoList {
-		klog.InfoS("day piano info", "date", d.Day.Date,"pianoTime", d.PianoTime,  "content", conInfo.Content, "contentPianoTime", conInfo.PianoTime)
+		klog.InfoS("day piano info", "date", d.Day.Date, "pianoTime", d.PianoTime, "content", conInfo.Content, "contentPianoTime", conInfo.PianoTime)
 	}
 }
 
 // 只要时长>=target时长，就认为完成
 func (d *DayPiano) CheckFinish() error {
-  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(d.PianoTime, d.TargetPianoTime)
+	res, err := hDate.IsActualDurationLongerOrEqualToTargetDuration(d.PianoTime, d.TargetPianoTime)
 	if err != nil {
 		return err
 	}

@@ -8,15 +8,14 @@ import (
 )
 
 type MonthPiano struct {
-	Month *hDate.Month
-	PianoTime string 
-	PianoTimeOfDifferentContent map[string]string 
+	Month                          *hDate.Month
+	PianoTime                      string
+	PianoTimeOfDifferentContent    map[string]string
 	PianoTimeOfDifferentContentStr string
-	RawInfo  map[int]*DayPiano  // int表示几号
-	IsFinish bool
-	TargetPianoTime string
+	RawInfo                        map[int]*DayPiano // int表示几号
+	IsFinish                       bool
+	TargetPianoTime                string
 }
-
 
 func NewMonthPiano(monthNum string, daysInMonth int, rawInfo map[int]*DayPiano) (*MonthPiano, error) {
 	tPianoTime, err := hDate.FormatDurationMultiply(TargetDayPianoTime, daysInMonth)
@@ -27,14 +26,14 @@ func NewMonthPiano(monthNum string, daysInMonth int, rawInfo map[int]*DayPiano) 
 
 	return &MonthPiano{
 		Month: &hDate.Month{
-			MonthNum: monthNum,
-			DaysInMonth: daysInMonth, 
+			MonthNum:    monthNum,
+			DaysInMonth: daysInMonth,
 		},
-		PianoTime: "0min",
+		PianoTime:                   "0min",
 		PianoTimeOfDifferentContent: make(map[string]string),
-		RawInfo: rawInfo,
-		TargetPianoTime: tPianoTime,
-	},nil
+		RawInfo:                     rawInfo,
+		TargetPianoTime:             tPianoTime,
+	}, nil
 }
 
 func (m *MonthPiano) ComputePianoTime() error {
@@ -51,37 +50,35 @@ func (m *MonthPiano) ComputePianoTime() error {
 			} else {
 				conSum, err := hDate.FormatDurationSum(m.PianoTimeOfDifferentContent[content], conPianoTime)
 				if err != nil {
-					return err 
+					return err
 				}
 				m.PianoTimeOfDifferentContent[content] = conSum
 			}
 		}
-	  sum, err := hDate.FormatDurationSum(m.PianoTime, dayPiano.PianoTime)
+		sum, err := hDate.FormatDurationSum(m.PianoTime, dayPiano.PianoTime)
 		if err != nil {
-			return err 
+			return err
 		}
 		m.PianoTime = sum
 	}
 
-	for k,v := range m.PianoTimeOfDifferentContent {
-	  m.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+	for k, v := range m.PianoTimeOfDifferentContent {
+		m.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
 
 	return nil
-}	
-
+}
 
 func (m *MonthPiano) Print() {
 	for content, conPianoTime := range m.PianoTimeOfDifferentContent {
 		klog.InfoS("month piano info", "monthNum", m.Month.MonthNum, "pianoTime", m.PianoTime, "content", content, "contentPianoTime", conPianoTime)
 	}
-	
-}
 
+}
 
 // 只要阅读时长>=target时长，就认为完成
 func (m *MonthPiano) CheckFinish() error {
-  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(m.PianoTime, m.TargetPianoTime)
+	res, err := hDate.IsActualDurationLongerOrEqualToTargetDuration(m.PianoTime, m.TargetPianoTime)
 	if err != nil {
 		return err
 	}
