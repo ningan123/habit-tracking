@@ -8,13 +8,14 @@ import (
 )
 
 type YearReading struct {
-	Year *hDate.Year
-  ReadingTime string  // 年总阅读时长
-	YearRawInfo map[string]*DayReading  
-  ReadingTimeOfDifferentContent map[string]string // 不同内容的阅读时间
-	ReadingTimeOfDifferentContentStr string	
-	IsFinish bool
-	TargetReadingTime string
+	Year                             *hDate.Year
+	ReadingTime                      string // 年总阅读时长
+	YearRawInfo                      map[string]*DayReading
+	ReadingTimeOfDifferentContent    map[string]string // 不同内容的阅读时间
+	ReadingTimeOfDifferentContentStr string
+	IsFinish                         bool
+	TargetReadingTime                string
+	ExtraReadingTime                 string
 }
 
 func NewYearReading(yearNum string, daysInYear int, yearRawInfo map[string]*DayReading) (*YearReading, error) {
@@ -24,18 +25,17 @@ func NewYearReading(yearNum string, daysInYear int, yearRawInfo map[string]*DayR
 		return nil, err
 	}
 
-  return &YearReading{
+	return &YearReading{
 		Year: &hDate.Year{
-			YearNum: yearNum,
+			YearNum:    yearNum,
 			DaysInYear: daysInYear,
 		},
-    YearRawInfo: yearRawInfo,
-    ReadingTimeOfDifferentContent: make(map[string]string),
-    ReadingTime: "0min",
-		TargetReadingTime: tReadingTime,
-  },nil
+		YearRawInfo:                   yearRawInfo,
+		ReadingTimeOfDifferentContent: make(map[string]string),
+		ReadingTime:                   "0min",
+		TargetReadingTime:             tReadingTime,
+	}, nil
 }
-
 
 func (y *YearReading) ComputeReadingTime() error {
 	for _, dayReading := range y.YearRawInfo {
@@ -51,26 +51,24 @@ func (y *YearReading) ComputeReadingTime() error {
 			} else {
 				conSum, err := hDate.FormatDurationSum(y.ReadingTimeOfDifferentContent[content], conReadingTime)
 				if err != nil {
-					return err 
+					return err
 				}
 				y.ReadingTimeOfDifferentContent[content] = conSum
 			}
 		}
-	  sum, err := hDate.FormatDurationSum(y.ReadingTime, dayReading.ReadingTime)
+		sum, err := hDate.FormatDurationSum(y.ReadingTime, dayReading.ReadingTime)
 		if err != nil {
-			return err 
+			return err
 		}
 		y.ReadingTime = sum
 	}
 
 	for k, v := range y.ReadingTimeOfDifferentContent {
-		y.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s	", k, v)
+		y.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
 
 	return nil
-}	
-
-
+}
 
 func (y *YearReading) Print() {
 	for content, conReadingTime := range y.ReadingTimeOfDifferentContent {
@@ -78,13 +76,21 @@ func (y *YearReading) Print() {
 	}
 }
 
-
 // 只要阅读时长>=target时长，就认为完成
 func (y *YearReading) CheckFinish() error {
-  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(y.ReadingTime, y.TargetReadingTime)
+	res, err := hDate.IsActualDurationLongerOrEqualToTargetDuration(y.ReadingTime, y.TargetReadingTime)
 	if err != nil {
 		return err
 	}
 	y.IsFinish = res
+	return nil
+}
+
+func (y *YearReading) ComputeExtraReadingTime() error {
+	sub, err := hDate.FormatDurationSub(y.ReadingTime, y.TargetReadingTime)
+	if err != nil {
+		return err
+	}
+	y.ExtraReadingTime = sub
 	return nil
 }

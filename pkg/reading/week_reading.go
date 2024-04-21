@@ -8,32 +8,32 @@ import (
 )
 
 type WeekReading struct {
-	Week *hDate.Week
-	ReadingTime string 
-	ReadingTimeOfDifferentContent map[string]string 
+	Week                             *hDate.Week
+	ReadingTime                      string
+	ReadingTimeOfDifferentContent    map[string]string
 	ReadingTimeOfDifferentContentStr string
-	RawInfo  map[string]*DayReading  // string表示周几
-	IsFinish bool
-	TargetReadingTime string
-	ExtraReadingTime string
+	RawInfo                          map[string]*DayReading // string表示周几
+	IsFinish                         bool
+	TargetReadingTime                string
+	ExtraReadingTime                 string
 }
 
-func NewWeekReading(weekNum string, rawInfo map[string]*DayReading ) (*WeekReading, error) {
+func NewWeekReading(weekNum string, rawInfo map[string]*DayReading) (*WeekReading, error) {
 	tReadingTime, err := hDate.FormatDurationMultiply(TargetDayReadingTime, 7)
 	if err != nil {
 		klog.Errorf("format duration error: %v", err)
 		return nil, err
 	}
 
-  return &WeekReading{
-    Week: &hDate.Week{
+	return &WeekReading{
+		Week: &hDate.Week{
 			WeekNum: weekNum,
 		},
-		ReadingTime: "0min",
-		ReadingTimeOfDifferentContent : make(map[string]string),
-		RawInfo: rawInfo,
-		TargetReadingTime: tReadingTime,
-  }, nil
+		ReadingTime:                   "0min",
+		ReadingTimeOfDifferentContent: make(map[string]string),
+		RawInfo:                       rawInfo,
+		TargetReadingTime:             tReadingTime,
+	}, nil
 }
 
 func (w *WeekReading) ComputeReadingTime() error {
@@ -51,7 +51,7 @@ func (w *WeekReading) ComputeReadingTime() error {
 			} else {
 				conSum, err := hDate.FormatDurationSum(w.ReadingTimeOfDifferentContent[content], conReadingTime)
 				if err != nil {
-					return err 
+					return err
 				}
 				w.ReadingTimeOfDifferentContent[content] = conSum
 			}
@@ -59,17 +59,17 @@ func (w *WeekReading) ComputeReadingTime() error {
 		}
 
 		// 计算ReadingTime
-	  sum, err := hDate.FormatDurationSum(w.ReadingTime, dayReading.ReadingTime)
+		sum, err := hDate.FormatDurationSum(w.ReadingTime, dayReading.ReadingTime)
 		if err != nil {
-			return err 
+			return err
 		}
-		w.ReadingTime = sum		
+		w.ReadingTime = sum
 	}
 
 	for k, v := range w.ReadingTimeOfDifferentContent {
 		w.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
-	
+
 	return nil
 }
 
@@ -79,10 +79,9 @@ func (w *WeekReading) Print() {
 	}
 }
 
-
 // 只要阅读时长>=target时长，就认为完成
 func (w *WeekReading) CheckFinish() error {
-  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(w.ReadingTime, w.TargetReadingTime)
+	res, err := hDate.IsActualDurationLongerOrEqualToTargetDuration(w.ReadingTime, w.TargetReadingTime)
 	if err != nil {
 		return err
 	}
@@ -92,9 +91,9 @@ func (w *WeekReading) CheckFinish() error {
 }
 
 func (w *WeekReading) ComputeExtraReadingTime() error {
-  sub, err := hDate.FormatDurationSub(w.ReadingTime, w.TargetReadingTime)
+	sub, err := hDate.FormatDurationSub(w.ReadingTime, w.TargetReadingTime)
 	if err != nil {
-	  return err
+		return err
 	}
 	w.ExtraReadingTime = sub
 	return nil
