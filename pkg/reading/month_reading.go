@@ -15,6 +15,7 @@ type MonthReading struct {
 	RawInfo                          map[int]*DayReading // int表示几号
 	IsFinish                         bool
 	TargetReadingTime                string
+	ExtraReadingTime                 string
 }
 
 func NewMonthReading(monthNum string, daysInMonth int, rawInfo map[int]*DayReading) (*MonthReading, error) {
@@ -82,5 +83,14 @@ func (m *MonthReading) CheckFinish() error {
 		return err
 	}
 	m.IsFinish = res
+	return nil
+}
+
+func (m *MonthReading) ComputeExtraReadingTime() error {
+	sub, err := hDate.FormatDurationSub(m.ReadingTime, m.TargetReadingTime)
+	if err != nil {
+		return err
+	}
+	m.ExtraReadingTime = sub
 	return nil
 }

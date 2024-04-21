@@ -15,6 +15,7 @@ type YearReading struct {
 	ReadingTimeOfDifferentContentStr string
 	IsFinish                         bool
 	TargetReadingTime                string
+	ExtraReadingTime                 string
 }
 
 func NewYearReading(yearNum string, daysInYear int, yearRawInfo map[string]*DayReading) (*YearReading, error) {
@@ -82,5 +83,14 @@ func (y *YearReading) CheckFinish() error {
 		return err
 	}
 	y.IsFinish = res
+	return nil
+}
+
+func (y *YearReading) ComputeExtraReadingTime() error {
+	sub, err := hDate.FormatDurationSub(y.ReadingTime, y.TargetReadingTime)
+	if err != nil {
+		return err
+	}
+	y.ExtraReadingTime = sub
 	return nil
 }
