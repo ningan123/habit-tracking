@@ -28,6 +28,7 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 
 		<li><a href="/day">Link to day info</a></li>
 		<li><a href="/week">Link to week info</a></li>
+		<li><a href="/month">Link to month info</a></li>
 
     </ul>  
 </body>  
