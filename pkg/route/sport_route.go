@@ -17,11 +17,11 @@ func SportHandler(w http.ResponseWriter, r *http.Request) {
     <h1>Welcome to My Page</h1>  
     <p>Here are some links:</p>  
     <ul>  
-		    <li><a href="/sport/day">Link to day sport</a></li>  
-        <li><a href="/sport/week">Link to week sport</a></li> 
-				<li><a href="/sport/month">Link to month sport</a></li>  
-				<li><a href="/sport/year">Link to year sport</a></li>  
-				<li><a href="/sport/all">Link to all sport info</a></li>
+		<li><a href="/sport/day">Link to day sport</a></li>  
+		<li><a href="/sport/week">Link to week sport</a></li> 
+		<li><a href="/sport/month">Link to month sport</a></li>  
+		<li><a href="/sport/year">Link to year sport</a></li>  
+		<li><a href="/sport/all">Link to all sport info</a></li>
     </ul>  
 </body>  
 </html>`)
