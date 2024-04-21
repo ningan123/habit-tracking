@@ -106,7 +106,7 @@ func MonthPianoHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")
 	fmt.Fprintf(w, "<body>\n")
 	fmt.Fprintf(w, "<table border='1'>\n")
-	fmt.Fprintf(w, "<tr><th>monthNum</th><th>monthPianoTime</th><th>targetPianoTime</th><th>content</th><th>finish</th></tr>\n")
+	fmt.Fprintf(w, "<tr><th>monthNum</th><th>monthPianoTime</th><th>targetPianoTime</th><th>extraPianoTime</th><th>content</th><th>finish</th></tr>\n")
 
 	// 遍历数据并构造表格的行
 	for _, item := range hData.GlobalPiano.MonthOrderPianoInfo {
@@ -118,6 +118,7 @@ func MonthPianoHtmlTable(w http.ResponseWriter) {
 		fmt.Fprintf(w, "<td>%s</td>", item.Month.MonthNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.PianoTime)
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetPianoTime)
+		fmt.Fprintf(w, "<td>%s</td>", item.ExtraPianoTime)
 		fmt.Fprintf(w, "<td>%s</td>", item.PianoTimeOfDifferentContentStr)
 		if item.IsFinish {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
@@ -150,7 +151,7 @@ func YearPianoHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</head>\n")
 	fmt.Fprintf(w, "<body>\n")
 	fmt.Fprintf(w, "<table border='1'>\n")
-	fmt.Fprintf(w, "<tr><th>yearNum</th><th>yearPianoTime</th><th>targetPianoTime</th><th>content</th><th>finish</th></tr>\n")
+	fmt.Fprintf(w, "<tr><th>yearNum</th><th>yearPianoTime</th><th>targetPianoTime</th><th>extraPianoTime</th><th>content</th><th>finish</th></tr>\n")
 
 	// 遍历数据并构造表格的行
 	for _, item := range hData.GlobalPiano.YearOrderPianoInfo {
@@ -161,6 +162,7 @@ func YearPianoHtmlTable(w http.ResponseWriter) {
 		fmt.Fprintf(w, "<td>%s</td>", item.Year.YearNum)
 		fmt.Fprintf(w, "<td>%s</td>", item.PianoTime)
 		fmt.Fprintf(w, "<td>%s</td>", item.TargetPianoTime)
+		fmt.Fprintf(w, "<td>%s</td>", item.ExtraPianoTime)
 		fmt.Fprintf(w, "<td>%s</td>", item.PianoTimeOfDifferentContentStr)
 		if item.IsFinish {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")

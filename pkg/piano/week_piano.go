@@ -8,32 +8,32 @@ import (
 )
 
 type WeekPiano struct {
-	Week *hDate.Week
-	PianoTime string 
-	PianoTimeOfDifferentContent map[string]string 
+	Week                           *hDate.Week
+	PianoTime                      string
+	PianoTimeOfDifferentContent    map[string]string
 	PianoTimeOfDifferentContentStr string
-	RawInfo  map[string]*DayPiano  // string表示周几
-	IsFinish bool
-	TargetPianoTime string
-	ExtraPianoTime string
+	RawInfo                        map[string]*DayPiano // string表示周几
+	IsFinish                       bool
+	TargetPianoTime                string
+	ExtraPianoTime                 string
 }
 
-func NewWeekPiano(weekNum string, rawInfo map[string]*DayPiano ) (*WeekPiano, error) {
+func NewWeekPiano(weekNum string, rawInfo map[string]*DayPiano) (*WeekPiano, error) {
 	tPianoTime, err := hDate.FormatDurationMultiply(TargetDayPianoTime, 7)
 	if err != nil {
 		klog.Errorf("format duration error: %v", err)
 		return nil, err
 	}
 
-  return &WeekPiano{
-    Week: &hDate.Week{
+	return &WeekPiano{
+		Week: &hDate.Week{
 			WeekNum: weekNum,
 		},
-		PianoTime: "0min",
-		PianoTimeOfDifferentContent : make(map[string]string),
-		RawInfo: rawInfo,
-		TargetPianoTime: tPianoTime,
-  }, nil
+		PianoTime:                   "0min",
+		PianoTimeOfDifferentContent: make(map[string]string),
+		RawInfo:                     rawInfo,
+		TargetPianoTime:             tPianoTime,
+	}, nil
 }
 
 func (w *WeekPiano) ComputePianoTime() error {
@@ -51,7 +51,7 @@ func (w *WeekPiano) ComputePianoTime() error {
 			} else {
 				conSum, err := hDate.FormatDurationSum(w.PianoTimeOfDifferentContent[content], conPianoTime)
 				if err != nil {
-					return err 
+					return err
 				}
 				w.PianoTimeOfDifferentContent[content] = conSum
 			}
@@ -59,17 +59,17 @@ func (w *WeekPiano) ComputePianoTime() error {
 		}
 
 		// 计算PianoTime
-	  sum, err := hDate.FormatDurationSum(w.PianoTime, dayPiano.PianoTime)
+		sum, err := hDate.FormatDurationSum(w.PianoTime, dayPiano.PianoTime)
 		if err != nil {
-			return err 
+			return err
 		}
-		w.PianoTime = sum		
+		w.PianoTime = sum
 	}
 
 	for k, v := range w.PianoTimeOfDifferentContent {
 		w.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
-	
+
 	return nil
 }
 
@@ -79,10 +79,9 @@ func (w *WeekPiano) Print() {
 	}
 }
 
-
-// 只要阅读时长>=target时长，就认为完成
+// 只要时长>=target时长，就认为完成
 func (w *WeekPiano) CheckFinish() error {
-  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(w.PianoTime, w.TargetPianoTime)
+	res, err := hDate.IsActualDurationLongerOrEqualToTargetDuration(w.PianoTime, w.TargetPianoTime)
 	if err != nil {
 		return err
 	}
@@ -92,9 +91,9 @@ func (w *WeekPiano) CheckFinish() error {
 }
 
 func (w *WeekPiano) ComputeExtraPianoTime() error {
-  sub, err := hDate.FormatDurationSub(w.PianoTime, w.TargetPianoTime)
+	sub, err := hDate.FormatDurationSub(w.PianoTime, w.TargetPianoTime)
 	if err != nil {
-	  return err
+		return err
 	}
 	w.ExtraPianoTime = sub
 	return nil

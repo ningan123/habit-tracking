@@ -15,6 +15,7 @@ type MonthPiano struct {
 	RawInfo                        map[int]*DayPiano // int表示几号
 	IsFinish                       bool
 	TargetPianoTime                string
+	ExtraPianoTime                 string
 }
 
 func NewMonthPiano(monthNum string, daysInMonth int, rawInfo map[int]*DayPiano) (*MonthPiano, error) {
@@ -76,12 +77,21 @@ func (m *MonthPiano) Print() {
 
 }
 
-// 只要阅读时长>=target时长，就认为完成
+// 只要时长>=target时长，就认为完成
 func (m *MonthPiano) CheckFinish() error {
 	res, err := hDate.IsActualDurationLongerOrEqualToTargetDuration(m.PianoTime, m.TargetPianoTime)
 	if err != nil {
 		return err
 	}
 	m.IsFinish = res
+	return nil
+}
+
+func (m *MonthPiano) ComputeExtraPianoTime() error {
+	sub, err := hDate.FormatDurationSub(m.PianoTime, m.TargetPianoTime)
+	if err != nil {
+		return err
+	}
+	m.ExtraPianoTime = sub
 	return nil
 }

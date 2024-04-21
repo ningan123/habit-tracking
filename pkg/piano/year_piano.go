@@ -15,6 +15,7 @@ type YearPiano struct {
 	PianoTimeOfDifferentContentStr string
 	IsFinish                       bool
 	TargetPianoTime                string
+	ExtraPianoTime                 string
 }
 
 func NewYearPiano(yearNum string, daysInYear int, rawInfo map[string]*DayPiano) (*YearPiano, error) {
@@ -75,12 +76,21 @@ func (y *YearPiano) Print() {
 	}
 }
 
-// 只要阅读时长>=target时长，就认为完成
+// 只要时长>=target时长，就认为完成
 func (y *YearPiano) CheckFinish() error {
 	res, err := hDate.IsActualDurationLongerOrEqualToTargetDuration(y.PianoTime, y.TargetPianoTime)
 	if err != nil {
 		return err
 	}
 	y.IsFinish = res
+	return nil
+}
+
+func (y *YearPiano) ComputeExtraPianoTime() error {
+	sub, err := hDate.FormatDurationSub(y.PianoTime, y.TargetPianoTime)
+	if err != nil {
+		return err
+	}
+	y.ExtraPianoTime = sub
 	return nil
 }
