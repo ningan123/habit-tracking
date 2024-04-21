@@ -10,22 +10,20 @@ import (
 )
 
 type DayReading struct {
-	Day *hDate.Day
-  RawInfo  string
-	ReadingTime string // 这一天总共的阅读时长
-	ReadingTimeOfDifferentContent map[string]string
+	Day                              *hDate.Day
+	RawInfo                          string
+	ReadingTime                      string // 这一天总共的阅读时长
+	ReadingTimeOfDifferentContent    map[string]string
 	ReadingTimeOfDifferentContentStr string
-	ContentInfoList []ContentInfo 
-	IsFinish bool
-	TargetReadingTime string
+	ContentInfoList                  []ContentInfo
+	IsFinish                         bool
+	TargetReadingTime                string
 }
-
 
 type ContentInfo struct {
-	Content string 
+	Content     string
 	ReadingTime string
 }
-
 
 func NewDayReading(date string, weekday string, weekNum string, monthNum string, yearNum string, dayOfMonth int, dayOfYear int, rawInfo string) (*DayReading, error) {
 	contentInfoList, err := SplitRawInfo(rawInfo)
@@ -36,19 +34,19 @@ func NewDayReading(date string, weekday string, weekNum string, monthNum string,
 
 	return &DayReading{
 		Day: &hDate.Day{
-			Date: date,
-			Weekday: weekday,
-			WeekNum: weekNum,
-			MonthNum: monthNum,
-			YearNum: yearNum,
+			Date:       date,
+			Weekday:    weekday,
+			WeekNum:    weekNum,
+			MonthNum:   monthNum,
+			YearNum:    yearNum,
 			DayOfMonth: dayOfMonth,
-			DayOfYear: dayOfYear,
+			DayOfYear:  dayOfYear,
 		},
-		RawInfo: rawInfo,
-		ReadingTime: "0min",
+		RawInfo:                       rawInfo,
+		ReadingTime:                   "0min",
 		ReadingTimeOfDifferentContent: make(map[string]string),
-		ContentInfoList: contentInfoList,
-		TargetReadingTime: TargetDayReadingTime,
+		ContentInfoList:               contentInfoList,
+		TargetReadingTime:             TargetDayReadingTime,
 	}, nil
 }
 
@@ -63,10 +61,10 @@ func SplitRawInfo(rawInfo string) ([]ContentInfo, error) {
 	// 然后返回这个数组
 
 	if rawInfo == "" || rawInfo == "×" {
-	  return nil, nil
+		return nil, nil
 	}
 
-	rawInfoList := strings.Split(rawInfo, "；")
+	rawInfoList := strings.Split(rawInfo, "；\n")
 	for _, str := range rawInfoList {
 		strList := strings.Split(str, "：")
 		if len(strList) != 2 {
@@ -74,13 +72,12 @@ func SplitRawInfo(rawInfo string) ([]ContentInfo, error) {
 			return nil, errors.New(errMsg)
 		}
 		contentInfoList = append(contentInfoList, ContentInfo{Content: strList[0], ReadingTime: strList[1]})
-		
+
 	}
 	return contentInfoList, nil
 }
 
-
-func (d *DayReading) ComputeReadingTime () error {
+func (d *DayReading) ComputeReadingTime() error {
 	// 假设阅读时间等于ContentInfoList中每个ContentInfo的ReadingTime的和
 	for _, contentInfo := range d.ContentInfoList {
 		// 计算DayReadingTimeOfDifferentContent
@@ -93,31 +90,30 @@ func (d *DayReading) ComputeReadingTime () error {
 			}
 			d.ReadingTimeOfDifferentContent[contentInfo.Content] = conSum
 		}
-		
+
 		// 计算DayReadingTime
-	  sum, err := hDate.FormatDurationSum(d.ReadingTime, contentInfo.ReadingTime)
+		sum, err := hDate.FormatDurationSum(d.ReadingTime, contentInfo.ReadingTime)
 		if err != nil {
-			return err 
+			return err
 		}
 		d.ReadingTime = sum
 	}
 
-	for k,v := range d.ReadingTimeOfDifferentContent {
-	  d.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
+	for k, v := range d.ReadingTimeOfDifferentContent {
+		d.ReadingTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
 	return nil
 }
 
-
 func (d *DayReading) Print() {
 	for _, conInfo := range d.ContentInfoList {
-		klog.InfoS("day reading info", "date", d.Day.Date,"readingTime", d.ReadingTime,  "content", conInfo.Content, "contentReadingTime", conInfo.ReadingTime)
+		klog.InfoS("day reading info", "date", d.Day.Date, "readingTime", d.ReadingTime, "content", conInfo.Content, "contentReadingTime", conInfo.ReadingTime)
 	}
 }
 
 // 只要阅读时长>=target时长，就认为完成
 func (d *DayReading) CheckFinish() error {
-  res, err :=  hDate.IsActualDurationLongerOrEqualToTargetDuration(d.ReadingTime, d.TargetReadingTime)
+	res, err := hDate.IsActualDurationLongerOrEqualToTargetDuration(d.ReadingTime, d.TargetReadingTime)
 	if err != nil {
 		return err
 	}
