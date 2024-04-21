@@ -29,10 +29,23 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 		<li><a href="/day">Link to day info</a></li>
 		<li><a href="/week">Link to week info</a></li>
 		<li><a href="/month">Link to month info</a></li>
+		<li><a href="/year">Link to year info</a></li>
+		<li><a href="/all">Link to all info</a></li>
 
     </ul>  
 </body>  
 </html>`)
+}
+
+func AllHandler(w http.ResponseWriter, r *http.Request) {
+
+	// 设置响应头，指定内容类型为HTML
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	DayHtmlTable(w)
+	WeekHtmlTable(w)
+	MonthHtmlTable(w)
+	YearHtmlTable(w)
 }
 
 var GlobalTable = `<!DOCTYPE html>  

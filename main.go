@@ -132,6 +132,8 @@ func main() {
 	http.HandleFunc("/day", hRoute.DayHandler)
 	http.HandleFunc("/week", hRoute.WeekHandler)
 	http.HandleFunc("/month", hRoute.MonthHandler)
+	http.HandleFunc("/year", hRoute.YearHandler)
+	http.HandleFunc("/all", hRoute.AllHandler)
 
 	// 启动服务器
 	log.Printf("Starting server on port %s", port)
