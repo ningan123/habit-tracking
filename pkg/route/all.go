@@ -6,7 +6,7 @@ import (
 )
 
 // 定义一个处理函数，用于返回包含两个链接的HTML页面
-func RootHandler(w http.ResponseWriter, r *http.Request) {  
+func RootHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, `<!DOCTYPE html>  
 <html lang="en">  
 <head>  
@@ -24,14 +24,15 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 				<li><a href="/facemask">Link to facemask</a></li>
 				<li><a href="/skincare">Link to skincare</a></li>
 				<li><a href="/audiobook">Link to audiobook</a></li>
+				<li><a href="/audiobook">Link to sport</a></li>
 
 				<li><a href="/day">Link to day info</a></li>
 				<li><a href="/week">Link to week info</a></li>
 
     </ul>  
 </body>  
-</html>`)  
-}  
+</html>`)
+}
 
 var GlobalTable = `<!DOCTYPE html>  
 <html lang="en">  
