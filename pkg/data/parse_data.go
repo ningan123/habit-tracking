@@ -40,16 +40,6 @@ func readFileToMap(fileName string) (map[string]string,  error) {
 
 
 
-// findColumnIndex 找到包含指定标题的列索引  
-func findColumnIndex(sheet *excelize.File, target string) (int, error) {  
-	rows := sheet.GetRows("Sheet1") // 假设数据在Sheet1中  
-	for colIndex, col := range rows[0] { // 第一行是标题行  
-		if strings.EqualFold(col, target) {  
-			return colIndex, nil  
-		}  
-	}  
-	return -1, fmt.Errorf("column %q not found", target)  
-}  
   
 // readExcelAndCreateMapDataAndWriteFile 读取Excel文件，找到目标列，并创建map，然后将数据写到目标文件中  
 func readExcelAndCreateMapDataAndWriteFile(input string, output string, target string) (map[string]string, error) {  
@@ -87,3 +77,30 @@ func readExcelAndCreateMapDataAndWriteFile(input string, output string, target s
 	return dataMap, nil  
 }  
   
+
+
+
+// findColumnIndex 找到包含指定标题的列索引  
+func findColumnIndex(f *excelize.File, target string) (int, error) {  
+	rows := f.GetRows("Sheet1") // 假设数据在Sheet1中  
+	for colIndex, col := range rows[0] { // 第一行是标题行  
+		if strings.EqualFold(col, target) {  
+			return colIndex, nil  
+		}  
+	}  
+	return -1, fmt.Errorf("column not found")  
+}  
+
+
+
+// findRowIndex 根据日期字符串在Excel中查找对应的行索引 
+func findRowIndex(f *excelize.File, sheetName string, target string) (int, error) {  
+	rows := f.GetRows(sheetName)  
+	for rowNum, row := range rows {  
+			dateCell := row[0] // 假设日期数据在第一列  
+			if dateCell != "" && dateCell == target{  
+				return rowNum, nil
+			}  
+	}  
+	return -1, fmt.Errorf("row not found")  
+}  
