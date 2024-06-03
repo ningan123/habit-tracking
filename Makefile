@@ -5,10 +5,10 @@ VERSION := ${BASE_VERSION}-${COMMIT}
 arch=amd64
 archARM=arm64
 
-bin:
+habit:
 	GOOS=linux GOARCH=$(arch) go build -ldflags "-X main.Version=${VERSION}" -o bin/habit-tracking 
 
-binARM:
+habitRAM:
 	GOOS=linux GOARCH=$(archARM) go build -ldflags "-X main.Version=${VERSION}" -o bin/habit-tracking
 	
 # 测试可用
