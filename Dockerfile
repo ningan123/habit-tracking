@@ -1,4 +1,4 @@
-FROM alpine
+FROM golang:1.21
 
 ADD ./bin/habit-tracking /root/habit-tracking
 
