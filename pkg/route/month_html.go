@@ -127,7 +127,7 @@ func MonthHtmlTable(w http.ResponseWriter) {
 		fmt.Fprintf(w, "<td>%d</td>", spItem.ActualFinishDays)
 		fmt.Fprintf(w, "<td>%d</td>", spItem.TargetFinishDays)
 		fmt.Fprintf(w, "<td>%s</td>", spItem.SportTimesOfDifferentContentStr)
-		if aItem.IsFinish {
+		if spItem.IsFinish {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
 		} else {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")

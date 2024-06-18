@@ -124,7 +124,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 		}
 		fmt.Fprintf(w, "<td class='%s'>%d</td>", cellClass, spItem.SportTimes)
 		fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, spItem.SportTimesOfDifferentContentStr)
-		if aItem.IsFinish {
+		if spItem.IsFinish {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x2705;")
 		} else {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x274C;")
