@@ -82,7 +82,11 @@ func (d *DayReading) ComputeReadingTime() error {
 	for _, contentInfo := range d.ContentInfoList {
 		// 计算DayReadingTimeOfDifferentContent
 		if _, ok := d.ReadingTimeOfDifferentContent[contentInfo.Content]; !ok {
-			d.ReadingTimeOfDifferentContent[contentInfo.Content] = contentInfo.ReadingTime
+			conSum, err := hDate.FormatDuration(contentInfo.ReadingTime)
+			if err != nil {
+				return err
+			}
+			d.ReadingTimeOfDifferentContent[contentInfo.Content] = conSum
 		} else {
 			conSum, err := hDate.FormatDurationSum(d.ReadingTimeOfDifferentContent[contentInfo.Content], contentInfo.ReadingTime)
 			if err != nil {

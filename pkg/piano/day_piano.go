@@ -82,7 +82,11 @@ func (d *DayPiano) ComputePianoTime() error {
 	for _, contentInfo := range d.ContentInfoList {
 		// 计算DayPianoTimeOfDifferentContent
 		if _, ok := d.PianoTimeOfDifferentContent[contentInfo.Content]; !ok {
-			d.PianoTimeOfDifferentContent[contentInfo.Content] = contentInfo.PianoTime
+			conSum, err := hDate.FormatDuration(contentInfo.PianoTime)
+			if err != nil {
+				return err
+			}
+			d.PianoTimeOfDifferentContent[contentInfo.Content] = conSum
 		} else {
 			conSum, err := hDate.FormatDurationSum(d.PianoTimeOfDifferentContent[contentInfo.Content], contentInfo.PianoTime)
 			if err != nil {
@@ -97,6 +101,7 @@ func (d *DayPiano) ComputePianoTime() error {
 			return err
 		}
 		d.PianoTime = sum
+
 	}
 
 	for k, v := range d.PianoTimeOfDifferentContent {
