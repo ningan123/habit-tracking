@@ -53,6 +53,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// eyemask
+	err = hData.DealEyeMaskData(*dataPath+"/"+*dataFileName, *dataPath+"/output_eyemask.txt", "敷眼膜")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// skincare
 	err = hData.DealSkinCareData(*dataPath+"/"+*dataFileName, *dataPath+"/output_skincare.txt", "护肤")
 	if err != nil {
@@ -107,6 +113,13 @@ func main() {
 	http.HandleFunc("/facemask/month", hRoute.MonthFaceMaskHandler)
 	http.HandleFunc("/facemask/year", hRoute.YearFaceMaskHandler)
 	http.HandleFunc("/facemask/all", hRoute.AllFaceMaskHandler)
+
+	http.HandleFunc("/eyemask", hRoute.EyeMaskHandler)
+	http.HandleFunc("/eyemask/day", hRoute.DayEyeMaskHandler)
+	http.HandleFunc("/eyemask/week", hRoute.WeekEyeMaskHandler)
+	http.HandleFunc("/eyemask/month", hRoute.MonthEyeMaskHandler)
+	http.HandleFunc("/eyemask/year", hRoute.YearEyeMaskHandler)
+	http.HandleFunc("/eyemask/all", hRoute.AllEyeMaskHandler)
 
 	http.HandleFunc("/skincare", hRoute.SkinCareHandler)
 	http.HandleFunc("/skincare/day", hRoute.DaySkinCareHandler)

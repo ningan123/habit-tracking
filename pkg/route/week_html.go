@@ -24,8 +24,9 @@ func WeekHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "<th class='%s'>piano</th><th class='%s'>target</th><th class='%s'>extra</th><th class='%s'>pianoContentContent</th><th class='%s'>finish</th>", "fixed-header3", "fixed-header3", "fixed-header3", "fixed-header3", "fixed-header3")
 	fmt.Fprintf(w, "<th class='%s'>skincare</th><th class='%s'>target</th><th class='%s'>finish</th>", "fixed-header2", "fixed-header2", "fixed-header2")
 	fmt.Fprintf(w, "<th class='%s'>facemask</th><th class='%s'>target</th><th class='%s'>finish</th>", "fixed-header3", "fixed-header3", "fixed-header3")
-	fmt.Fprintf(w, "<th class='%s'>audio</th><th class='%s'>target</th><th class='%s'>finish</th>", "fixed-header2", "fixed-header2", "fixed-header2")
-	fmt.Fprintf(w, "<th class='%s'>sport</th><th class='%s'>actual</th><th class='%s'>target</th><th class='%s'>sportContentContent</th><th class='%s'>finish</th></tr>\n", "fixed-header3", "fixed-header3", "fixed-header3", "fixed-header3", "fixed-header3")
+	fmt.Fprintf(w, "<th class='%s'>eyemask</th><th class='%s'>target</th><th class='%s'>finish</th>", "fixed-header2", "fixed-header2", "fixed-header2")
+	fmt.Fprintf(w, "<th class='%s'>audio</th><th class='%s'>target</th><th class='%s'>finish</th>", "fixed-header3", "fixed-header3", "fixed-header3")
+	fmt.Fprintf(w, "<th class='%s'>sport</th><th class='%s'>actual</th><th class='%s'>target</th><th class='%s'>sportContentContent</th><th class='%s'>finish</th></tr>\n", "fixed-header2", "fixed-header2", "fixed-header2", "fixed-header2", "fixed-header2")
 
 	// 遍历数据并构造表格的行
 	for _, item := range hData.GlobalGetup.WeekOrderGetupInfo {
@@ -102,6 +103,18 @@ func WeekHtmlTable(w http.ResponseWriter) {
 		fmt.Fprintf(w, "<td>%d</td>", fItem.ActualFinishDays)
 		fmt.Fprintf(w, "<td>%d</td>", fItem.TargetFinishDays)
 		if fItem.IsFinish {
+			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
+		} else {
+			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")
+		}
+
+		eItem := hData.GlobalEyeMask.WeekInfo[item.Week.WeekNum]
+		if eItem == nil {
+			continue
+		}
+		fmt.Fprintf(w, "<td>%d</td>", eItem.ActualFinishDays)
+		fmt.Fprintf(w, "<td>%d</td>", eItem.TargetFinishDays)
+		if eItem.IsFinish {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x2705;")
 		} else {
 			fmt.Fprintf(w, "<td>%s</td>", "&#x274C;")

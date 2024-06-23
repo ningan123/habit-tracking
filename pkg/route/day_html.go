@@ -22,7 +22,7 @@ func DayHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintf(w, "<th class='%s'>sleep</th><th class='%s'>target</th><th class='%s'>finish</th>", "fixed-header3", "fixed-header3", "fixed-header3")
 	fmt.Fprintf(w, "<th class='%s'>reading</th><th class='%s'>target</th><th class='%s'>readingcContentContent</th><th class='%s'>finish</th>", "fixed-header2", "fixed-header2", "fixed-header2", "fixed-header2")
 	fmt.Fprintf(w, "<th class='%s'>piano</th><th class='%s'>target</th><th class='%s'>pianoContentContent</th><th class='%s'>finish</th>", "fixed-header3", "fixed-header3", "fixed-header3", "fixed-header3")
-	fmt.Fprintf(w, "<th class='%s'>skincare</th><th class='%s'>facemask</th>", "fixed-header2", "fixed-header2")
+	fmt.Fprintf(w, "<th class='%s'>skincare</th><th class='%s'>facemask</th><th class='%s'>eyemask</th>", "fixed-header2", "fixed-header2", "fixed-header2")
 	fmt.Fprintf(w, "<th class='%s'>audiobookContentContent</th><th class='%s'>finish</th>", "fixed-header3", "fixed-header3")
 	fmt.Fprintf(w, "<th class='%s'>sport</th><th class='%s'>sportContentContent</th><th class='%s'>finish</th></tr>\n", "fixed-header2", "fixed-header2", "fixed-header2")
 
@@ -102,6 +102,16 @@ func DayHtmlTable(w http.ResponseWriter) {
 			continue
 		}
 		if fItem.IsFinish {
+			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x2705;")
+		} else {
+			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x274C;")
+		}
+
+		eItem := hData.GlobalEyeMask.DayInfo[item.Day.Date]
+		if eItem == nil {
+			continue
+		}
+		if eItem.IsFinish {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x2705;")
 		} else {
 			fmt.Fprintf(w, "<td class='%s'>%s</td>", cellClass, "&#x274C;")
