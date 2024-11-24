@@ -1,1 +1,3 @@
-./data/real
+data/real/
+bin
+.env
