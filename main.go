@@ -23,62 +23,62 @@ func main() {
 	port := fmt.Sprintf(":%d", *port)
 	klog.InfoS("Show version", "version", Version)
 
-	// reading
-	err := hData.DealReadingData(*dataPath+"/"+*dataFileName, *dataPath+"/output_reading.txt", "阅读")
-	if err != nil {
-		log.Fatal(err)
-	}
+	// // reading
+	// err := hData.DealReadingData(*dataPath+"/"+*dataFileName, *dataPath+"/output_reading.txt", "阅读")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	// piano
-	err = hData.DealPianoData(*dataPath+"/"+*dataFileName, *dataPath+"/output_piano.txt", "练琴")
+	err := hData.DealPianoData(*dataPath+"/"+*dataFileName, *dataPath+"/output_piano.txt", "练琴")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// getup
-	err = hData.DealGetupData(*dataPath+"/"+*dataFileName, *dataPath+"/output_getup.txt", "起床")
-	if err != nil {
-		log.Fatal(err)
-	}
+	// // getup
+	// err = hData.DealGetupData(*dataPath+"/"+*dataFileName, *dataPath+"/output_getup.txt", "起床")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	// sleep
-	err = hData.DealSleepData(*dataPath+"/"+*dataFileName, *dataPath+"/output_sleep.txt", "睡觉")
-	if err != nil {
-		log.Fatal(err)
-	}
+	// // sleep
+	// err = hData.DealSleepData(*dataPath+"/"+*dataFileName, *dataPath+"/output_sleep.txt", "睡觉")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	// facemask
-	err = hData.DealFaceMaskData(*dataPath+"/"+*dataFileName, *dataPath+"/output_facemask.txt", "敷面膜")
-	if err != nil {
-		log.Fatal(err)
-	}
+	// // facemask
+	// err = hData.DealFaceMaskData(*dataPath+"/"+*dataFileName, *dataPath+"/output_facemask.txt", "敷面膜")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	// eyemask
-	err = hData.DealEyeMaskData(*dataPath+"/"+*dataFileName, *dataPath+"/output_eyemask.txt", "敷眼膜")
-	if err != nil {
-		log.Fatal(err)
-	}
+	// // eyemask
+	// err = hData.DealEyeMaskData(*dataPath+"/"+*dataFileName, *dataPath+"/output_eyemask.txt", "敷眼膜")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	// skincare
-	err = hData.DealSkinCareData(*dataPath+"/"+*dataFileName, *dataPath+"/output_skincare.txt", "护肤")
-	if err != nil {
-		log.Fatal(err)
-	}
+	// // skincare
+	// err = hData.DealSkinCareData(*dataPath+"/"+*dataFileName, *dataPath+"/output_skincare.txt", "护肤")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	// audiobook
-	err = hData.DealAudiobookData(*dataPath+"/"+*dataFileName, *dataPath+"/output_audiobook.txt", "听书")
-	if err != nil {
-		log.Fatal(err)
-	}
+	// // audiobook
+	// err = hData.DealAudiobookData(*dataPath+"/"+*dataFileName, *dataPath+"/output_audiobook.txt", "听书")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	// sport
-	err = hData.DealSportData(*dataPath+"/"+*dataFileName, *dataPath+"/output_sport.txt", "运动")
-	if err != nil {
-		log.Fatal(err)
-	}
+	// // sport
+	// err = hData.DealSportData(*dataPath+"/"+*dataFileName, *dataPath+"/output_sport.txt", "运动")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	// 设置路由
-	// http.HandleFunc("/", hRoute.RootHandler)
+	http.HandleFunc("/", hRoute.RootHandler)
 	// http.HandleFunc("/reading", hRoute.ReadingHandler)
 	// http.HandleFunc("/reading/day", hRoute.DayReadingHandler)
 	// http.HandleFunc("/reading/week", hRoute.WeekReadingHandler)

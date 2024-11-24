@@ -17,15 +17,8 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
     <h1>Welcome to My Page</h1>  
     <p>Here are some links:</p>  
     <ul>  
-		<li><a href="/reading">Link to reading</a></li> 
 		<li><a href="/piano">Link to piano</a></li> 
-		<li><a href="/getup">Link to getup</a></li>
-		<li><a href="/sleep">Link to sleep</a></li>
-		<li><a href="/facemask">Link to facemask</a></li>
-		<li><a href="/eyemask">Link to eyemask</a></li>
-		<li><a href="/skincare">Link to skincare</a></li>
-		<li><a href="/audiobook">Link to audiobook</a></li>
-		<li><a href="/sport">Link to sport</a></li>
+		
 
 		<li><a href="/day">Link to day info</a></li>
 		<li><a href="/week">Link to week info</a></li>
