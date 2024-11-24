@@ -3,7 +3,7 @@ package data
 import (
 	"fmt"
 
-	hGetup "ningan.com/habit-tracking/pkg/getup"
+	hGetup "ningan.com/habit-tracking/pkg/habit/getup"
 )
 
 var GlobalGetup *hGetup.Getup

@@ -3,7 +3,7 @@ package data
 import (
 	"fmt"
 
-	hPiano "ningan.com/habit-tracking/pkg/piano"
+	hPiano "ningan.com/habit-tracking/pkg/habit/piano"
 )
 
 var GlobalPiano *hPiano.Piano

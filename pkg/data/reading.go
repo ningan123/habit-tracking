@@ -3,7 +3,7 @@ package data
 import (
 	"fmt"
 
-	hReading "ningan.com/habit-tracking/pkg/reading"
+	hReading "ningan.com/habit-tracking/pkg/habit/reading"
 )
 
 var GlobalReading *hReading.Reading

@@ -3,7 +3,7 @@ package data
 import (
 	"fmt"
 
-	hAudiobook "ningan.com/habit-tracking/pkg/audiobook"
+	hAudiobook "ningan.com/habit-tracking/pkg/habit/audiobook"
 )
 
 var GlobalAudiobook *hAudiobook.Audiobook

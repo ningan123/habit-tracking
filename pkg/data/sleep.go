@@ -3,7 +3,7 @@ package data
 import (
 	"fmt"
 
-	hSleep "ningan.com/habit-tracking/pkg/sleep"
+	hSleep "ningan.com/habit-tracking/pkg/habit/sleep"
 )
 
 var GlobalSleep *hSleep.Sleep

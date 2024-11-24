@@ -4,7 +4,7 @@ package data
 import (
 	"fmt"
 
-	hSkinCare "ningan.com/habit-tracking/pkg/skincare"
+	hSkinCare "ningan.com/habit-tracking/pkg/habit/skincare"
 )
 
 var GlobalSkinCare *hSkinCare.SkinCare

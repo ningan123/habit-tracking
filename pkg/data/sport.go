@@ -3,7 +3,7 @@ package data
 import (
 	"fmt"
 
-	hSport "ningan.com/habit-tracking/pkg/sport"
+	hSport "ningan.com/habit-tracking/pkg/habit/sport"
 )
 
 var GlobalSport *hSport.Sport

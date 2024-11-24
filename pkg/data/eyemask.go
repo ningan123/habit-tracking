@@ -4,7 +4,7 @@ package data
 import (
 	"fmt"
 
-	hEyeMask "ningan.com/habit-tracking/pkg/eyemask"
+	hEyeMask "ningan.com/habit-tracking/pkg/habit/eyemask"
 )
 
 var GlobalEyeMask *hEyeMask.EyeMask

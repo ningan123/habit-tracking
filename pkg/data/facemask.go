@@ -4,7 +4,7 @@ package data
 import (
 	"fmt"
 
-	hFaceMask "ningan.com/habit-tracking/pkg/facemask"
+	hFaceMask "ningan.com/habit-tracking/pkg/habit/facemask"
 )
 
 var GlobalFaceMask *hFaceMask.FaceMask
