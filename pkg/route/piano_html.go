@@ -10,13 +10,13 @@ import (
 func DayPianoHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintln(w, GlobalTable)
 
-	// // 构造HTML表格的开头
-	// fmt.Fprintf(w, "<html>\n")
-	// fmt.Fprintf(w, "<head>\n")
-	// fmt.Fprintf(w, "<title>MyStruct Table</title>\n")
-	// fmt.Fprintf(w, "</head>\n")
-	// fmt.Fprintf(w, "<body>\n")
-	// fmt.Fprintf(w, "<table border='1'>\n")
+	// 构造HTML表格的开头
+	fmt.Fprintf(w, "<html>\n")
+	fmt.Fprintf(w, "<head>\n")
+	fmt.Fprintf(w, "<title>MyStruct Table</title>\n")
+	fmt.Fprintf(w, "</head>\n")
+	fmt.Fprintf(w, "<body>\n")
+	fmt.Fprintf(w, "<table border='1'>\n")
 	fmt.Fprintf(w, "<tr><th>date</th><th>weekNum</th><th>weekday</th><th>dayPianoTime</th><th>targetPianoTime</th><th>content</th><th>finish</th></tr>\n")
 
 	// 遍历数据并构造表格的行

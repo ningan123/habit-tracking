@@ -79,6 +79,7 @@ func main() {
 
 	// 设置路由
 	http.HandleFunc("/", hRoute.RootHandler)
+
 	// http.HandleFunc("/reading", hRoute.ReadingHandler)
 	// http.HandleFunc("/reading/day", hRoute.DayReadingHandler)
 	// http.HandleFunc("/reading/week", hRoute.WeekReadingHandler)

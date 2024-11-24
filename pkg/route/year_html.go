@@ -28,7 +28,7 @@ func YearHtmlTable(w http.ResponseWriter) {
 	// fmt.Fprintf(w, "<th class='%s'>sport</th><th class='%s'>actual</th><th class='%s'>target</th><th class='%s'>sportContentContent</th><th class='%s'>finish</th></tr>\n", "fixed-header3", "fixed-header3", "fixed-header3", "fixed-header3", "fixed-header3")
 
 	// 遍历数据并构造表格的行
-	for _, item := range hData.GlobalGetup.YearOrderGetupInfo {
+	for _, item := range hData.GlobalPiano.YearOrderPianoInfo {
 		if item == nil {
 			continue
 		}

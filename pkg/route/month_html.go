@@ -10,13 +10,13 @@ import (
 func MonthHtmlTable(w http.ResponseWriter) {
 	fmt.Fprintln(w, GlobalTable)
 
-	// // 构造HTML表格的开头
-	// fmt.Fprintf(w, "<html>\n")
-	// fmt.Fprintf(w, "<head>\n")
-	// fmt.Fprintf(w, "<title>MyStruct Table</title>\n")
-	// fmt.Fprintf(w, "</head>\n")
-	// fmt.Fprintf(w, "<body>\n")
-	// fmt.Fprintf(w, "<table border='1'>\n")
+	// 构造HTML表格的开头
+	fmt.Fprintf(w, "<html>\n")
+	fmt.Fprintf(w, "<head>\n")
+	fmt.Fprintf(w, "<title>MyStruct Table</title>\n")
+	fmt.Fprintf(w, "</head>\n")
+	fmt.Fprintf(w, "<body>\n")
+	fmt.Fprintf(w, "<table border='1'>\n")
 	fmt.Fprintf(w, "<tr><th class='%s'>monthNum</th>", "fixed-header")
 	// fmt.Fprintf(w, "<th class='%s'>getup</th><th class='%s'>target</th><th class='%s'>finish</th>", "fixed-header2", "fixed-header2", "fixed-header2")
 	// fmt.Fprintf(w, "<th class='%s'>sleep</th><th class='%s'>target</th><th class='%s'>finish</th>", "fixed-header3", "fixed-header3", "fixed-header3")
@@ -28,7 +28,7 @@ func MonthHtmlTable(w http.ResponseWriter) {
 	// fmt.Fprintf(w, "<th class='%s'>sport</th><th class='%s'>actual</th><th class='%s'>target</th><th class='%s'>sportContentContent</th><th class='%s'>finish</th></tr>\n", "fixed-header3", "fixed-header3", "fixed-header3", "fixed-header3", "fixed-header3")
 
 	// 遍历数据并构造表格的行
-	for _, item := range hData.GlobalGetup.MonthOrderGetupInfo {
+	for _, item := range hData.GlobalPiano.MonthOrderPianoInfo {
 		if item == nil {
 			continue
 		}
