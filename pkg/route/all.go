@@ -22,6 +22,7 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 		<li><a href="/getup">Link to getup</a></li>
 		<li><a href="/sleep">Link to sleep</a></li>
 		<li><a href="/facemask">Link to facemask</a></li>
+		<li><a href="/eyemask">Link to eyemask</a></li>
 		<li><a href="/skincare">Link to skincare</a></li>
 		<li><a href="/audiobook">Link to audiobook</a></li>
 		<li><a href="/sport">Link to sport</a></li>

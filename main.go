@@ -53,6 +53,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// eyemask
+	err = hData.DealEyeMaskData(*dataPath+"/"+*dataFileName, *dataPath+"/output_eyemask.txt", "敷眼膜")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// skincare
 	err = hData.DealSkinCareData(*dataPath+"/"+*dataFileName, *dataPath+"/output_skincare.txt", "护肤")
 	if err != nil {

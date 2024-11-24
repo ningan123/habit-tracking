@@ -1,5 +1,5 @@
 COMMIT := $(shell git rev-parse --short HEAD)
-BASE_VERSION ?= v0.0.2
+BASE_VERSION ?= v0.0.4
 VERSION := ${BASE_VERSION}-${COMMIT}
 
 arch=amd64
