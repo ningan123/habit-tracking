@@ -7,6 +7,7 @@ import (
 
 	"k8s.io/klog/v2"
 	hDate "ningan.com/habit-tracking/pkg/date"
+	hString "ningan.com/habit-tracking/pkg/string"
 )
 
 type DayPiano struct {
@@ -107,6 +108,7 @@ func (d *DayPiano) ComputePianoTime() error {
 	for k, v := range d.PianoTimeOfDifferentContent {
 		d.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
+	d.PianoTimeOfDifferentContentStr = hString.SortString(d.PianoTimeOfDifferentContentStr)
 	return nil
 }
 

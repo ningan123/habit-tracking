@@ -5,6 +5,7 @@ import (
 
 	"k8s.io/klog/v2"
 	hDate "ningan.com/habit-tracking/pkg/date"
+	hString "ningan.com/habit-tracking/pkg/string"
 )
 
 type YearPiano struct {
@@ -66,6 +67,7 @@ func (y *YearPiano) ComputePianoTime() error {
 	for k, v := range y.PianoTimeOfDifferentContent {
 		y.PianoTimeOfDifferentContentStr += fmt.Sprintf("%s: %s<br>", k, v)
 	}
+	y.PianoTimeOfDifferentContentStr = hString.SortString(y.PianoTimeOfDifferentContentStr)
 
 	return nil
 }
