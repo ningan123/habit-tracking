@@ -197,6 +197,7 @@ func (p *Piano) ComputeDayPianoTime() error {
 	for _, dPiano := range p.DayPianoInfo {
 		err := dPiano.ComputePianoTime()
 		if err != nil {
+			klog.ErrorS(err, "ComputeDayPianoTime error", "date", dPiano.Day.Date, "rawInfo", dPiano.RawInfo)
 			return err
 		}
 	}

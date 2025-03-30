@@ -65,6 +65,9 @@ func SplitRawInfo(rawInfo string) ([]ContentInfo, error) {
 		return nil, nil
 	}
 
+	// 去除字符串中的空格
+	rawInfo = strings.ReplaceAll(rawInfo, " ", "")
+
 	rawInfoList := strings.Split(rawInfo, "；\n")
 	for _, str := range rawInfoList {
 		strList := strings.Split(str, "：")
